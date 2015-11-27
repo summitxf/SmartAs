@@ -275,11 +275,12 @@
   </dependencyManagement>
 
   <modules>
-    
-    
     <module>smartas-core</module>
+    <module>smartas-workflow</module>
+    <module>smartas-security</module>
+    <module>smartas-web-support</module>
+    <module>smartas-web-resources</module>
     <module>smartas-web</module>
-    
   </modules>
 
   <profiles>

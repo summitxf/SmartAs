@@ -50,10 +50,10 @@ public class DevLoader extends WebappLoader {
 			return;
 		}
 		
-		File prjDir = getProjectRootDir();
+		File prjDir = getProjectRootDir().getParentFile();
 		
 		if(prjDir == null){
-			logError("[" + webClassPathFile + "] file not found");
+			logError("[" + projectFile + "] file not found");
 			return;
 		}
 		WebappClassLoader devCl = (WebappClassLoader) cl;
@@ -67,18 +67,7 @@ public class DevLoader extends WebappLoader {
 			}else{
 				loadPath(devCl, prjDir, entry);
 			}
-			
 		}
-		/*String cp = (String)getServletContext().getAttribute(Globals.CLASS_PATH_ATTR);
-		StringTokenizer tokenizer = new StringTokenizer(cp, File.pathSeparatorChar+"");
-		while(tokenizer.hasMoreTokens()) {
-			String token = tokenizer.nextToken();
-			if (token.charAt(0)=='/' && token.charAt(2)==':') token = token.substring(1);
-			classpath.append(token + File.pathSeparatorChar);
-		}*/
-		//cp = classpath + cp;
-		//getServletContext().setAttribute(Globals.CLASS_PATH_ATTR, classpath.toString());
-		//log("JSPCompiler Classpath = " + classpath);
 	}
 	
 	private void loadPath(WebappClassLoader devCl,File prjDir,String entry){
@@ -86,11 +75,13 @@ public class DevLoader extends WebappLoader {
 		//绝对路径
 		if(!f.exists()){
 			f = new File(entry);
+			if (!f.exists()) {
+				logError(entry + " does not exist !");
+			}
+			return;
 		}
-		if (!f.exists()) {
-			logError(entry + " does not exist !");
-		}
-		if (f.isDirectory() && entry.endsWith("/")==false) f = new File(entry + "/");
+		
+		if (f.isDirectory() && entry.endsWith("/")==false) f = new File(f,"/");
 		try {
 			URL url = f.toURI().toURL();
 			devCl.addRepository(url.toString());
@@ -106,9 +97,10 @@ public class DevLoader extends WebappLoader {
 		//绝对路径
 		if(!f.exists()){
 			f = new File(entry);
-		}
-		if(!f.exists()){
-			logError(entry + " does not exist !");
+			if(!f.exists()){
+				logError(entry + " does not exist !");
+				return;
+			}
 		}
 		
 		FileFilter filter = new FileFilter() {
@@ -173,7 +165,7 @@ public class DevLoader extends WebappLoader {
 			String line = null;
 			while((line = lr.readLine()) != null) {
 				line = line.trim();
-				if(!line.startsWith("#")){
+				if(line.length() > 0 && !line.startsWith("#")){
 					line = line.replace('\\', '/');
 					rc.add(line);
 				}
