@@ -1,0 +1,75 @@
+package org.smartas.core.service;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.smartas.core.BusinessAccessException;
+import org.smartas.core.Entity;
+import org.smartas.core.GenericDao;
+import org.smartas.core.Pageable;
+import org.smartas.core.Service;
+
+public abstract class GenericServiceImpl<T extends Entity, PK extends Serializable> implements Service<T, PK> {
+
+	protected abstract GenericDao<T, PK> getDao();
+	
+
+	public GenericServiceImpl() {
+	}
+
+	public T get(PK id) {
+		return (T) getDao().select(id);
+	}
+
+	public T save(T entity) {
+		return (T) getDao().insert(entity);
+	}
+
+	/*public T merge(T entity) {
+		getDao().merge(entity);
+		return entity;
+	}
+
+	public void evict(T entity) {
+		getDao().evict(entity);
+	}*/
+
+	public List<T> getAll() {
+		return getDao().select();
+	}
+
+
+	public void remove(PK id) {
+		getDao().delete(id);
+	}
+
+	public T find(PK id) throws BusinessAccessException {
+		return getDao().select(id);
+	}
+
+	public Pageable<T> getAll(int page, int pageSize) throws BusinessAccessException {
+		int length =getDao().count();
+		page = realPage(page, pageSize, length);
+		return new Pageable<T>(page, pageSize, length, getDao().select((page - 1) * pageSize, pageSize));
+	}
+
+	public int getAllSize() throws BusinessAccessException {
+		return getDao().count();
+	}
+
+	public void remove(T o) throws BusinessAccessException {
+		getDao().delete(o);
+	}
+
+	public void update(T o) throws BusinessAccessException {
+		getDao().update(o);
+	}
+	
+	protected final int realPage(int page, int pageSize, int length) {
+		if ((page - 1) * pageSize > length) {
+			page = (length + pageSize - 1) / pageSize;
+		}
+		return page;
+	}
+
+}
