@@ -23,15 +23,15 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 	}
 
 	public T select(PK id) throws DataAccessException {
-		return (T) super.getSqlSession().selectOne(clazz.getName(), id);
+		return super.getSqlSession().selectOne(clazz.getName(), id);
 	}
 
 	public List<T> select() throws DataAccessException {
-		return (List<T>)super.getSqlSession().selectList(selectStatement(clazz));
+		return super.getSqlSession().selectList(selectStatement(clazz));
 	}
 
 	public List<T> select(final int offset, final int limit) throws DataAccessException {
-		return (List<T>)super.getSqlSession().selectList(selectStatement(clazz),new RowBounds(offset, limit));
+		return super.getSqlSession().selectList(selectStatement(clazz),new RowBounds(offset, limit));
 	}
 
 	public int count() throws DataAccessException {
@@ -59,7 +59,7 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 		return this.select(statement, null, offset, limit);
 	}
 	protected final List<T> select(String statement,Object params,final int offset, final int limit) throws DataAccessException {
-		return (List<T>)super.getSqlSession().selectList(statement(clazz,statement),params,new RowBounds(offset, limit));
+		return super.getSqlSession().selectList(statement(clazz,statement),params,new RowBounds(offset, limit));
 	}
 	
 	protected final <B> B execute(BatisCallback action) throws DataAccessException {

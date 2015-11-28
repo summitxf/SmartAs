@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven conversion-service="conversionService"/>
+
+
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		 
+	</bean>
+	
+	<bean id="resourcesHandler" class="org.smartas.web.support.handler.ResourcesHandler">
+		<property name="locations">
+		  <list>
+		    <value>classpath:web/</value>
+		  </list>
+		</property>
+	</bean>
+	<bean id="indexHandler" class="org.smartas.web.support.handler.ResourceHandler">
+		<property name="resource" value="index.html"/>
+	</bean>
+	<bean id="loginHandler" class="org.smartas.web.support.handler.ResourceHandler">
+		<property name="resource" value="login.html"/>
+	</bean>
+	
+	
+	
+	
+	<!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="/" value-ref="indexHandler"/>
+				<entry key="/login.html" value-ref="loginHandler"/>
+			 	<entry key="/web/**" value-ref="resourcesHandler"/>
+			</map>
+		</property>
+	</bean>
+	
+	<mvc:interceptors>
+	     <mvc:interceptor>
+	            <mvc:mapping path="/**" />
+	            <bean class="org.smartas.security.handler.SecurityInteceptor">
+	            	 <property name="excludedUrls">
+		                <list>
+		                    <value>/login.html</value>
+		                </list>
+		            </property>
+	            </bean>
+	     </mvc:interceptor>
+ 	</mvc:interceptors>
+
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+
+	<context:component-scan base-package="com.intercom.btravel.**.web">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 配置上传文件 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	 <!-- 设置上传文件的最大尺寸为10MB -->  
+	 <!-- <property name="maxUploadSize" value="100010485761"/> -->
+	</bean>
+	
+</beans>

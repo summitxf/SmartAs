@@ -22,7 +22,13 @@ import org.apache.catalina.LifecycleException;
  */
 public class DevLoader extends WebappLoader {
 	//private static final String info = "org.apache.catalina.loader.DevLoader/2.0"; 
-
+    private static final List<String> IG = new ArrayList<String>();
+    
+    static{
+    	IG.add("servlet-api");
+    }
+    
+    
 	private String webClassPathFile = ".#webclasspath";
 	private String projectFile = ".project";
 	
@@ -91,6 +97,15 @@ public class DevLoader extends WebappLoader {
 		}
 	}
 	
+	private boolean ignore(String name){
+		for (String jar : IG) {
+			if(name.contains(jar)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private void loadJar(WebappClassLoader devCl,File prjDir,String entry){
 		//entry = entry.substring(0,entry.length() - 5);
 		File f = new File(prjDir,entry);
@@ -105,7 +120,7 @@ public class DevLoader extends WebappLoader {
 		
 		FileFilter filter = new FileFilter() {
 			public boolean accept(File file) {
-				return (file.getName().equalsIgnoreCase(".jar"));
+				return ignore(file.getName()) && file.getName().endsWith(".jar");
 			}
 		};
 		

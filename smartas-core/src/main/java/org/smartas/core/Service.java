@@ -10,6 +10,8 @@ package org.smartas.core;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 
 
 /**
@@ -23,6 +25,7 @@ import java.util.List;
  * @author chenjpu
  * 
  */
+@Transactional()
 public interface Service<T extends Entity,PK extends Serializable> {
 
 	/**
@@ -31,7 +34,7 @@ public interface Service<T extends Entity,PK extends Serializable> {
 	 * @param id
 	 * @return
 	 */
-
+	@Transactional(readOnly=true)
 	T get(PK id) throws BusinessAccessException;
 
 	/**
@@ -41,7 +44,7 @@ public interface Service<T extends Entity,PK extends Serializable> {
 	 * @return
 	 * @throws BusinessAccessException
 	 */
-
+	@Transactional(readOnly=true)
 	T find(PK id) throws BusinessAccessException;
 	
 	/**
@@ -49,6 +52,7 @@ public interface Service<T extends Entity,PK extends Serializable> {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	int getAllSize() throws BusinessAccessException;
 
 	/**
@@ -59,8 +63,9 @@ public interface Service<T extends Entity,PK extends Serializable> {
 	 * @return
 	 * @throws BusinessAccessException
 	 */
+	@Transactional(readOnly=true)
 	Pageable<T> getAll(int page, int pageSize) throws BusinessAccessException;
-
+	@Transactional(readOnly=true)
 	List<T> getAll() throws BusinessAccessException;
 
 	/**
@@ -69,8 +74,9 @@ public interface Service<T extends Entity,PK extends Serializable> {
 	 * @param newObject
 	 * @throws BusinessAccessException
 	 */
+	@Transactional()
 	Serializable save(T o) throws BusinessAccessException;
-
+	@Transactional()
 	void update(T o) throws BusinessAccessException;
 	
 	/*T merge(T entity);
@@ -84,7 +90,9 @@ public interface Service<T extends Entity,PK extends Serializable> {
 	 * @param id
 	 * @throws BusinessAccessException
 	 */
+	@Transactional()
 	void remove(PK id) throws BusinessAccessException;
 
+	@Transactional()
 	void remove(T o) throws BusinessAccessException;
 }

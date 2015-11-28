@@ -12,10 +12,39 @@
   <name>smartas-web Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-  	
-  
-  
-  
+  	<dependency>
+      <groupId>com.smart.as</groupId>
+      <artifactId>smartas-core</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.smart.as</groupId>
+      <artifactId>smartas-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smart.as</groupId>
+      <artifactId>smartas-web-resources</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smart.as</groupId>
+      <artifactId>smartas-web-support</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smart.as</groupId>
+      <artifactId>smartas-workflow</artifactId>
+    </dependency>
+   <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+      </dependency>
+        <dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+	</dependency>
+	 <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+      </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
