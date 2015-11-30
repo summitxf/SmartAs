@@ -48,7 +48,7 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	List<T> select(@Param("") int skip, @Param("") int max);
+	List<T> select(@Param("skip") int skip, @Param("max") int max);
 
 	/**
 	 * 保存数据记录,更具id是否为空来判断是否插入新记录还是更新操作

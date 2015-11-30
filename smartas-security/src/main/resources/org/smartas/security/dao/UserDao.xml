@@ -68,7 +68,7 @@
 	  <select id="findByUserAcount" resultType="org.smartas.security.model.User">
 	    SELECT
 	       T.*
-	    FROM T_USER T
+	    FROM T_USER T 
 	    WHERE T.ACOUNT = #{acount}
 	  </select>
 	
