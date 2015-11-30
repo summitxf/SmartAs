@@ -9,8 +9,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="renderer" content="webkit">
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<link rel="alternate icon" type="image/png"
-	href="web/amazeui/i/favicon.png">
+<link rel="alternate icon" type="image/png" href="web/amazeui/i/favicon.png">
 <link rel="stylesheet" href="web/amazeui/css/amazeui.min.css" />
 <style>
 .header {
@@ -39,15 +38,15 @@
 		<div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
 			<h3>登录</h3>
 			<hr>
-			<form method="post" class="am-form">
-				<label for="email">邮箱:</label> <input type="email" name=""
-					id="email" value=""> <br> <label for="password">密码:</label>
+			<form method="post" class="am-form" id="login_form">
+				<label for="username">账号:</label> <input type="email" name="username" id="username" value=""> <br> 
+				<label for="password">密码:</label>
 				<input type="password" name="" id="password" value=""> <br>
 				<label for="remember-me"> <input id="remember-me"
 					type="checkbox"> 记住密码
 				</label> <br />
 				<div class="am-cf">
-					<input type="submit" name="" value="登 录"
+					<input type="submit" onclick="return false" value="登 录" id="login_bnt"
 						class="am-btn am-btn-primary am-btn-sm am-fl"> <input
 						type="submit" name="" value="忘记密码 ^_^? "
 						class="am-btn am-btn-default am-btn-sm am-fr">
@@ -57,5 +56,8 @@
 			<p>© 2014 Licensed under MIT license.</p>
 		</div>
 	</div>
+	<script src="web/jquery/v2.1.4/jquery.min.js"></script>
+	<script src="web/common/jquery.form2json.js"></script>
+	<script src="web/security/Login.js"></script>
 </body>
 </html>

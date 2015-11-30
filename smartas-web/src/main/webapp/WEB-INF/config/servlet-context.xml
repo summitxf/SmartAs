@@ -34,10 +34,8 @@
 		<property name="resource" value="login.html"/>
 	</bean>
 	
+	<bean id="securityInteceptor" class="org.smartas.security.handler.SecurityInteceptor" />
 	
-	 <bean id="securityInteceptor" class="org.smartas.security.handler.SecurityInteceptor" />
-	
-	<!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="urlMap">
 			<map>
@@ -51,13 +49,28 @@
 	
 	<bean class="org.smartas.web.support.handler.ServiceHandlerMapping">
 		 <property name="prefix" value="/services"/>
-		 <property name="interceptors">
+		 <!-- <property name="interceptors">
 		 	<list>
 		 		<ref bean="securityInteceptor"/>
 		 	</list>
-		 </property>
+		 </property> -->
 	</bean>
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				 <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+			        <property name="supportedMediaTypes" value="application/json;charset=UTF-8"/>
+			        <property name="features">
+			          <array>
+			            <value>WriteMapNullValue</value>
+			            <value>WriteNullStringAsEmpty</value>
+			          </array>
+			        </property>
+			      </bean>
+			</list>
+		</property>
+	</bean>
+	
 	<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>
 	
 	<mvc:interceptors>

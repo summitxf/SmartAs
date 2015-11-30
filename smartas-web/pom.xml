@@ -33,6 +33,11 @@
       <groupId>com.smart.as</groupId>
       <artifactId>smartas-workflow</artifactId>
     </dependency>
+    
+     <dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	  </dependency>
    <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
