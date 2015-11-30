@@ -3,7 +3,6 @@ $(function() {
 		dataType : "json",
 		contentType : "application/json",
 	});
-
 	var context = "";
 
 	$("#logout").click(function() {
