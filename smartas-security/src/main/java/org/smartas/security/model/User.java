@@ -12,21 +12,29 @@ public class User extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1757475622243875292L;
-	protected String username;
+	
+	
+	private String acount;
+	private String email;
+	private String firstname;
+	private String lastname;
+	private short status;
+	private String addr1;
+	private String addr2;
+	private String city;
+	private String state;
+	private String zip;
+	private String country;
+	private String phone;
+	
 	protected String password;
-	protected String email;
-	protected String position;
-	protected String phone;
 	protected String mobile;
 	protected String fax;
 	protected String address;
-	protected String zip;
 	protected String photo;
 	protected Date accessionTime;
-	protected Short status;
 	protected String education;
 	protected Short title;
-	protected String fullname;
 	
 	private Short delFlag;
 	
@@ -47,21 +55,6 @@ public class User extends BaseEntity {
 	}
 
 
-	/**
-	 * 	 * @return String
-	 * @hibernate.property column="username" type="java.lang.String" length="128" not-null="true" unique="false"
-	 */
-	public String getUsername() {
-		return this.username;
-	}
-
-	/**
-	 * Set the username
-	 * @spring.validator type="required"
-	 */
-	public void setUsername(String aValue) {
-		this.username = aValue;
-	}
 
 	/**
 	 * 	 * @return String
@@ -95,20 +88,6 @@ public class User extends BaseEntity {
 		this.email = aValue;
 	}
 
-	/**
-	 * 	 * @return String
-	 * @hibernate.property column="position" type="java.lang.String" length="32" not-null="false" unique="false"
-	 */
-	public String getPosition() {
-		return this.position;
-	}
-
-	/**
-	 * Set the position
-	 */
-	public void setPosition(String aValue) {
-		this.position = aValue;
-	}
 
 	/**
 	 * 	 * @return String
@@ -216,21 +195,6 @@ public class User extends BaseEntity {
 		this.accessionTime = aValue;
 	}
 
-	/**
-	 * 	 * @return Short
-	 * @hibernate.property column="status" type="java.lang.Short" length="5" not-null="true" unique="false"
-	 */
-	public Short getStatus() {
-		return this.status;
-	}
-
-	/**
-	 * Set the status
-	 * @spring.validator type="required"
-	 */
-	public void setStatus(Short aValue) {
-		this.status = aValue;
-	}
 
 	/**
 	 * 	 * @return String
@@ -260,21 +224,6 @@ public class User extends BaseEntity {
 	 */
 	public void setTitle(Short aValue) {
 		this.title = aValue;
-	}
-
-	/**
-	 * 	 * @return String
-	 * @hibernate.property column="fullname" type="java.lang.String" length="128" not-null="false" unique="false"
-	 */
-	public String getFullname() {
-		return this.fullname;
-	}
-
-	/**
-	 * Set the fullname
-	 */
-	public void setFullname(String aValue) {
-		this.fullname = aValue;
 	}
 
 	/**
@@ -314,14 +263,6 @@ public class User extends BaseEntity {
 		return email;
 	}
 
-	public String getFamilyName() {
-		return fullname;
-	}
-
-	public String getGivenName() {
-		return fullname;
-	}
-
 	public Set<String> getRights() {
 		return rights;
 	}
@@ -332,5 +273,87 @@ public class User extends BaseEntity {
 
 	public void setDelFlag(Short delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	
+	 
+	public String getAcount() {
+		return acount;
+	}
+
+	public void setAcount(String acount) {
+		this.acount = acount;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public short getStatus() {
+		return status;
+	}
+
+	public void setStatus(short status) {
+		this.status = status;
+	}
+
+	public String getAddr1() {
+		return addr1;
+	}
+
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
+	}
+
+	public String getAddr2() {
+		return addr2;
+	}
+
+	public void setAddr2(String addr2) {
+		this.addr2 = addr2;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setRights(Set<String> rights) {
+		this.rights = rights;
 	}
 }

@@ -38,7 +38,11 @@
 	    <groupId>com.alibaba</groupId>
 	    <artifactId>fastjson</artifactId>
 	  </dependency>
-   <dependency>
+	  <dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+	  </dependency>
+   	  <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
       </dependency>

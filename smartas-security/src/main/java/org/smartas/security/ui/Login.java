@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.smartas.security.model.Credentials;
 import org.smartas.security.model.LoginResult;
+import org.smartas.security.model.User;
 import org.smartas.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -36,7 +37,8 @@ public class Login {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public LoginResult login(@RequestBody Credentials credentials, HttpServletRequest request) {
-		request.getSession().setAttribute("user", credentials);
+		User user = userService.findByUserAcount(credentials.getUsername());
+		request.getSession().setAttribute("user", user);
 		LoginResult result = new LoginResult();
 		result.setContext(request.getContextPath());
 		result.setStatus(200);

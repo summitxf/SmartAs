@@ -22,7 +22,7 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 		this.clazz = clazz;
 	}
 
-	public T select(PK id) throws DataAccessException {
+	public T getById(PK id) throws DataAccessException {
 		return super.getSqlSession().selectOne(clazz.getName(), id);
 	}
 
@@ -34,11 +34,11 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 		return super.getSqlSession().selectList(selectStatement(clazz),new RowBounds(offset, limit));
 	}
 
-	public int count() throws DataAccessException {
+	public int getCountAll() throws DataAccessException {
 		return ((Number)super.getSqlSession().selectOne(countStatement(clazz))).intValue();
 	}
 
-	public void delete(final PK id) throws DataAccessException {
+	public void deleteById(final PK id) throws DataAccessException {
 		super.getSqlSession().delete(deleteStatement(clazz), id);
 	}
 

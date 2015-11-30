@@ -18,7 +18,7 @@ public abstract class GenericServiceImpl<T extends Entity, PK extends Serializab
 	}
 
 	public T get(PK id) {
-		return (T) getDao().select(id);
+		return (T) getDao().getById(id);
 	}
 
 	public T save(T entity) {
@@ -40,25 +40,25 @@ public abstract class GenericServiceImpl<T extends Entity, PK extends Serializab
 
 
 	public void remove(PK id) {
-		getDao().delete(id);
+		getDao().deleteById(id);
 	}
 
 	public T find(PK id) throws BusinessAccessException {
-		return getDao().select(id);
+		return getDao().getById(id);
 	}
 
 	public Pageable<T> getAll(int page, int pageSize) throws BusinessAccessException {
-		int length =getDao().count();
+		int length =getDao().getCountAll();
 		page = realPage(page, pageSize, length);
 		return new Pageable<T>(page, pageSize, length, getDao().select((page - 1) * pageSize, pageSize));
 	}
 
 	public int getAllSize() throws BusinessAccessException {
-		return getDao().count();
+		return getDao().getCountAll();
 	}
 
 	public void remove(T o) throws BusinessAccessException {
-		getDao().delete(o);
+		getDao().deleteById(o);
 	}
 
 	public void update(T o) throws BusinessAccessException {

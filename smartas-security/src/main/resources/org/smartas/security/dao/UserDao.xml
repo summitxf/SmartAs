@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="org.smartas.security.dao.UserDao">
+	  
+	  <cache />
+	
+	  <!-- ///////////////////////////基础接口定义///////////////////////////////// -->
+	
+	  <select id="getById" resultType="org.smartas.security.model.User">
+	    SELECT
+	       T.*
+	    FROM T_USER T
+	    WHERE T.ID = #{id}
+	  </select>
+	  
+	  <select id="getCountAll" resultType="int">
+	    SELECT
+	       count(1)
+	    FROM T_USER T
+	  </select>
+	  
+	  <select id="select" resultType="org.smartas.security.model.User">
+	    SELECT
+	       T.*
+	    FROM T_USER T
+	    <if test="skip != null">
+	    	LIMIT #{skip},#{max}
+	    </if>
+	  </select>
+	  
+	  
+	  <insert id="insert" parameterType="org.smartas.security.model.User">
+	    INSERT INTO T_USER
+	      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, ACOUNT)
+	    VALUES
+	      (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{acount})
+	  </insert>
+	  
+	  
+	  <update id="update" parameterType="org.smartas.security.model.User">
+	    UPDATE ACCOUNT SET
+	      EMAIL = #{email},
+	      FIRSTNAME = #{firstName},
+	      LASTNAME = #{lastName},
+	      STATUS = #{status},
+	      ADDR1 = #{address1},
+	      ADDR2 = #{address2,jdbcType=VARCHAR},
+	      CITY = #{city},
+	      STATE = #{state},
+	      ZIP = #{zip},
+	      COUNTRY = #{country},
+	      PHONE = #{phone}
+	    WHERE ID = #{id}
+	  </update>
+	  
+	  
+	   <select id="deleteById">
+	    DELETE * FROM  T_USER T
+	    WHERE T.ID = #{id}
+	  </select>
+	  
+	 <!-- //////////////////////////////////////////////////////////// -->
+	  
+	  
+	  
+	  <select id="findByUserAcount" resultType="org.smartas.security.model.User">
+	    SELECT
+	       T.*
+	    FROM T_USER T
+	    WHERE T.ACOUNT = #{acount}
+	  </select>
+	
+</mapper>
+
