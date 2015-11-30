@@ -58,7 +58,7 @@ public abstract class GenericServiceImpl<T extends Entity, PK extends Serializab
 	}
 
 	public void remove(T o) throws BusinessAccessException {
-		getDao().deleteById(o);
+		getDao().deleteById(o.getId());
 	}
 
 	public void update(T o) throws BusinessAccessException {

@@ -38,7 +38,7 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 		return ((Number)super.getSqlSession().selectOne(countStatement(clazz))).intValue();
 	}
 
-	public void deleteById(final PK id) throws DataAccessException {
+	public void deleteById(final Serializable id) throws DataAccessException {
 		super.getSqlSession().delete(deleteStatement(clazz), id);
 	}
 

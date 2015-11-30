@@ -3,7 +3,6 @@ package org.smartas.core;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
@@ -75,7 +74,7 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 	 * @param id
 	 * @throws DataAccessException
 	 */
-	void deleteById(PK id);
+	void deleteById(Serializable id);
 
 	// ~~~
 	// void evict(T entity);
