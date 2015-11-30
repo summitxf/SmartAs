@@ -10,6 +10,7 @@
 package org.smartas.security.ui;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +52,15 @@ public class Login {
 		request.getSession().setAttribute("user", user);
 		result.setStatus(200);
 		return result;
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public void logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		return;
 	}
 
 }
