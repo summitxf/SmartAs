@@ -5,6 +5,7 @@ smartas-security/target/classes
 smartas-web-resources/target/classes
 smartas-web-support/target/classes
 smartas-workflow/target/classes
+smartas-web/target/classes
 
 #以来的jar包
 smartas-web/target/smartas-web/WEB-INF/lib/*.jar
