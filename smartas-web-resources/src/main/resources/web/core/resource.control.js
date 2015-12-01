@@ -6,7 +6,7 @@
 	  var hash = location.hash;
 	  //console.log(hash);
 	  hash&&(function(url){
-			$.ajax({
+		  url && $.ajax({
 				type : 'get',
 				url : url,
 				dataType:'html',
