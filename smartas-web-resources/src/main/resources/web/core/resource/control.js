@@ -2,6 +2,8 @@
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
 	var context = $("#content");
+	
+	
 	$(window).hashchange(function(e) {
 		var hash = location.hash;
 		// console.log(hash);
@@ -16,9 +18,11 @@
 				success : function(data) {
 					// .1卸载已经加载的资源
 					Namespace.uninstall();
-					// .2初始化
+					//2.加载资源
 					var page = $(data);
 					context.html(page);
+					//.3初始化
+					context.trigger('changed.dom.amui');
 				},
 				error : function() {
 
