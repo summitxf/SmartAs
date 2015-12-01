@@ -51,6 +51,7 @@ public class Login {
 		// userService.getAll(1,5);
 		request.getSession().setAttribute("user", user);
 		result.setStatus(200);
+		result.setHome("web/demo/admin-index.html");
 		return result;
 	}
 
