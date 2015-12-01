@@ -26,6 +26,7 @@ public class DevLoader extends WebappLoader {
     
     static{
     	IG.add("servlet-api");
+    	IG.add("smartas");
     }
     
     
@@ -67,7 +68,7 @@ public class DevLoader extends WebappLoader {
 		List<String> webClassPathEntries = readWebClassPathEntries();
 		//StringBuffer classpath   = new StringBuffer();
 		for (String entry: webClassPathEntries) {
-			//ÅúÁ¿jarÅäÖÃ
+			//ï¿½ï¿½ï¿½ï¿½jarï¿½ï¿½ï¿½ï¿½
 			if(entry.endsWith("*.jar")){
 				loadJar(devCl, prjDir, entry.substring(0,entry.length() - 5));
 			}else{
@@ -78,7 +79,7 @@ public class DevLoader extends WebappLoader {
 	
 	private void loadPath(WebappClassLoader devCl,File prjDir,String entry){
 		File f = new File(prjDir,entry);
-		//¾ø¶ÔÂ·¾¶
+		//ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 		if(!f.exists()){
 			f = new File(entry);
 			if (!f.exists()) {
@@ -109,7 +110,7 @@ public class DevLoader extends WebappLoader {
 	private void loadJar(WebappClassLoader devCl,File prjDir,String entry){
 		//entry = entry.substring(0,entry.length() - 5);
 		File f = new File(prjDir,entry);
-		//¾ø¶ÔÂ·¾¶
+		//ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 		if(!f.exists()){
 			f = new File(entry);
 			if(!f.exists()){

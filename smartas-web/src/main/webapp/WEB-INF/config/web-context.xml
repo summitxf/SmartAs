@@ -15,8 +15,11 @@
 		 
 	</bean> -->
 	
+	<import resource="classpath*:/META-INF/spring/web-context.xml" />
 	
-	<context:component-scan base-package="org.smartas.**.ui" />
+	<context:component-scan base-package="org.smartas.**.ui" name-generator="org.smartas.core.FullClassNameBeanNameGenerator">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 	
 	<bean id="resourcesHandler" class="org.smartas.web.support.handler.ResourcesHandler">
 		<property name="locations">
@@ -34,8 +37,6 @@
 		<property name="resource" value="login.html"/>
 	</bean>
 	
-	<bean id="securityInteceptor" class="org.smartas.security.handler.SecurityInteceptor" />
-	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="urlMap">
 			<map>
@@ -49,11 +50,11 @@
 	
 	<bean class="org.smartas.web.support.handler.ServiceHandlerMapping">
 		 <property name="prefix" value="/services"/>
-		 <!-- <property name="interceptors">
+		  <property name="interceptors">
 		 	<list>
 		 		<ref bean="securityInteceptor"/>
 		 	</list>
-		 </property> -->
+		 </property>
 	</bean>
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
@@ -77,25 +78,15 @@
 	     <mvc:interceptor>
 	           <mvc:mapping path="/" />
 	           <mvc:mapping path="/index.html" />
-	           <ref bean="securityInteceptor" />
+	           <ref bean="loginInteceptor" />
 	     </mvc:interceptor>
  	</mvc:interceptors>
 
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-
-	<context:component-scan base-package="com.intercom.btravel.**.web">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
 	<!-- 配置上传文件 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	 <!-- 设置上传文件的最大尺寸为10MB -->  
 	 <!-- <property name="maxUploadSize" value="100010485761"/> -->
 	</bean>
-	
+	 
 </beans>

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.smartas.core.annotation.Operation;
+import org.smartas.core.annotation.Resource;
 import org.smartas.security.model.Credentials;
 import org.smartas.security.model.LoginResult;
 import org.smartas.security.model.User;
@@ -25,9 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "com.jbob.security.ui.Login")
+@RestController()
 @RequestMapping("/security")
-public class Login {
+@Resource(code = 9000, model = "Smart", desc = "Login UI")
+public class LoginUI {
 
 	@Autowired
 	private UserService userService;
@@ -39,6 +42,7 @@ public class Login {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
 	public LoginResult login(@RequestBody Credentials credentials, HttpServletRequest request) {
 		User user = userService.findByUserAcount(credentials.getUsername());
 		LoginResult result = new LoginResult();

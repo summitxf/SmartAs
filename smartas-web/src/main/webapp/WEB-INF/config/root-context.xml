@@ -63,5 +63,5 @@
  	<context:component-scan base-package="org.smartas.**.service.impl,org.smartas.**.dao.impl" />
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<import resource="classpath*:/META-INF/root-context.xml" />
+	<import resource="classpath*:/META-INF/spring/root-context.xml" />
 </beans>

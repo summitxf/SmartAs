@@ -11,24 +11,5 @@
 	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
 	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-
-	<bean class="org.springframework.orm.hibernate4.HibernateExceptionTranslator" />
-
-	<bean id="abstractEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" abstract="true">
-		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="${hibernate.generateDdl}" />
-				<property name="showSql" value="${hibernate.showSql}" />
-				<property name="database" value="${hibernate.database}"/>
-			</bean>
-		</property>
-		<property name="persistenceUnitName" value="persistenceUnit"></property>
-		<property name="jpaProperties">
-			<map>
-			  <entry key="hibernate.format_sql" value="${hibernate.format_sql}"/>
-			</map>
-		</property>
-		<property name="packagesToScan" value="com.intercom.btravel.**.entity" />
-	</bean>
-
+	
 </beans>
