@@ -52,35 +52,45 @@
 		'fatal' : Log.FATAL,
 		'none' : Log.NONE
 	}
+	
+	var toString = function(obj){
+		if(typeof obj !== 'string'){
+			if(typeof obj === 'object'){
+				return JSON.stringify(obj);
+			}
+			return obj.toString();
+		}
+		return obj;
+	}
 
 	Log.prototype.debug = function(s) {
 		if (this.getLevel() <= Log.DEBUG) {
 			var args = slice.call(arguments, 1);
-			this._log(format.apply(JSON.stringify(s), args), "DEBUG", this);
+			this._log(format.apply(toString(s), args), "DEBUG", this);
 		}
 	}
 	Log.prototype.info = function(s) {
 		if (this.getLevel() <= Log.INFO) {
 			var args = slice.call(arguments, 1);
-			this._log(format.apply(JSON.stringify(s), args), "INFO ", this);
+			this._log(format.apply(toString(s), args), "INFO ", this);
 		}
 	}
 	Log.prototype.warn = function(s) {
 		if (this.getLevel() <= Log.WARN) {
 			var args = slice.call(arguments, 1);
-			this._log(format.apply(JSON.stringify(s), args), "WARN ", this);
+			this._log(format.apply(toString(s), args), "WARN ", this);
 		}
 	}
 	Log.prototype.error = function(s) {
 		if (this.getLevel() <= Log.ERROR) {
 			var args = slice.call(arguments, 1);
-			this._log(format.apply(JSON.stringify(s), args), "ERROR", this);
+			this._log(format.apply(toString(s), args), "ERROR", this);
 		}
 	}
 	Log.prototype.fatal = function(s) {
 		if (this.getLevel() <= Log.FATAL) {
 			var args = slice.call(arguments, 1);
-			this._log(format.apply(JSON.stringify(s), args), "FATAL", this);
+			this._log(format.apply(toString(s), args), "FATAL", this);
 		}
 	}
 

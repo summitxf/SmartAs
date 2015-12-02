@@ -2,33 +2,50 @@
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
 	var context = $("#content");
-	
-	
+
+	$.fn.include = function(url, params, callback) {
+		// .处理url中?参数
+		var index = url.indexOf('?'),self = this;
+		if (index >= 0) {
+			url = url.substr(0, index);
+		}
+		if (!url) {
+			logger.warn("request url is emtpy");
+			return;
+		}
+		if ($.isFunction(params)) {
+			callback = params;
+			params = undefined;
+		}
+		logger.debug("request url '{0}'", url);
+		$.ajax({
+			type : 'get',
+			url : url,
+			dataType : 'html',
+			data : params,
+			success : function(data) {
+				// 1.回调
+				callback && callback();
+				// 2.加载资源
+				var page = $(data);
+				logger.info("apply html segment to dom ");
+				self.html(page);
+				// .3初始化
+				self.trigger('changed.dom.amui');
+			},
+			error : function() {
+
+			}
+		});
+	}
+
 	$(window).hashchange(function(e) {
 		var hash = location.hash;
-		// console.log(hash);
-		hash && (function(url) {
-			if (!url) {
-				return;
-			}
-			$.ajax({
-				type : 'get',
-				url : url,
-				dataType : 'html',
-				success : function(data) {
-					// .1卸载已经加载的资源
-					Namespace.uninstall();
-					//2.加载资源
-					var page = $(data);
-					context.html(page);
-					//.3初始化
-					context.trigger('changed.dom.amui');
-				},
-				error : function() {
 
-				}
-			});
-		})(hash.substr(2));
+		context.include(hash.substr(2), function() {
+			// 卸载已经加载的资源
+			Namespace.uninstall();
+		});
 	});
 
 	// 第一次手动触发

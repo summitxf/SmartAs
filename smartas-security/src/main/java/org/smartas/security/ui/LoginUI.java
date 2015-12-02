@@ -47,7 +47,7 @@ public class LoginUI {
 		User user = userService.findByUserAcount(credentials.getUsername());
 		LoginResult result = new LoginResult();
 		result.setContext(request.getContextPath());
-		System.out.println(DigestUtils.sha256Hex(credentials.getPassword()));
+		//System.out.println(DigestUtils.sha256Hex(credentials.getPassword()));
 		if (user == null || !StringUtils.equals(DigestUtils.sha256Hex(credentials.getPassword()), user.getPassword())) {
 			result.setStatus(400);
 			return result;

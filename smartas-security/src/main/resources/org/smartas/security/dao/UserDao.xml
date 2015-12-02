@@ -11,20 +11,20 @@
 	  <select id="getById" resultType="org.smartas.security.model.User">
 	    SELECT
 	       T.*
-	    FROM T_USER T
+	    FROM tpl_user_t T
 	    WHERE T.ID = #{id}
 	  </select>
 	  
 	  <select id="getCountAll" resultType="int">
 	    SELECT
 	       count(1)
-	    FROM T_USER T
+	    FROM tpl_user_t T
 	  </select>
 	  
 	  <select id="select" resultType="org.smartas.security.model.User">
 	    SELECT
 	       T.*
-	    FROM T_USER T
+	    FROM tpl_user_t T
 	    <if test="skip != null">
 	    	LIMIT #{skip},#{max}
 	    </if>
@@ -32,7 +32,7 @@
 	  
 	  
 	  <insert id="insert" parameterType="org.smartas.security.model.User">
-	    INSERT INTO T_USER
+	    INSERT INTO tpl_user_t
 	      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, ACOUNT)
 	    VALUES
 	      (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{acount})
@@ -57,7 +57,7 @@
 	  
 	  
 	   <select id="deleteById">
-	    DELETE * FROM  T_USER T
+	    DELETE * FROM  tpl_user_t T
 	    WHERE T.ID = #{id}
 	  </select>
 	  
@@ -68,7 +68,7 @@
 	  <select id="findByUserAcount" resultType="org.smartas.security.model.User">
 	    SELECT
 	       T.*
-	    FROM T_USER T 
+	    FROM tpl_user_t T 
 	    WHERE T.ACOUNT = #{acount}
 	  </select>
 	
