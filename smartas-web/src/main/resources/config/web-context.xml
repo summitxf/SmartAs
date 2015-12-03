@@ -31,7 +31,7 @@
 	
 	
 	<bean id="indexHandler" class="org.smartas.web.support.handler.ResourceHandler">
-		<property name="resource" value="index.html"/>
+		<property name="resource" value="classpath:web/ui/theme/default/index.html"/>
 	</bean>
 	<bean id="loginHandler" class="org.smartas.web.support.handler.ResourceHandler">
 		<property name="resource" value="classpath:web/security/signin/index.html"/>
