@@ -43,7 +43,8 @@ body {
 		overflow-x: hidden;
 		overflow-y: auto;
 		padding: 0;
-		background-color : #f5f5f5;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
 		border-right: 1px solid #eee;
 		background-color: #f5f5f5
 	}
@@ -120,7 +121,7 @@ body {
 }
 
 .main-menu li {
-	line-height: 39px;
+	line-height: 30px;
 	background-color: #fff;
 	margin-bottom: -1px;
 	background-color: #fff;
@@ -129,11 +130,14 @@ body {
 }
 
 .main-menu li a {
-	height: 35px;
+	width: 100%; height : 30px;
 	padding-top: 0px;
+	padding-left: 20px;
+	height: 30px;
 }
 
 .main-menu li a:hover {
+	 background-color: #fafafa;
 	text-decoration: none;
 }
 
@@ -148,11 +152,11 @@ body {
 .main-menu li a.curSelectedNode {
 	background-color: #EEEEEE;
 	border-width: 0;
-	height: 35px;
+	height: 30px;
 }
 
 .main-menu li span {
-	line-height: 20px;
+	line-height: 30px;
 }
 
 .main-menu li span.button {
@@ -168,28 +172,19 @@ body {
 	background-image: url("images/left_menuForOutLook.png");
 }
 
-.main-menu li span.button.switch.level0 {
+.main-menu li span.button.switch {
 	width: 20px;
 	height: 20px
 }
 
-.main-menu li span.button.switch.level1 {
-	width: 20px;
-	height: 20px
-}
 
 .main-menu li span.button.noline_open {
-	background-position: 0 0;
+	margin-top:5px;
+	background-position: 0px 0px;
 }
 
 .main-menu li span.button.noline_close {
+	margin-top:5px;
 	background-position: -18px 0;
 }
 
-.main-menu li span.button.noline_open.level0 {
-	background-position: 0 -18px;
-}
-
-.main-menu li span.button.noline_close.level0 {
-	background-position: -18px -18px;
-}
