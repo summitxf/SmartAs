@@ -1,0 +1,255 @@
+<script src="web/demo/ztree.js"></script>
+
+<style>
+<!--
+div.content_wrap {width: 600px;height:380px;}
+div.content_wrap div.left{float: left;width: 250px;}
+div.content_wrap div.right{float: right;width: 340px;}
+div.zTreeDemoBackground {width:250px;height:362px;text-align:left;}
+
+
+
+.ztree * {font-size: 10pt;font-family:"Microsoft Yahei",Verdana,Simsun,"Segoe UI Web Light","Segoe UI Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol","Helvetica Neue",Arial}
+.ztree li ul{ margin:0; padding:0}
+.ztree li {line-height:30px;}
+.ztree li a {width:200px;height:30px;padding-top: 0px;}
+.ztree li a:hover {text-decoration:none; background-color: #E7E7E7;}
+.ztree li a span.button.switch {visibility:hidden}
+.ztree.showIcon li a span.button.switch {visibility:visible}
+.ztree li a.curSelectedNode {background-color:#D4D4D4;border:0;height:30px;}
+.ztree li span {line-height:30px;}
+.ztree li span.button {margin-top: -7px;}
+.ztree li span.button.switch {width: 16px;height: 16px;}
+
+.ztree li span.button {background-image:url("./left_menuForOutLook.png"); *background-image:url("./left_menuForOutLook.gif")}
+.ztree li span.button.switch.level0 {width: 20px; height:20px}
+.ztree li span.button.switch.level1 {width: 20px; height:20px}
+.ztree li span.button.noline_open {background-position: 0 0;}
+.ztree li span.button.noline_close {background-position: -18px 0;}
+.ztree li span.button.noline_open.level0 {background-position: 0 -18px;}
+.ztree li span.button.noline_close.level0 {background-position: -18px -18px;}
+-->
+</style>
+<div class="content_wrap">
+	<div class="zTreeDemoBackground left">
+		<ul id="treeDemo" class="ztree main-menu"></ul>
+	</div>
+	
+	<!-- <div class="col-md-2 left-sidebar">
+						main-nav
+						<nav class="main-nav">
+							<ul class="main-menu">
+								<li class="active">
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-dashboard fa-fw"></i><span class="text">Dashboard</span>
+										<i class="toggle-icon fa fa-angle-down"></i>
+									</a>
+									<ul class="sub-menu open">
+										<li class="active"><a href="index.html"><span class="text">Dashboard v1</span></a></li>
+										<li><a href="index-dashboard-v2.html"><span class="text">Dashboard v2 <span class="badge element-bg-color-blue">New</span></span></a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-clipboard fa-fw"></i><span class="text">Pages</span>
+										<i class="toggle-icon fa fa-angle-left"></i>
+									</a>
+									<ul class="sub-menu ">
+										<li><a href="page-profile.html"><span class="text">Profile</span></a></li>
+										<li><a href="page-invoice.html"><span class="text">Invoice</span></a></li>
+										<li><a href="page-knowledgebase.html"><span class="text">Knowledge Base</span></a></li>
+										<li><a href="page-inbox.html"><span class="text">Inbox</span></a></li>
+										<li><a href="page-new-message.html"><span class="text">New Message</span></a></li>
+										<li><a href="page-view-message.html"><span class="text">View Message</span></a></li>
+										<li><a href="page-search-result.html"><span class="text">Search Result</span></a></li>
+										<li><a href="page-submit-ticket.html"><span class="text">Submit Ticket</span></a></li>
+										<li><a href="page-file-manager.html"><span class="text">File Manager <span class="badge element-bg-color-blue">New</span></span></a></li>
+										<li><a href="page-projects.html"><span class="text">Projects <span class="badge element-bg-color-blue">New</span></span></a></li>
+										<li><a href="page-project-detail.html"><span class="text">Project Detail <span class="badge element-bg-color-blue">New</span></span></a></li>
+										<li><a href="page-faq.html"><span class="text">FAQ <span class="badge element-bg-color-blue">New</span></span></a></li>
+										<li><a href="page-register.html"><span class="text">Register</span></a></li>
+										<li><a href="page-login.html"><span class="text">Login</span></a></li>
+										<li><a href="page-404.html"><span class="text">404</span></a></li>
+										<li><a href="page-blank.html"><span class="text">Blank Page</span></a></li>
+									</ul>
+								</li>
+								<li class="">
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-bar-chart-o fw"></i><span class="text">Charts &amp; Statistics</span>
+										<i class="toggle-icon fa fa-angle-left"></i>
+									</a>
+									<ul class="sub-menu " style="display: none;">
+										<li><a href="charts-statistics.html"><span class="text">Charts</span></a></li>
+										<li><a href="charts-statistics-interactive.html"><span class="text">Interactive Charts</span></a></li>
+										<li><a href="charts-statistics-real-time.html"><span class="text">Realtime Charts</span></a></li>
+										<li><a href="charts-d3charts.html"><span class="text">D3 Charts</span></a></li>
+									</ul>
+								</li>
+								<li class="active">
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-edit fw"></i><span class="text">Forms</span>
+										<i class="toggle-icon fa fa-angle-down"></i>
+									</a>
+									<ul class="sub-menu " style="display: block;">
+										<li><a href="form-inplace-editing.html"><span class="text">In-place Editing</span></a></li>
+										<li><a href="form-elements.html"><span class="text">Form Elements</span></a></li>
+										<li><a href="form-layouts.html"><span class="text">Form Layouts</span></a></li>
+										<li><a href="form-bootstrap-elements.html"><span class="text">Bootstrap Elements</span></a></li>
+										<li><a href="form-validations.html"><span class="text">Validation</span></a></li>
+										<li><a href="form-file-upload.html"><span class="text">File Upload</span></a></li>
+										<li><a href="form-text-editor.html"><span class="text">Text Editor</span></a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-list-alt fw"></i><span class="text">UI Elements</span>
+										<i class="toggle-icon fa fa-angle-left"></i>
+									</a>
+									<ul class="sub-menu ">
+										<li><a href="ui-elements-general.html"><span class="text">General Elements</span></a></li>
+										<li><a href="ui-elements-tabs.html"><span class="text">Tabs</span></a></li>
+										<li><a href="ui-elements-buttons.html"><span class="text">Buttons</span></a></li>
+										<li><a href="ui-elements-icons.html"><span class="text">Icons <span class="badge element-bg-color-blue">Updated</span></span></a></li>
+										<li><a href="ui-elements-flash-message.html"><span class="text">Flash Message</span></a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="widgets.html">
+										<i class="fa fa-puzzle-piece fa-fw"></i><span class="text">Widgets <span class="badge element-bg-color-blue">Updated</span></span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-gears fw"></i><span class="text">Components</span>
+										<i class="toggle-icon fa fa-angle-left"></i>
+									</a>
+									<ul class="sub-menu ">
+										<li><a href="components-wizard.html"><span class="text">Wizard (with validation)</span></a></li>
+										<li><a href="components-calendar.html"><span class="text">Calendar</span></a></li>
+										<li><a href="components-maps.html"><span class="text">Maps</span></a></li>
+										<li><a href="components-gallery.html"><span class="text">Gallery</span></a></li>
+										<li><a href="components-tree-view.html"><span class="text">Tree View <span class="badge element-bg-color-blue">New</span></span></a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#" class="js-sub-menu-toggle">
+										<i class="fa fa-table fw"></i><span class="text">Tables</span>
+										<i class="toggle-icon fa fa-angle-left"></i>
+									</a>
+									<ul class="sub-menu ">
+										<li><a href="tables-static-table.html"><span class="text">Static Table</span></a></li>
+										<li><a href="tables-dynamic-table.html"><span class="text">Dynamic Table</span></a></li>
+									</ul>
+								</li>
+								<li><a href="typography.html"><i class="fa fa-font fa-fw"></i><span class="text">Typography</span></a></li>
+								<li>
+									<a href="#" class="js-sub-menu-toggle"><i class="fa fa-bars"></i>
+										<span class="text">Menu Lvl 1 <span class="badge element-bg-color-blue">New</span></span>
+										<i class="toggle-icon fa fa-angle-left"></i>
+									</a>
+									<ul class="sub-menu">
+										<li class="">
+											<a href="#" class="js-sub-menu-toggle">
+												<span class="text">Menu Lvl 2</span>
+												<i class="toggle-icon fa fa-angle-left"></i>
+											</a>
+											<ul class="sub-menu">
+												<li><a href="#">Menu Lvl 3</a></li>
+												<li><a href="#">Menu Lvl 3</a></li>
+												<li><a href="#">Menu Lvl 3</a></li>
+											</ul>
+										</li>
+										<li>
+											<a href="#">
+												<span class="text">Menu Lvl 2</span>
+											</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+						/main-nav
+						<div class="sidebar-minified js-toggle-minified">
+							<i class="fa fa-angle-left"></i>
+						</div>
+						sidebar content
+						<div class="sidebar-content">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h5><i class="fa fa-lightbulb-o"></i> Tips</h5>
+								</div>
+								<div class="panel-body">
+									<p>You can do live search to the widget at search box located at top bar. It's very useful if your dashboard is full of widget.</p>
+								</div>
+							</div>
+							<h5 class="label label-default"><i class="fa fa-info-circle"></i> Server Info</h5>
+							<ul class="list-unstyled list-info-sidebar bottom-30px">
+								<li class="data-row">
+									<div class="data-name">Disk Space Usage</div>
+									<div class="data-value">
+										274.43 / 2 GB
+										<div class="progress progress-xs">
+											<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+												<span class="sr-only">10%</span>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="data-row">
+									<div class="data-name">Monthly Bandwidth Transfer</div>
+									<div class="data-value">
+										230 / 500 GB
+										<div class="progress progress-xs">
+											<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" style="width: 46%">
+												<span class="sr-only">46%</span>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="data-row">
+									<span class="data-name">Database Disk Space</span>
+									<span class="data-value">219.45 MB</span>
+								</li>
+								<li class="data-row">
+									<span class="data-name">Operating System</span>
+									<span class="data-value">Linux</span>
+								</li>
+								<li class="data-row">
+									<span class="data-name">Apache Version</span>
+									<span class="data-value">2.4.6</span>
+								</li>
+								<li class="data-row">
+									<span class="data-name">PHP Version</span>
+									<span class="data-value">5.3.27</span>
+								</li>
+								<li class="data-row">
+									<span class="data-name">MySQL Version</span>
+									<span class="data-value">5.5.34-cll</span>
+								</li>
+								<li class="data-row">
+									<span class="data-name">Architecture</span>
+									<span class="data-value">x86_64</span>
+								</li>
+							</ul>
+						</div>
+						end sidebar content
+					</div> -->
+	
+	<div class="right">
+		<ul class="info">
+			<li class="title"><h2>实现方法说明</h2>
+				<ul class="list">
+				<li>帮朋友用 zTree 实现了一个貌似 Outlook.com 的菜单，特拿出来分享给大家</li>
+				<li class="highlight_red">1、请注意本页面源码中的 css 部分</li>
+				<li class="highlight_red">2、请查看源码中 js 的使用，特别是利用 addDiyDom 回调将 展开按钮 转移到 &lt;a&gt; 标签内</li>
+				<li class="highlight_red">3、利用添加 zTree 的 class 实现展开按钮的隐藏、显示</li>
+				<li>4、其他辅助规则，请根据实际情况自行编写</li>
+				<li>5、当前规则说明:<br/>
+				&nbsp;&nbsp;单击根节点可以展开、折叠;<br/>
+				&nbsp;&nbsp;非根节点只有点击 箭头 图标才可以展开、折叠;<br/>
+				</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>

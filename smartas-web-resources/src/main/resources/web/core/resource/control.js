@@ -89,7 +89,7 @@
 		var resources = {};
 		// 加载资源
 		var install = function(namespace, define) {
-			logger.info("install resource {0}", namespace);
+			logger.info("install package '{0}'", namespace);
 			var pkg = register(namespace);
 			define(pkg, context);
 			pkg.ready && pkg.ready();
@@ -103,7 +103,7 @@
 			$.each(pkgs, function(ns) {
 				var pkg = __package(ns);
 				// 命名空间
-				logger.info("uninstall resource {0}", ns);
+				logger.info("uninstall package '{0}'", ns);
 				if (pkg && pkg.parent) {
 					delete pkg.parent[pkg.name];
 				}

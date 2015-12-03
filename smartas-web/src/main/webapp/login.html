@@ -10,7 +10,7 @@
 <meta name="renderer" content="webkit">
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link rel="alternate icon" type="image/png" href="web/images/smartas.jpg">
-<link rel="stylesheet" href="web/amazeui/css/amazeui.min.css" />
+<link rel="stylesheet" href="web/common/amazeui/css/amazeui.min.css" />
 <style>
 .header {
 	text-align: center;
@@ -37,7 +37,9 @@
 	<div class="am-g">
 		<div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
 			<h3>登录</h3>
-			<div class="am-alert am-alert-danger" id="info" style="display: none;"></div>
+			<div class="am-alert am-alert-danger" id="info" style="display: none;">
+				<div role="alert"></div>
+			</div>
 			<hr>
 			<form method="post" class="am-form" id="login_form">
 				<label for="username">账号:</label> <input type="text" name="username" id="username" value="" /> <br /> <label

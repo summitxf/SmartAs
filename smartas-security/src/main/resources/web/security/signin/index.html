@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="chenbing@fiberhome.com">
+<link rel="icon" href="web/images/smartas.jpg">
+
+<title>Smart Login</title>
+
+<!-- Bootstrap core CSS -->
+<link href="web/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="web/common/bootstrap/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="web/security/signin/signin.css" rel="stylesheet">
+
+<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+<!--[if lt IE 9]>
+	<script src="web/common/bootstrap/ie8-responsive-file-warning.js"></script>
+<![endif]-->
+<script src="web/common/bootstrap/ie-emulation-modes-warning.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="web/common/html5shiv.min.js"></script>
+      <script src="web/common/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+	<div class="container">
+		<div class="text-center">
+			<h2>Smart Web2.0</h2>
+		</div>
+		<hr />
+		<form class="form-signin form-horizontal" id="login_form">
+			<div class="form-group">
+				<label for="username" class="col-sm-2 control-label">账号:</label>
+				<div class="col-sm-10">
+					<input type="email" class="form-control" id="username" placeholder="账号"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="col-sm-2 control-label">密码:</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" id="password" placeholder="密码">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<div class="checkbox">
+						<label> <input type="checkbox"> Remember me
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="display: none;" id="info">
+				<div class="col-sm-offset-2 col-sm-10 ">
+					<div class="alert alert-warning" role="alert"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" onclick="return false" id="login_bnt" class="btn btn-default">Sign in</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+	<!-- /container -->
+
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="web/common/bootstrap/ie10-viewport-bug-workaround.js"></script>
+	<script src="web/common/jquery/jquery-2.1.4.min.js"></script>
+	<script src="web/common/jquery.form2json.js"></script>
+	<script src="web/security/Login.js"></script>
+</body>
+</html>

@@ -19,7 +19,7 @@ $(function() {
 	});
 
 	$("#login_bnt").click(function() {
-		var data = $("#login_form").form2json();
+		var form = $("#login_form"),data = form.form2json();
 		// $("#info").hide();
 		$.ajax({
 			type : 'post',
@@ -30,13 +30,14 @@ $(function() {
 					context = data.context;
 					window.location = data.context + "/#!" + data.home;
 				} else if (data.status == 400) {// 账号密码错误
-					$("#info").text("账号不存在或密码错误").show();
+					form.addClass("has-error");
+					$("#info").show().find("[role='alert']").text("账号不存在或密码错误");
 				} else {// 其他情况
-					$("#info").text("服务器忙,稍后再试").show();
+					$("#info").show().find("[role='alert']").text("服务器忙,稍后再试");
 				}
 			},
 			error : function() {
-				$("#info").text("服务器忙,稍后再试").show();
+				$("#info").show().find("[role='alert']").text("服务器忙,稍后再试");
 			}
 		});
 	});

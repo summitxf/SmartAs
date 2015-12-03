@@ -110,20 +110,14 @@
 }
 
 .ztree li a:hover {
-	background-color: #EEEEEE;
 	text-decoration: none;
+	background-color: #E7E7E7;
 }
 
-.ztree li a span.button.switch {
-	visibility: hidden
-}
 
-.ztree.showIcon li a span.button.switch {
-	visibility: visible
-}
 
 .ztree li a.curSelectedNode {
-	background-color: #EEEEEE;
+	background-color: #D4D4D4;
 	 border: 1px solid #dedede;
 	 border-width: 1px 0;
 	height: 39px;
@@ -133,49 +127,11 @@
 	line-height: 30px;
 }
 
-.ztree li span.button {
-	margin-top: -7px;
-}
-
-.ztree li span.button.switch {
-	width: 16px;
-	height: 16px;
-}
-
-.ztree li span.button {
-	background-image: url("web/demo/images/left_menuForOutLook.png");
-}
-
-.ztree li span.button.switch.level0 {
-	width: 20px;
-	height: 20px
-}
-
-.ztree li span.button.switch.level1 {
-	width: 20px;
-	height: 20px
-}
-
-.ztree li span.button.noline_open {
-	background-position: 0 0;
-}
-
-.ztree li span.button.noline_close {
-	background-position: -18px 0;
-}
-
-.ztree li span.button.noline_open.level0 {
-	background-position: 0 -18px;
-}
-
-.ztree li span.button.noline_close.level0 {
-	background-position: -18px -18px;
-}
 -->
 </style>
 				
 				<div class="zTreeDemoBackground left">
-					<ul id="treeDemo1" class="ztree showIcon"></ul>
+					<ul id="treeDemo1" class="ztree"></ul>
 				</div>
 				
 				
@@ -248,11 +204,10 @@
 					var curMenu = null, zTree_Menu = null;
 					var setting = {
 						view : {
-							showLine : false,
-							showIcon : false,
+							showLine : true,
+							showIcon : true,
 							selectedMulti : false,
-							dblClickExpand : false,
-							addDiyDom : addDiyDom
+							dblClickExpand : false
 						},
 						data : {
 							simpleData : {
@@ -267,15 +222,11 @@
 					var zNodes = [ {
 						id : 1,
 						pId : 0,
-						name : "首页"
-					}, {
-						id : 2,
-						pId : 0,
 						name : "文件夹",
 						open : true
-					},{
+					}, {
 						id : 11,
-						pId : 2,
+						pId : 1,
 						name : "收件箱"
 					}, {
 						id : 111,
@@ -295,19 +246,19 @@
 						name : "收件箱4"
 					}, {
 						id : 12,
-						pId : 2,
+						pId : 1,
 						name : "垃圾邮件"
 					}, {
 						id : 13,
-						pId : 2,
+						pId : 1,
 						name : "草稿"
 					}, {
 						id : 14,
-						pId : 2,
+						pId : 1,
 						name : "已发送邮件"
 					}, {
 						id : 15,
-						pId : 2,
+						pId : 1,
 						name : "已删除邮件"
 					}, {
 						id : 3,
@@ -324,16 +275,16 @@
 					} ];
 
 					function addDiyDom(treeId, treeNode) {
-						var spaceWidth = 8;
-						var switchObj = $("#" + treeNode.tId + "_switch"), icoObj = $("#"
-								+ treeNode.tId + "_ico");
-						switchObj.remove();
-						icoObj.before(switchObj);
+						//var spaceWidth = 5;
+						//var switchObj = $("#" + treeNode.tId + "_switch"), icoObj = $("#"
+						//		+ treeNode.tId + "_ico");
+						//switchObj.remove();
+						//icoObj.before(switchObj);
 
 						if (treeNode.level > 1) {
-							var spaceStr = "<span style='display: inline-block;width:"
-									+ (spaceWidth * treeNode.level) + "px'></span>";
-							switchObj.before(spaceStr);
+							//var spaceStr = "<span style='display: inline-block;width:"
+							//		+ (spaceWidth * treeNode.level) + "px'></span>";
+							//switchObj.before(spaceStr);
 						}
 					}
 
@@ -349,16 +300,16 @@
 						var treeObj = $("#treeDemo1");
 						$.fn.zTree.init(treeObj, setting, zNodes);
 						zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo1");
-						//curMenu = zTree_Menu.getNodes()[1].children[0].children[0];
-						//zTree_Menu.selectNode(curMenu);
+						curMenu = zTree_Menu.getNodes()[0].children[0].children[0];
+						zTree_Menu.selectNode(curMenu);
 
-						/* treeObj.hover(function() {
+						treeObj.hover(function() {
 							if (!treeObj.hasClass("showIcon")) {
 								treeObj.addClass("showIcon");
 							}
 						}, function() {
 							treeObj.removeClass("showIcon");
-						}); */
+						});
 				
 	});
 				
