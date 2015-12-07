@@ -1,11 +1,13 @@
-(function($) {
+(function($, Namespace) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
 	var context = $("#content");
 
+	// context.on()
+
 	$.fn.include = function(url, params, callback) {
 		// .处理url中?参数
-		var index = url.indexOf('?'),self = this;
+		var index = url.indexOf('?'), self = this;
 		if (index >= 0) {
 			url = url.substr(0, index);
 		}
@@ -31,7 +33,7 @@
 				logger.info("apply html segment to dom ");
 				self.html(page);
 				// .3初始化
-				self.trigger('changed.dom.amui');
+				self.trigger('changed.dom');
 			},
 			error : function() {
 
@@ -44,54 +46,27 @@
 
 		context.include(hash.substr(2), function() {
 			// 卸载已经加载的资源
-			Namespace.uninstall();
+			Resource.uninstall();
 		});
 	});
 
 	// 第一次手动触发
 	$(window).hashchange();
 
-	// 1、命名空间注册工具类
-	var Namespace = (function() {
-		// 祖册packge
-		var register = function(path) {
-			if (!path) {
-				return window;
-			}
-			var packages = path.split(".");
-			var root = window;
-			for (var i = 0, length = packages.length; i < length; i++) {
-				root = root[packages[i]] || (root[packages[i]] = {});
-			}
-			return root;
-		};
+	var Resource = (function() {
 
-		var __package = function(path) {
-			if (!path) {
-				return null;
-			}
-			var packages = path.split(".");
-			var root = window, parent = null;
-			for (var i = 0, length = packages.length; i < length; i++) {
-				parent = root;
-				root = root[packages[i]];
-				if (!root) {
-					return null;
-				}
-			}
-			return {
-				pkg : root,
-				parent : parent,
-				name : packages[packages.length - 1]
-			};
+		var $S = function(selector) {
+			return $(selector, context);
 		};
 
 		var resources = {};
 		// 加载资源
 		var install = function(namespace, define) {
 			logger.info("install package '{0}'", namespace);
-			var pkg = register(namespace);
-			define(pkg, context);
+			var pkg = Namespace.register(namespace);
+
+			define(pkg, $S, context[0], pkg.Dispatcher
+					|| (pkg.Dispatcher = new Flux.Dispatcher()));
 			pkg.ready && pkg.ready();
 			resources[namespace] = pkg;
 		};
@@ -101,11 +76,11 @@
 				namespace : null
 			} : resources;
 			$.each(pkgs, function(ns) {
-				var pkg = __package(ns);
+				var pkgInfo = Namespace.pkg(ns);
 				// 命名空间
 				logger.info("uninstall package '{0}'", ns);
-				if (pkg && pkg.parent) {
-					delete pkg.parent[pkg.name];
+				if (pkgInfo && pkgInfo.parent) {
+					delete pkgInfo.parent[pkgInfo.name];
 				}
 				delete pkgs[ns];
 			});
@@ -113,11 +88,10 @@
 		};
 		// 对外暴露的接口
 		return {
-			register : register,
 			install : install,
 			uninstall : uninstall
 		};
 	})();
-	$.extend(Namespace.register("Namespace"), Namespace);
-	window.install = Namespace.install;
-})($);
+	$.extend(Namespace.register("Resource"), Resource);
+	window.install = Resource.install;
+})($, Namespace);

@@ -25,5 +25,11 @@ public class MenuUI extends BaseUI<Menu> {
 	protected MenuService getService() {
 		return service;
 	}
-	
+
+	/*@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
+	public List<Menu> list(Model model) {
+		return service.getAll();
+	}*/
+
 }

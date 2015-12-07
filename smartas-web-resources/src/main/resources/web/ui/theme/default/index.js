@@ -21,8 +21,9 @@ $(function() {
 	var zNodes = [ {
 		id : 1,
 		pId : 0,
-		url : '#!sss',
+		url : '#!web/demo/Dashboard.html',
 		target : "_self",
+		iconClass : 'fa fa-home',
 		name : "首页"
 	}, {
 		id : 2,
@@ -71,34 +72,68 @@ $(function() {
 	}, {
 		id : 3,
 		pId : 0,
-		name : "快速视图"
+		name : "系统管理"
 	}, {
 		id : 31,
 		pId : 3,
-		name : "文档"
+		target : "_self",
+		url : '#!web/security/menu/index.html',
+		name : "菜单管理"
 	}, {
 		id : 32,
 		pId : 3,
 		name : "照片"
+	}, {
+		id : 4,
+		pId : 2,
+		name : "开发",
+	}, {
+		id : 41,
+		pId : 4,
+		name : "Demo",
+	}, {
+		id : 411,
+		pId : 41,
+		name : "Grid",
+		target : "_self",
+		url : '#!web/demo/bootstrap/grid/index.html'
 	} ];
 
 	function addDiyDom(treeId, treeNode) {
 		var spaceWidth = 14, id = treeNode.tId;
 		var switchObj = $("#" + id + "_switch"), spanObj = $("#" + id + "_span");
 		switchObj.remove();
+		switchObj.before("<i class='fa fa-home'></i>")
+
 		spanObj.before(switchObj);
 		if (treeNode.level > 0) {
 			spanObj.parent().css('padding-left',
-					20 + (spaceWidth * treeNode.level) + 'px');
+					10 + (spaceWidth * treeNode.level) + 'px');
 		}
+		// treeNode.iconClass && $("#" + id + "_ico").before("<i class='" +
+		// treeNode.iconClass +"'></i>");;
 	}
 
 	function beforeClick(treeId, treeNode) {
 		zTree_Menu.expandNode(treeNode);
 		return true;
 	}
-	
+
 	var treeObj = $("#main_menu");
 	$.fn.zTree.init(treeObj, setting, zNodes);
 	zTree_Menu = $.fn.zTree.getZTreeObj("main_menu");
+	
+	
+	
+	
+	$("#navbar-fullscreen").click(function(){
+		$("[fullscreen]").each(function(){
+			var self = $(this);
+			if(self.hasClass("container")){
+				self.removeClass("container");
+			}else{
+				self.addClass("container");
+			}
+		});
+	});
 });

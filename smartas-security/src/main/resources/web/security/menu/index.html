@@ -1,2 +1,36 @@
 <script src="web/security/menu/index.js"></script>
+<script type="text/babel">
+install("web.security.menu",function(pkg,$S,mountNode){
+ 	pkg.ready = function(){
+	var Input = ReactBootstrap.Input
+ 	var Root = React.createClass({
+		componentDidMount: function() {
+			pkg.buildTree();
+		},
+ 		render: function() {
+return(
+	<div className="full-height">
+	<div className="row full-height">
+		<div className="col-md-4 full-height">
+			<div className="panel panel-default full-height">
+				<ul id="siteMap_tree" className="ztree"></ul>
+			</div>
+		</div>
+		<div className="col-md-8 full-height">
+			<div className="panel panel-default full-height">
+				<div className="panel-body full-height" id="tt">
+ 				 <form className="form-horizontal">
+    				<Input type="text" label="Text" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+    				<Input type="textarea" label="Textarea" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+    				<Input type="checkbox" label="Checkbox" wrapperClassName="col-xs-offset-2 col-xs-10" help="Offset is applied to wrapper." />
+  				  </form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>)}});
 
+	ReactDOM.render(<Root />, mountNode);
+};
+});
+</script>

@@ -44,10 +44,10 @@ public class LoginUI {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
 	public LoginResult login(@RequestBody Credentials credentials, HttpServletRequest request) {
-		User user = userService.findByUserAcount(credentials.getUsername());
+		User user = userService.findByUserAcount(StringUtils.trim(credentials.getUsername()));
 		LoginResult result = new LoginResult();
 		result.setContext(request.getContextPath());
-		//System.out.println(DigestUtils.sha256Hex(credentials.getPassword()));
+		System.out.println(DigestUtils.sha256Hex(credentials.getPassword()));
 		if (user == null || !StringUtils.equals(DigestUtils.sha256Hex(credentials.getPassword()), user.getPassword())) {
 			result.setStatus(400);
 			return result;

@@ -35,7 +35,7 @@
 
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
+		<div class="container-fluid full-height" fullscreen>
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
 					aria-expanded="false" aria-controls="navbar">
@@ -56,9 +56,10 @@
 							</a></li>
 							<li><a href="#"> <i class="fa fa-cog"></i> <span class="text">设置</span>
 							</a></li>
-							<li><a href="#" id="logout"><i class="fa fa-power-off"></i> <span class="text">退出</span> </a></li>
+							<li><a id="logout"><i class="fa fa-power-off"></i> <span class="text">退出</span> </a></li>
 						</ul></li>
 					<li><a href="#">Help</a></li>
+					<li><a id="navbar-fullscreen"><i class="fa fa-crosshairs fa-lg"></i></a></li>
 				</ul>
 				<form class="navbar-form navbar-right">
 					<input type="text" class="form-control" placeholder="Search...">
@@ -67,14 +68,14 @@
 		</div>
 	</nav>
 
-	<div class="container-fluid ztree_menu">
-		<div class="row">
+	<div class="container-fluid ztree_menu full-height" fullscreen>
+		<div class="row full-height">
 			<div class="col-sm-3 col-md-2 sidebar">
-				<div class="zTreeDemoBackground left">
+				<div>
 					<ul id="main_menu" class="ztree main-menu showIcon"></ul>
 				</div>
 			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="content">
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main full-height" id="content">
 			
 			</div>
 		</div>
@@ -86,6 +87,7 @@
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="web/common/bootstrap/ie10-viewport-bug-workaround.js"></script>
 	<script src="web/common/jquery/jquery-2.1.4.min.js"></script>
+	<script src="web/common/flux/Flux.min.js"></script>
 
 	<script src="web/common/Utils.js"></script>
 	<script src="web/common/log4js.js"></script>
@@ -94,14 +96,19 @@
 
 	<script src="web/common/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
 	<script src="web/common/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script src="web/common/react/react.min.js"></script>
+	<script src="web/common/react/react-dom.min.js"></script>
+	<script src="web/common/react/react-bootstrap.min.js"></script>
+	<script src="web/common/react/browser.js"></script>
 	<script src="web/common/jquery.form2json.js"></script>
-
-
-	<script src="web/core/resource/control.js"></script>
+	<script src="web/core/Namespace.js"></script>
+	<script src="web/core/Resource.js"></script>
+	
+	<script src="web/ui/Event.js"></script>
+	<script src="web/ui/react.js"></script>
 	<script src="web/security/Login.js"></script>
 	<script src="web/ui/theme/default/index.js"></script>
-	
-	
 	
 	
 </body>
