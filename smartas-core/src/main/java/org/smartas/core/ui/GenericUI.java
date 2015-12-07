@@ -7,6 +7,7 @@ import org.smartas.core.BusinessAccessException;
 import org.smartas.core.Entity;
 import org.smartas.core.Service;
 import org.smartas.core.annotation.Operation;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -22,7 +23,7 @@ public abstract class GenericUI<T extends Entity, PK extends Serializable> {
 
 	@RequestMapping(value = "/single/{id}", method = RequestMethod.GET)
 	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
-	public T get(PK id) {
+	public T get(@PathVariable("id") PK id) {
 		return getService().get(id);
 	}
 
@@ -46,7 +47,7 @@ public abstract class GenericUI<T extends Entity, PK extends Serializable> {
 
 	@RequestMapping(value = "/single/{id}", method = RequestMethod.DELETE)
 	@Operation(code = Operation.DELETE, desc = Operation.DELETE_DESC)
-	public void remove(PK id) throws BusinessAccessException {
+	public void remove(@PathVariable("id")PK id) throws BusinessAccessException {
 		getService().remove(id);
 	}
 

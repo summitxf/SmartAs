@@ -35,6 +35,6 @@
 		}
 	}
 
-	$.extend(Namespace.register("Namespace"), Namespace);
-	
+	$.extend(Namespace.register("Smart.Namespace"), Namespace);
+
 }();

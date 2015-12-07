@@ -23,4 +23,4 @@
 			watcher(document);
 		});
 	});
-}(Namespace);
+}(Smart.Namespace);

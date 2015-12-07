@@ -1,11 +1,18 @@
 <script src="web/security/menu/index.js"></script>
 <script type="text/babel">
-install("web.security.menu",function(pkg,$S,mountNode){
+install("web.security.menu",function(pkg,dispatcher,$S,mountNode){
  	pkg.ready = function(){
 	var Input = ReactBootstrap.Input
  	var Root = React.createClass({
+		getInitialState: function() {
+   			 return {};
+  		},
 		componentDidMount: function() {
 			pkg.buildTree();
+			var self = this;
+			dispatcher.on('menu.tree',function(data){
+				self.setState(data);
+			});
 		},
  		render: function() {
 return(
@@ -20,8 +27,8 @@ return(
 			<div className="panel panel-default full-height">
 				<div className="panel-body full-height" id="tt">
  				 <form className="form-horizontal">
-    				<Input type="text" label="Text" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-    				<Input type="textarea" label="Textarea" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
+    				<Input type="text" label="Text" labelClassName="col-xs-2" wrapperClassName="col-xs-10" value={this.state.name}/>
+    				<Input type="textarea" label="Textarea" labelClassName="col-xs-2" wrapperClassName="col-xs-10" value='s'/>
     				<Input type="checkbox" label="Checkbox" wrapperClassName="col-xs-offset-2 col-xs-10" help="Offset is applied to wrapper." />
   				  </form>
 				</div>

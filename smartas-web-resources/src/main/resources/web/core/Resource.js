@@ -1,4 +1,4 @@
-(function($, Namespace) {
+(function($, Namespace, Dispatcher) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
 	var context = $("#content");
@@ -64,9 +64,9 @@
 		var install = function(namespace, define) {
 			logger.info("install package '{0}'", namespace);
 			var pkg = Namespace.register(namespace);
-
-			define(pkg, $S, context[0], pkg.Dispatcher
-					|| (pkg.Dispatcher = new Flux.Dispatcher()));
+			var dispatcher = pkg.Dispatcher
+					|| (pkg.Dispatcher = Dispatcher.New(namespace))
+			define(pkg, dispatcher, $S, context[0]);
 			pkg.ready && pkg.ready();
 			resources[namespace] = pkg;
 		};
@@ -92,6 +92,6 @@
 			uninstall : uninstall
 		};
 	})();
-	$.extend(Namespace.register("Resource"), Resource);
+	$.extend(Namespace.register("Smart.Resource"), Resource);
 	window.install = Resource.install;
-})($, Namespace);
+})($, Smart.Namespace, Smart.Dispatcher);
