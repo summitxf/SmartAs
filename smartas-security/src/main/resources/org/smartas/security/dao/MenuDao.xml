@@ -28,6 +28,7 @@
 	    <if test="skip != null">
 	    	LIMIT #{skip},#{max}
 	    </if>
+	     ORDER BY T.sn
 	  </select>
 	  
 	  
@@ -72,6 +73,7 @@
 	       T.*
 	    FROM tpl_menu_t T
 	    WHERE T.publish = '1'
+	    ORDER BY T.sn
 	 </select>
 	
 </mapper>

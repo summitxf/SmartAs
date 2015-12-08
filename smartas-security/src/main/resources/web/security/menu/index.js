@@ -79,17 +79,12 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 		};
 
 		function addDiyDom(treeId, treeNode) {
-			if (treeNode.level == 0) {
+			if (treeNode.level < 2) {
 				var id = treeNode.tId;
 				var switchObj = $S("#" + id + "_switch");
 				switchObj.css({
 					visibility : 'hidden',
 					width : 1
-				});
-				var ulObj = $S("#" + id + "_ul");
-				ulObj.css({
-					padding : 0,
-					background : 'none'
 				});
 			}
 		}

@@ -20,7 +20,7 @@
 			params = undefined;
 		}
 		logger.debug("request url '{0}'", url);
-		$.ajax({
+		Resource.ajax({
 			type : 'get',
 			url : url,
 			dataType : 'html',
@@ -36,7 +36,7 @@
 				self.trigger('changed.dom');
 			},
 			error : function() {
-
+				
 			}
 		});
 	}
@@ -76,8 +76,17 @@
 		};
 		// 对外暴露的接口
 
-		var request = function(url, options) {
-			return $.ajax(url, options);
+		var request = function(options) {
+			ZENG.msgbox.show('正在加载中，请稍后...', 6);
+			var complete  = options.complete;
+			options.complete = function(request,code){
+				try{
+					complete && complete(request,code);
+				}finally{
+					ZENG.msgbox.hide();
+				}
+			}
+			return $.ajax(options);
 		}
 		return {
 			install : install,

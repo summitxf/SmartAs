@@ -12,7 +12,7 @@ $(function() {
 					var result = [], id = (parent ? parent.id : 0);
 					$.each(data, function(i, menu) {
 						if (menu.parentId == id) {
-							list.push(menu);
+							menu.id > 2 && list.push(menu);
 							var node = {
 								id : menu.id,
 								node : menu,
