@@ -23,5 +23,14 @@
 			isUndefined : isType("Undefined")
 		}
 	}();
-
-}();
+	if (!jQuery.__hack__) {
+		var parseJSON = jQuery.parseJSON
+		jQuery.parseJSON = function(data) {
+			if (data === "") {
+				return data;
+			}
+			return parseJSON(data);
+		}
+		jQuery.__hack__ = true;
+	}
+}(jQuery);

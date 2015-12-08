@@ -3,7 +3,6 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 	var logger = Log.getLogger('web.security.menu');
 	var request = Smart.Resource.ajax;
 	pkg.create = function(event) {
-
 		dispatcher.fire('menu.tree', {
 			name : '',
 			id : '',
@@ -13,21 +12,33 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 
 	pkg.update = function(event) {
 		event.preventDefault();
-		var zTree = $.fn.zTree.getZTreeObj("siteMap_tree");
-		var node = zTree.getSelectedNodes()[0];
-		node.name = this.name;
+		var zTree = $.fn.zTree.getZTreeObj("siteMap_tree"), 
+		node = zTree.getSelectedNodes()[0], 
+			data = this, 
+			isCreate = !data.id;
 		request({
-			type : this.id ? 'put' : 'post',
+			type : isCreate ? 'post' : 'put',
 			url : "services/security/menu/single",
 			data : JSON.stringify(this),
 			dataType : "json",
 			contentType : "application/json",
-			success : function(data) {
-				zTree.updateNode(node);
-				//alert('成功');
+			success : function(id) {
+				if (isCreate) {
+					var nodes = zTree.addNodes(node, [ {
+						id : id,
+						name : data.name
+					}]);
+					zTree.selectNode(nodes[0]);
+					data.id=id;
+					dispatcher.fire('menu.tree', data);
+				} else {
+					node.name = data.name;
+					zTree.updateNode(node);
+				}
+
 			},
 			error : function(data) {
-				alert('失败');
+				logger.error('错误响应');
 			}
 		});
 	};

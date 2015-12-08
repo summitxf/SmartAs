@@ -1,80 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
-	<mapper namespace="org.smartas.security.dao.MenuDao">
-	  
-	  <!-- <cache /> -->
-	
-	  <!-- ///////////////////////////基础接口定义///////////////////////////////// -->
-	
-	  <select id="getById" resultType="org.smartas.security.model.Menu">
-	    SELECT
-	       T.*
-	    FROM tpl_menu_t T
-	    WHERE T.ID = #{id}
-	  </select>
-	  
-	  <select id="getCountAll" resultType="int">
-	    SELECT
-	       count(1)
-	    FROM tpl_menu_t T
-	  </select>
-	  
-	  <select id="select" resultType="org.smartas.security.model.Menu">
-	    SELECT
-	       T.*
-	    FROM tpl_menu_t T
-	    <if test="skip != null">
-	    	LIMIT #{skip},#{max}
-	    </if>
-	     ORDER BY T.sn
-	  </select>
-	  
-	  
-	  <insert id="insert" parameterType="org.smartas.security.model.Menu">
-	    INSERT INTO tpl_menu_t
-	      (code, name, url, parentId, sn, className, iconName, publish)
-	    VALUES
-	      (#{code,jdbcType=VARCHAR}, 
-	      #{name,jdbcType=VARCHAR},
-	      #{url,jdbcType=VARCHAR},
-	      #{parentId,jdbcType=VARCHAR},
-	      #{sn,jdbcType=VARCHAR},
-	      #{className,jdbcType=VARCHAR},
-	      #{iconName,jdbcType=VARCHAR},
-	      #{publish,jdbcType=VARCHAR})
-	  </insert>
-	  
-	  <update id="update" parameterType="org.smartas.security.model.Menu">
-	    UPDATE tpl_menu_t SET
-	      code = #{code,jdbcType=VARCHAR},
-	      name = #{name,jdbcType=VARCHAR},
-	      url = #{url,jdbcType=VARCHAR},
-	      parentId = #{parentId,jdbcType=VARCHAR},
-	      sn = #{sn,jdbcType=VARCHAR},
-	      className = #{className,jdbcType=VARCHAR},
-	      iconName = #{iconName,jdbcType=VARCHAR},
-	      publish = #{publish,jdbcType=VARCHAR}
-	    WHERE ID = #{id}
-	  </update>
-	  
-	  
-	   <select id="deleteById">
-	    DELETE * FROM  tpl_menu_t T
-	    WHERE T.ID = #{id}
-	  </select>
-	  
-	 <!-- //////////////////////////////////////////////////////////// -->
-	  
-	  
-	 <select id="findNavbarMenus" resultType="org.smartas.security.model.Menu">
-	   SELECT
-	       T.*
-	    FROM tpl_menu_t T
-	    WHERE T.publish = '1'
-	    ORDER BY T.sn
-	 </select>
-	
+
+<mapper namespace="org.smartas.security.dao.MenuDao">
+
+	<!-- <cache /> -->
+
+	<!-- ///////////////////////////基础接口定义///////////////////////////////// -->
+
+	<select id="getById" resultType="org.smartas.security.model.Menu">
+		SELECT
+		T.*
+		FROM tpl_menu_t T
+		WHERE T.ID = #{id}
+	</select>
+
+	<select id="getCountAll" resultType="int">
+		SELECT
+		count(1)
+		FROM tpl_menu_t T
+	</select>
+
+	<select id="select" resultType="org.smartas.security.model.Menu">
+		SELECT
+		T.*
+		FROM tpl_menu_t T
+		<if test="skip != null">
+			LIMIT #{skip},#{max}
+		</if>
+		ORDER BY T.sn
+	</select>
+
+
+	<insert id="insert" parameterType="org.smartas.security.model.Menu">
+		INSERT INTO tpl_menu_t
+		(code, name, url, parentId, sn, className, iconName, publish)
+		VALUES
+		(#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{parentId,jdbcType=VARCHAR},
+		#{sn,jdbcType=VARCHAR},
+		#{className,jdbcType=VARCHAR},
+		#{iconName,jdbcType=VARCHAR},
+		#{publish,jdbcType=VARCHAR})
+		<selectKey resultType="long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID() AS ID
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterType="org.smartas.security.model.Menu">
+		UPDATE tpl_menu_t SET
+		code = #{code,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR},
+		parentId = #{parentId,jdbcType=VARCHAR},
+		sn = #{sn,jdbcType=VARCHAR},
+		className = #{className,jdbcType=VARCHAR},
+		iconName = #{iconName,jdbcType=VARCHAR},
+		publish = #{publish,jdbcType=VARCHAR}
+		WHERE ID = #{id}
+	</update>
+
+
+	<select id="deleteById">
+		DELETE * FROM tpl_menu_t T
+		WHERE T.ID = #{id}
+	</select>
+
+	<!-- //////////////////////////////////////////////////////////// -->
+
+
+	<select id="findNavbarMenus" resultType="org.smartas.security.model.Menu">
+		SELECT
+		T.*
+		FROM tpl_menu_t T
+		WHERE T.publish = '1'
+		ORDER BY T.sn
+	</select>
+
 </mapper>
 
