@@ -21,8 +21,9 @@ public abstract class GenericServiceImpl<T extends Entity, PK extends Serializab
 		return (T) getDao().getById(id);
 	}
 
-	public T save(T entity) {
-		return (T) getDao().insert(entity);
+	public Serializable save(T entity) {
+		getDao().insert(entity);
+		return entity.getId();
 	}
 
 	/*public T merge(T entity) {

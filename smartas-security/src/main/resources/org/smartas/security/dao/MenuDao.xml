@@ -33,25 +33,28 @@
 	  
 	  <insert id="insert" parameterType="org.smartas.security.model.Menu">
 	    INSERT INTO tpl_menu_t
-	      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, ACOUNT)
+	      (code, name, url, parentId, sn, className, iconName, publish)
 	    VALUES
-	      (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{acount})
+	      (#{code,jdbcType=VARCHAR}, 
+	      #{name,jdbcType=VARCHAR},
+	      #{url,jdbcType=VARCHAR},
+	      #{parentId,jdbcType=VARCHAR},
+	      #{sn,jdbcType=VARCHAR},
+	      #{className,jdbcType=VARCHAR},
+	      #{iconName,jdbcType=VARCHAR},
+	      #{publish,jdbcType=VARCHAR})
 	  </insert>
 	  
-	  
 	  <update id="update" parameterType="org.smartas.security.model.Menu">
-	    UPDATE ACCOUNT SET
-	      EMAIL = #{email},
-	      FIRSTNAME = #{firstName},
-	      LASTNAME = #{lastName},
-	      STATUS = #{status},
-	      ADDR1 = #{address1},
-	      ADDR2 = #{address2,jdbcType=VARCHAR},
-	      CITY = #{city},
-	      STATE = #{state},
-	      ZIP = #{zip},
-	      COUNTRY = #{country},
-	      PHONE = #{phone}
+	    UPDATE tpl_menu_t SET
+	      code = #{code,jdbcType=VARCHAR},
+	      name = #{name,jdbcType=VARCHAR},
+	      url = #{url,jdbcType=VARCHAR},
+	      parentId = #{parentId,jdbcType=VARCHAR},
+	      sn = #{sn,jdbcType=VARCHAR},
+	      className = #{className,jdbcType=VARCHAR},
+	      iconName = #{iconName,jdbcType=VARCHAR},
+	      publish = #{publish,jdbcType=VARCHAR}
 	    WHERE ID = #{id}
 	  </update>
 	  

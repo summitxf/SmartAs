@@ -32,6 +32,11 @@ public class Menu extends BaseEntity {
 	// 样式控制
 	private String className;
 	private String iconName;
+	
+	/**
+	 * 是否发布
+	 */
+	private boolean publish;
 
 	/**
 	 * @return the code
@@ -135,6 +140,20 @@ public class Menu extends BaseEntity {
 	 */
 	public void setSn(int sn) {
 		this.sn = sn;
+	}
+
+	/**
+	 * @return the publish
+	 */
+	public boolean isPublish() {
+		return publish;
+	}
+
+	/**
+	 * @param publish the publish to set
+	 */
+	public void setPublish(boolean publish) {
+		this.publish = publish;
 	}
 	
 }

@@ -46,9 +46,8 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 		super.getSqlSession().delete(deleteStatement(clazz), entity.getId());
 	}
 
-	public T insert(T o) throws DataAccessException {
+	public void insert(T o) throws DataAccessException {
 		super.getSqlSession().insert(insertStatement(clazz), o);
-		return o;
 	}
 
 	public void update(T o) throws DataAccessException {

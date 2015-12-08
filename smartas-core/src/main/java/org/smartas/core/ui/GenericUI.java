@@ -8,6 +8,7 @@ import org.smartas.core.Entity;
 import org.smartas.core.Service;
 import org.smartas.core.annotation.Operation;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -35,19 +36,20 @@ public abstract class GenericUI<T extends Entity, PK extends Serializable> {
 
 	@RequestMapping(value = "/single", method = RequestMethod.POST)
 	@Operation(code = Operation.CREATE, desc = Operation.CREATE_DESC)
-	public Serializable save(T entity) {
+	public Serializable save(@RequestBody T entity) {
 		return getService().save(entity);
 	}
 
 	@RequestMapping(value = "/single", method = RequestMethod.PUT)
 	@Operation(code = Operation.UPDATE, desc = Operation.UPDATE_DESC)
-	public void update(T o) throws BusinessAccessException {
+	public Serializable update(@RequestBody T o) throws BusinessAccessException {
 		getService().update(o);
+		return o.getId();
 	}
 
 	@RequestMapping(value = "/single/{id}", method = RequestMethod.DELETE)
 	@Operation(code = Operation.DELETE, desc = Operation.DELETE_DESC)
-	public void remove(@PathVariable("id")PK id) throws BusinessAccessException {
+	public void remove(@PathVariable("id") PK id) throws BusinessAccessException {
 		getService().remove(id);
 	}
 

@@ -56,7 +56,7 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 	 * @param newObject
 	 * @throws DataAccessException
 	 */
-	T insert(T entity);
+	void insert(T entity);
 
 	/**
 	 * 更新数据记录

@@ -87,9 +87,18 @@
 
 		};
 		// 对外暴露的接口
+
+		var request = function(url, options) {
+			return $.ajax(url, options);
+		}
 		return {
 			install : install,
-			uninstall : uninstall
+			uninstall : uninstall,
+			ajax : request,
+			get : null,
+			post : null,
+			put : null,
+			del : null
 		};
 	})();
 	$.extend(Namespace.register("Smart.Resource"), Resource);

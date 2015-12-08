@@ -2,35 +2,44 @@
 <script type="text/babel">
 install("web.security.menu",function(pkg,dispatcher,$S,mountNode){
  	pkg.ready = function(){
-	var Input = ReactBootstrap.Input
+	var Input = ReactBootstrap.Input,ButtonInput = ReactBootstrap.ButtonInput;
  	var Root = React.createClass({
+		mixins: [React.addons.LinkedStateMixin],
 		getInitialState: function() {
-   			 return {};
+   			 return {id : 0};
   		},
 		componentDidMount: function() {
 			pkg.buildTree();
 			var self = this;
 			dispatcher.on('menu.tree',function(data){
-				self.setState(data);
+				self.replaceState(data);
 			});
 		},
  		render: function() {
+	var data = this.state;
+	var addBtn = (<ReactBootstrap.Button onClick={pkg.create.bind(this.state)}>新增</ReactBootstrap.Button>)
+	var form = (<div><ReactBootstrap.ButtonToolbar>
+      <ReactBootstrap.Button onClick={pkg.update.bind(this.state)}>保存</ReactBootstrap.Button>
+      {data.id?addBtn:''}
+    </ReactBootstrap.ButtonToolbar><form className="form-horizontal">
+    				<Input type="text" label="名称" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('name')}/>
+    				<Input type="text" label="URL" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('url')} />
+    				<Input type="text" label="Class" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('className')}/>
+    				<Input type="text" label="Icon" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('iconName')}/>
+    				<Input type="checkbox" label="是否发布" wrapperClassName="col-xs-offset-2 col-xs-10" checkedLink={this.linkState('publish')} />
+  				  </form></div>);
 return(
 	<div className="full-height">
 	<div className="row full-height">
 		<div className="col-md-4 full-height">
-			<div className="panel panel-default full-height">
+			<div className="panel panel-default full-height" style={{overflow:'auto'}}>
 				<ul id="siteMap_tree" className="ztree"></ul>
 			</div>
 		</div>
 		<div className="col-md-8 full-height">
 			<div className="panel panel-default full-height">
-				<div className="panel-body full-height" id="tt">
- 				 <form className="form-horizontal">
-    				<Input type="text" label="Text" labelClassName="col-xs-2" wrapperClassName="col-xs-10" value={this.state.name}/>
-    				<Input type="textarea" label="Textarea" labelClassName="col-xs-2" wrapperClassName="col-xs-10" value='s'/>
-    				<Input type="checkbox" label="Checkbox" wrapperClassName="col-xs-offset-2 col-xs-10" help="Offset is applied to wrapper." />
-  				  </form>
+				<div className="panel-body full-height">
+				{(data.id !='0')?form:''}
 				</div>
 			</div>
 		</div>
