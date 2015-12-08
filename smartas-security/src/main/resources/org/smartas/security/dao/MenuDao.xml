@@ -67,13 +67,12 @@
 	 <!-- //////////////////////////////////////////////////////////// -->
 	  
 	  
-	  
-	  <!-- <select id="findByUserAcount" resultType="org.smartas.security.model.User">
-	    SELECT
+	 <select id="findNavbarMenus" resultType="org.smartas.security.model.Menu">
+	   SELECT
 	       T.*
-	    FROM tpl_menu_t T 
-	    WHERE T.ACOUNT = #{acount}
-	  </select> -->
+	    FROM tpl_menu_t T
+	    WHERE T.publish = '1'
+	 </select>
 	
 </mapper>
 

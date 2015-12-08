@@ -1,7 +1,46 @@
 $(function() {
 	var curMenu = null, zTree_Menu = null;
+
 	var setting = {
+		async : {
+			enable : true,
+			type : 'get',
+			url : "services/security/menu/navbar",
+			dataFilter : function(treeId, parentNode, responseData) {
+				var url = Smart.Resource.getCurrentUrl(), currentNode = null,list = [];
+				var buildTree = function(data, parent) {
+					var result = [], id = (parent ? parent.id : 0);
+					$.each(data, function(i, menu) {
+						if (menu.parentId == id) {
+							list.push(menu);
+							var node = {
+								id : menu.id,
+								node : menu,
+								parent : parent
+							}
+							if (menu.url == url) {
+								currentNode = node;
+							}
+							menu.target = '_self';
+							result.push(node);
+						}
+					});
+					$.each(result, function(i, node) {
+						node.child = buildTree(data, node)
+					});
+					return result;
+				};
+				var root = buildTree(responseData);
+				
+				while (currentNode) {
+					currentNode.node.open = true;
+					currentNode = currentNode.parent;
+				}
+				return list;
+			}
+		},
 		view : {
+			expandSpeed : 'normal',
 			showLine : false,
 			showIcon : false,
 			selectedMulti : false,
@@ -10,94 +49,23 @@ $(function() {
 		},
 		data : {
 			simpleData : {
-				enable : true
+				enable : true,
+				idKey : "id",
+				pIdKey : "parentId",
+				rootPId : 0
 			}
 		},
 		callback : {
-			beforeClick : beforeClick
+			beforeClick : beforeClick,
+			onNodeCreated: onMenuCreated
 		}
 	};
 
-	var zNodes = [ {
-		id : 1,
-		pId : 0,
-		url : '#!web/demo/Dashboard.html',
-		target : "_self",
-		iconClass : 'fa fa-home',
-		name : "首页"
-	}, {
-		id : 2,
-		pId : 0,
-		name : "页面模块"
-	}, {
-		id : 13,
-		pId : 2,
-		name : "个人资料"
-	}, {
-		id : 14,
-		pId : 2,
-		name : "帮助页面"
-	}, {
-		id : 15,
-		pId : 2,
-		name : "相册页面"
-	}, {
-		id : 16,
-		pId : 2,
-		name : "系统日志"
-	}, {
-		id : 17,
-		pId : 2,
-		name : "404"
-	}, {
-		id : 11,
-		pId : 2,
-		name : "收件箱"
-	}, {
-		id : 111,
-		pId : 11,
-		name : "收件箱1"
-	}, {
-		id : 112,
-		pId : 111,
-		name : "收件箱2"
-	}, {
-		id : 113,
-		pId : 112,
-		name : "收件箱3"
-	}, {
-		id : 114,
-		pId : 113,
-		name : "收件箱4"
-	}, {
-		id : 3,
-		pId : 0,
-		name : "系统管理"
-	}, {
-		id : 31,
-		pId : 3,
-		target : "_self",
-		url : '#!web/security/menu/index.html',
-		name : "菜单管理"
-	}, {
-		id : 32,
-		pId : 3,
-		name : "照片"
-	}, {
-		id : 4,
-		pId : 2,
-		name : "开发",
-	}, {
-		id : 41,
-		pId : 4,
-		name : "Demo",
-	}, {
-		id : 411,
-		pId : 41,
-		name : "Grid",
-		target : "_self",
-		url : '#!web/demo/bootstrap/grid/index.html'
-	} ];
+	function onMenuCreated(event, treeId, treeNode) {
+		if(treeNode.url === Smart.Resource.getCurrentUrl()){
+			zTree_Menu.selectNode(treeNode);
+		}
+	}
 
 	function addDiyDom(treeId, treeNode) {
 		var spaceWidth = 14, id = treeNode.tId;
@@ -120,18 +88,15 @@ $(function() {
 	}
 
 	var treeObj = $("#main_menu");
-	$.fn.zTree.init(treeObj, setting, zNodes);
+	$.fn.zTree.init(treeObj, setting);
 	zTree_Menu = $.fn.zTree.getZTreeObj("main_menu");
-	
-	
-	
-	
-	$("#navbar-fullscreen").click(function(){
-		$("[fullscreen]").each(function(){
+
+	$("#navbar-fullscreen").click(function() {
+		$("[fullscreen]").each(function() {
 			var self = $(this);
-			if(self.hasClass("container")){
+			if (self.hasClass("container")) {
 				self.removeClass("container");
-			}else{
+			} else {
 				self.addClass("container");
 			}
 		});

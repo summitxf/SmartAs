@@ -41,18 +41,6 @@
 		});
 	}
 
-	$(window).hashchange(function(e) {
-		var hash = location.hash;
-
-		context.include(hash.substr(2), function() {
-			// 卸载已经加载的资源
-			Resource.uninstall();
-		});
-	});
-
-	// 第一次手动触发
-	$(window).hashchange();
-
 	var Resource = (function() {
 
 		var $S = function(selector) {
@@ -94,6 +82,9 @@
 		return {
 			install : install,
 			uninstall : uninstall,
+			getCurrentUrl : function() {
+				return Resource.hash;
+			},
 			ajax : request,
 			get : null,
 			post : null,
@@ -103,4 +94,16 @@
 	})();
 	$.extend(Namespace.register("Smart.Resource"), Resource);
 	window.install = Resource.install;
+
+	$(window).hashchange(function(e) {
+		var hash = location.hash;
+		Resource.hash = hash;
+		context.include(hash.substr(2), function() {
+			// 卸载已经加载的资源
+			Resource.uninstall();
+		});
+	});
+
+	// 第一次手动触发
+	$(window).hashchange();
 })($, Smart.Namespace, Smart.Dispatcher);
