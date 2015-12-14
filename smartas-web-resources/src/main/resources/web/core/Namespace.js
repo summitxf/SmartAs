@@ -1,5 +1,5 @@
 +function() {
-
+	var SN = 1;
 	// 1、命名空间注册工具类
 	var Namespace = {
 		register : function(path) {
@@ -9,7 +9,9 @@
 			var packages = path.split(".");
 			var root = window;
 			for (var i = 0, length = packages.length; i < length; i++) {
-				root = root[packages[i]] || (root[packages[i]] = {});
+				root = root[packages[i]] || (root[packages[i]] = {
+					__sn__ : 'pkg-sn-' + SN++
+				});
 			}
 			return root;
 		},

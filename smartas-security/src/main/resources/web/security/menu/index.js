@@ -1,16 +1,16 @@
 //# sourceURL=web/security/menu/index.js
-install('web.security.menu', function(pkg, dispatcher, $S) {
+install('web.security.menu', function($S) {
 	var logger = Log.getLogger('web.security.menu');
-	var request = Smart.Resource.ajax;
-	pkg.create = function(event) {
-		dispatcher.fire('menu.tree', {
+	var request = Smart.Resource.ajax,eventBus = this.eventBus;
+	this.create = function(event) {
+		eventBus.fire('menu.tree', {
 			name : '',
 			id : '',
 			parentId : this.id
 		});
 	}
 
-	pkg.update = function(event) {
+	this.update = function(event) {
 		event.preventDefault();
 		var zTree = $.fn.zTree.getZTreeObj("siteMap_tree"), 
 		node = zTree.getSelectedNodes()[0], 
@@ -30,7 +30,7 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 					}]);
 					zTree.selectNode(nodes[0]);
 					data.id=id;
-					dispatcher.fire('menu.tree', data);
+					eventBus.fire('menu.tree', data);
 				} else {
 					node.name = data.name;
 					zTree.updateNode(node);
@@ -43,7 +43,7 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 		});
 	};
 
-	pkg.buildTree = function() {
+	this.buildTree = function() {
 		var setting = {
 			async : {
 				enable : true,
@@ -102,7 +102,7 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 
 		function onClick(e, treeId, treeNode) {
 			if (treeNode.level < 1) {
-				dispatcher.fire('menu.tree', {
+				eventBus.fire('menu.tree', {
 					id : 0
 				});
 				return;
@@ -111,12 +111,12 @@ install('web.security.menu', function(pkg, dispatcher, $S) {
 				type : 'get',
 				url : "services/security/menu/single/{0}".format(treeNode.id),
 				success : function(data) {
-					dispatcher.fire('menu.tree', data || {
+					eventBus.fire('menu.tree', data || {
 						id : null
 					});
 				},
 				error : function() {
-					dispatcher.fire('menu.tree', {
+					eventBus.fire('menu.tree', {
 						id : null
 					});
 				}

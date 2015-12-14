@@ -1,8 +1,9 @@
 <script src="web/security/menu/index.js"></script>
 <script type="text/babel">
-install("web.security.menu",function(pkg,dispatcher,$S,mountNode){
- 	pkg.ready = function(){
-	var Input = ReactBootstrap.Input,ButtonInput = ReactBootstrap.ButtonInput;
+install("web.security.menu",function($S,mountNode){
+ 	this.ready = function(){
+	
+	var Input = ReactBootstrap.Input,ButtonInput = ReactBootstrap.ButtonInput,pkg = this;
  	var Root = React.createClass({
 		mixins: [React.addons.LinkedStateMixin],
 		getInitialState: function() {
@@ -11,7 +12,7 @@ install("web.security.menu",function(pkg,dispatcher,$S,mountNode){
 		componentDidMount: function() {
 			pkg.buildTree();
 			var self = this;
-			dispatcher.on('menu.tree',function(data){
+			pkg.eventBus.on('menu.tree',function(data){
 				self.replaceState(data);
 			});
 		},

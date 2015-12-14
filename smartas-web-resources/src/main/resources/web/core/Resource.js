@@ -36,7 +36,7 @@
 				self.trigger('changed.dom');
 			},
 			error : function() {
-				
+
 			}
 		});
 	}
@@ -50,11 +50,11 @@
 		var resources = {};
 		// 加载资源
 		var install = function(namespace, define) {
-			logger.info("install package '{0}'", namespace);
 			var pkg = Namespace.register(namespace);
-			var dispatcher = pkg.Dispatcher
-					|| (pkg.Dispatcher = Dispatcher.New(namespace))
-			define(pkg, dispatcher, $S, context[0]);
+			logger.info("install package '{0}({1})'", namespace , pkg.__sn__);
+			var eventBus = pkg.eventBus
+					|| (pkg.eventBus = Dispatcher.New(namespace))
+			define.call(pkg, $S, context[0], eventBus);
 			pkg.ready && pkg.ready();
 			resources[namespace] = pkg;
 		};
@@ -78,11 +78,11 @@
 
 		var request = function(options) {
 			ZENG.msgbox.show('正在加载中，请稍后...', 6);
-			var complete  = options.complete;
-			options.complete = function(request,code){
-				try{
-					complete && complete(request,code);
-				}finally{
+			var complete = options.complete;
+			options.complete = function(request, code) {
+				try {
+					complete && complete(request, code);
+				} finally {
 					ZENG.msgbox.hide();
 				}
 			}
