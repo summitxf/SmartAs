@@ -66,8 +66,8 @@
 			$.each(pkgs, function(ns) {
 				var pkgInfo = Namespace.pkg(ns);
 				// 命名空间
-				logger.info("uninstall package '{0}'", ns);
 				if (pkgInfo && pkgInfo.parent) {
+					logger.info("uninstall package '{0}({1})'", ns,pkgInfo.pkg.__sn__);
 					delete pkgInfo.parent[pkgInfo.name];
 				}
 				delete pkgs[ns];
