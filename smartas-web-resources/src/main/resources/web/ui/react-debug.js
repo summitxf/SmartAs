@@ -60,4 +60,4 @@
 		}
 	});
 
-}(Smart.Event.UI);
+}(Smart.UI);

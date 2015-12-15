@@ -28,6 +28,8 @@
 		<if test="skip != null">
 			LIMIT #{skip},#{max}
 		</if>
+		<query open="(" close=")"  value="queryVo"/>
+		
 		ORDER BY T.sn
 	</select>
 

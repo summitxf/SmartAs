@@ -1,8 +1,7 @@
-(function($, Namespace, Dispatcher) {
+(function($, Namespace, EventBus, Dispatcher) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
-	var context = $("#content");
-
+	var context = $("#content"),lifecycle = EventBus.New(true);
 	// context.on()
 
 	$.fn.include = function(url, params, callback) {
@@ -51,7 +50,7 @@
 		// 加载资源
 		var install = function(namespace, define) {
 			var pkg = Namespace.register(namespace);
-			logger.info("install package '{0}({1})'", namespace , pkg.__sn__);
+			logger.info("install package '{0}({1})'", namespace, pkg.__sn__);
 			var eventBus = pkg.eventBus
 					|| (pkg.eventBus = Dispatcher.New(namespace))
 			define.call(pkg, $S, context[0], eventBus);
@@ -67,7 +66,7 @@
 				var pkgInfo = Namespace.pkg(ns);
 				// 命名空间
 				if (pkgInfo && pkgInfo.parent) {
-					logger.info("uninstall package '{0}({1})'", ns,pkgInfo.pkg.__sn__);
+					logger.info("uninstall package '{0}({1})'", ns,	pkgInfo.pkg.__sn__);
 					delete pkgInfo.parent[pkgInfo.name];
 				}
 				delete pkgs[ns];
@@ -77,18 +76,25 @@
 		// 对外暴露的接口
 
 		var request = function(options) {
-			ZENG.msgbox.show('正在加载中，请稍后...', 6);
+			lifecycle.fire('before');
 			var complete = options.complete;
 			options.complete = function(request, code) {
 				try {
 					complete && complete(request, code);
 				} finally {
-					ZENG.msgbox.hide();
+					lifecycle.fire('after');
 				}
 			}
 			return $.ajax(options);
 		}
+
 		return {
+			before : function(fn) {
+				lifecycle.on('before', fn);
+			},
+			after : function(fn) {
+				lifecycle.on('after', fn);
+			},
 			install : install,
 			uninstall : uninstall,
 			getCurrentUrl : function() {
@@ -101,9 +107,19 @@
 			del : null
 		};
 	})();
+	
+	
 	$.extend(Namespace.register("Smart.Resource"), Resource);
-	window.install = Resource.install;
 
+	window.install = Resource.install;
+	
+	Resource.before(function(){
+		ZENG.msgbox.show('正在加载中，请稍后...', 6);
+	});
+	Resource.after(function(){
+		ZENG.msgbox.hide();
+	});
+	
 	$(window).hashchange(function(e) {
 		var hash = location.hash;
 		Resource.hash = hash;
@@ -112,7 +128,7 @@
 			Resource.uninstall();
 		});
 	});
-
 	// 第一次手动触发
 	$(window).hashchange();
-})($, Smart.Namespace, Smart.Dispatcher);
+	
+})($, Smart.Namespace, Smart.EventBus, Smart.Dispatcher);
