@@ -1,0 +1,16 @@
+{
+    "name": "my-react",
+    "version": "1.0.0",
+    "description": "react wegits",
+    "scripts": {
+        "build": "babel src/main/resources/react -d src/main/resources/web/ui/wegits"
+    },
+
+    "devDependencies": {
+        "babel-preset-react": "^6.3.13"
+    },
+
+    "babel": {
+        "presets": ["react"]
+    }
+}
