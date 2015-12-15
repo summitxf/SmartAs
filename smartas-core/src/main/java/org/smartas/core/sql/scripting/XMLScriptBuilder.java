@@ -38,7 +38,6 @@ import org.apache.ibatis.scripting.xmltags.TrimSqlNode;
 import org.apache.ibatis.scripting.xmltags.VarDeclSqlNode;
 import org.apache.ibatis.scripting.xmltags.WhereSqlNode;
 import org.apache.ibatis.session.Configuration;
-import org.smartas.core.sql.scripting.xmltags.QuerySqlNode;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -48,14 +47,41 @@ public class XMLScriptBuilder extends BaseBuilder {
 	private boolean isDynamic;
 	private Class<?> parameterType;
 
+	private Map<String, NodeHandler> nodeHandlers = new HashMap<String, NodeHandler>();
+
+	{
+		nodeHandlers.put("trim", new TrimHandler());
+		nodeHandlers.put("where", new WhereHandler());
+		nodeHandlers.put("set", new SetHandler());
+		nodeHandlers.put("foreach", new ForEachHandler());
+		nodeHandlers.put("if", new IfHandler());
+		nodeHandlers.put("choose", new ChooseHandler());
+		nodeHandlers.put("when", new IfHandler());
+		nodeHandlers.put("otherwise", new OtherwiseHandler());
+		nodeHandlers.put("bind", new BindHandler());
+	}
+
+
 	public XMLScriptBuilder(Configuration configuration, XNode context) {
-		this(configuration, context, null);
+		this(configuration, context, (Class<?>) null);
 	}
 
 	public XMLScriptBuilder(Configuration configuration, XNode context, Class<?> parameterType) {
 		super(configuration);
 		this.context = context;
 		this.parameterType = parameterType;
+	}
+
+	public XMLScriptBuilder(Configuration configuration, XNode context, Map<String, NodeHandler> nodeHandlers) {
+		this(configuration, context, null, nodeHandlers);
+	}
+
+	public XMLScriptBuilder(Configuration configuration, XNode context, Class<?> parameterType,
+			Map<String, NodeHandler> nodeHandlers) {
+		super(configuration);
+		this.context = context;
+		this.parameterType = parameterType;
+		this.nodeHandlers.putAll(nodeHandlers);
 	}
 
 	public SqlSource parseScriptNode() {
@@ -99,24 +125,7 @@ public class XMLScriptBuilder extends BaseBuilder {
 		return contents;
 	}
 
-	private Map<String, NodeHandler> nodeHandlers = new HashMap<String, NodeHandler>() {
-		private static final long serialVersionUID = 7123056019193266281L;
-
-		{
-			put("trim", new TrimHandler());
-			put("where", new WhereHandler());
-			put("set", new SetHandler());
-			put("foreach", new ForEachHandler());
-			put("if", new IfHandler());
-			put("choose", new ChooseHandler());
-			put("when", new IfHandler());
-			put("otherwise", new OtherwiseHandler());
-			put("bind", new BindHandler());
-			put("query", new QueryHandler());
-		}
-	};
-
-	private interface NodeHandler {
+	public static interface NodeHandler {
 		void handleNode(XNode nodeToHandle, List<SqlNode> targetContents);
 	}
 
@@ -227,16 +236,6 @@ public class XMLScriptBuilder extends BaseBuilder {
 				throw new BuilderException("Too many default (otherwise) elements in choose statement.");
 			}
 			return defaultSqlNode;
-		}
-	}
-
-	private class QueryHandler implements NodeHandler {
-		public void handleNode(XNode nodeToHandle, List<SqlNode> targetContents) {
-			String open = nodeToHandle.getStringAttribute("open");
-			String close = nodeToHandle.getStringAttribute("close");
-			final String expression = nodeToHandle.getStringAttribute("value");
-			final QuerySqlNode node = new QuerySqlNode(open, close, expression);
-			targetContents.add(node);
 		}
 	}
 
