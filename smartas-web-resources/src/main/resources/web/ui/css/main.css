@@ -90,3 +90,7 @@
 	float: left;
 	margin: 19px 10px 0 5px
 }
+
+.datagrid .panel-body ,.smart .panel-body{
+   padding: 0;
+}

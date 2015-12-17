@@ -1,53 +1,36 @@
-<script src="web/security/user/index.js"></script>
 <script type="text/babel">
 install("web.security.user",function($S,mountNode){
  	this.ready = function(){
-	var Input = ReactBootstrap.Input,ButtonInput = ReactBootstrap.ButtonInput,pkg = this;
- 	var Root = React.createClass({
-		mixins: [React.addons.LinkedStateMixin],
-		getInitialState: function() {
-   			 return {id : 0};
-  		},
-		componentDidMount: function() {
-			pkg.buildTree();
-			var self = this;
-			pkg.eventBus.on('menu.tree',function(data){
-				self.replaceState(data);
-			});
-		},
- 		render: function() {
-	var data = this.state;
-	var addBtn = (<ReactBootstrap.Button onClick={pkg.create.bind(this.state)}>新增</ReactBootstrap.Button>)
-	var form = (<div><ReactBootstrap.ButtonToolbar>
-      <ReactBootstrap.Button onClick={pkg.update.bind(this.state)}>保存</ReactBootstrap.Button>
-      {data.id?addBtn:''}
-    </ReactBootstrap.ButtonToolbar><form className="form-horizontal">
-    				<Input type="text" label="名称" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('name')}/>
-    				<Input type="text" label="URL" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('url')} />
-    				<Input type="text" label="Class" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('className')}/>
-    				<Input type="text" label="Icon" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('iconName')}/>
-					<Input type="text" label="排序号" labelClassName="col-xs-2" wrapperClassName="col-xs-10" valueLink={this.linkState('sn')}/>
-    				<Input type="checkbox" label="是否发布" wrapperClassName="col-xs-offset-2 col-xs-10" checkedLink={this.linkState('publish')} />
-  				  </form></div>);
-return(
-	<div className="full-height">
-	<div className="row full-height">
-		<div className="col-md-4 full-height">
-			<div className="panel panel-default full-height" style={{overflow:'auto'}}>
-				<ul id="siteMap_tree" className="ztree"></ul>
-			</div>
-		</div>
-		<div className="col-md-8 full-height">
-			<div className="panel panel-default full-height">
-				<div className="panel-body full-height">
-				{(data.id !='0')?form:''}
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>)}});
-
-	ReactDOM.render(<Root />, mountNode);
-};
+		var UI = Smart.UI,
+			Panel = UI.Panel,
+			IGrid = UI.IGrid,
+			Grid = UI.Grid,
+			Column = UI.Column,
+			pkg = this;
+		var Node = React.createClass({
+			render: function() {
+				return (<div>
+						<Panel>
+							<Panel.Header title="用户列表"></Panel.Header>
+					 		<IGrid url="services/security/user/list">
+								<IGrid.Column field="acount" width="100" title="账户"></IGrid.Column>
+								<IGrid.Column field="email" width="200" title="Emai"></IGrid.Column>
+								<IGrid.Column field="firstname" width="200" title="First name"></IGrid.Column>
+								<IGrid.Column field="lastname" width="200" title="Last name"></IGrid.Column>
+								<IGrid.Column field="status" width="200" title="状态"></IGrid.Column>
+					 		</IGrid>
+						</Panel>
+						/*
+						<Grid method="get" url="services/security/menu/list" height="257">
+							<Column field="id" title="id" width="100"/>
+							<Column field="name" title="name" width="100"/>
+							<Column field="url" title="url" width="100"/>
+						</Grid>*/
+					</div>
+					);
+			}
+		});
+		ReactDOM.render(<Node/>, mountNode);
+	};
 });
 </script>

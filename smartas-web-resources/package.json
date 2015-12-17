@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "react wegits",
     "scripts": {
-        "build": "babel src/main/resources/react -d src/main/resources/web/ui/wegits"
+        "build": "babel src/main/resources/react -d src/main/resources/web/"
     },
 
     "devDependencies": {
