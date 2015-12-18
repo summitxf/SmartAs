@@ -2,7 +2,7 @@
 #项目资源
 smartas-core/target/classes
 smartas-security/target/classes
-//smartas-web-resources/target/classes
+#smartas-web-resources/target/classes
 smartas-web-resources/src/main/resources
 smartas-web-support/target/classes
 smartas-workflow/target/classes

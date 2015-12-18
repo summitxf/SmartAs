@@ -89,24 +89,28 @@
 					'div',
 					{ className: 'datagrid-header', style: { width: '31px', height: '25px' } },
 					React.createElement(
-						'table',
-						{ className: 'datagrid-htable', border: '0', cellSpacing: '0', cellPadding: '0', style: { height: '25px' } },
+						'div',
+						{ className: 'datagrid-header-inner' },
 						React.createElement(
-							'tbody',
-							null,
+							'table',
+							{ className: 'datagrid-htable', border: '0', cellSpacing: '0', cellPadding: '0', style: { height: '25px' } },
 							React.createElement(
-								'tr',
-								{ className: 'datagrid-header-row' },
+								'tbody',
+								null,
 								React.createElement(
-									'td',
-									{ rowSpan: '0' },
-									React.createElement('div', { className: 'datagrid-header-rownumber' })
+									'tr',
+									{ className: 'datagrid-header-row' },
+									React.createElement(
+										'td',
+										{ rowSpan: '0' },
+										React.createElement('div', { className: 'datagrid-header-rownumber' })
+									)
 								)
 							)
 						)
 					)
 				),
-				React.createElement(View1Body, { rows: this.props.rows }),
+				React.createElement(View1Body, { rows: this.props.rows, height: this.props.height }),
 				React.createElement(
 					'div',
 					{ className: 'datagrid-footer', style: { width: '31px' } },
@@ -146,16 +150,20 @@
 			}
 			return React.createElement(
 				'div',
-				{ className: 'datagrid-body', style: { width: '31px', marginTop: '0px' } },
+				{ className: 'datagrid-body', style: { width: '31px', marginTop: '0px', height: this.props.height - 26 } },
 				React.createElement(
-					'table',
-					{ className: 'datagrid-btable', cellSpacing: '0', cellPadding: '0', border: '0' },
+					'div',
+					{ className: 'datagrid-body-inner' },
 					React.createElement(
-						'tbody',
-						null,
-						_.times(rows, function (i) {
-							return React.createElement(View1Row, { key: 'view1-row-' + i, rownumber: i });
-						})
+						'table',
+						{ className: 'datagrid-btable', cellSpacing: '0', cellPadding: '0', border: '0' },
+						React.createElement(
+							'tbody',
+							null,
+							_.times(rows, function (i) {
+								return React.createElement(View1Row, { key: 'view1-row-' + i, rownumber: i });
+							})
+						)
 					)
 				)
 			);
@@ -185,17 +193,9 @@
 			return React.createElement(
 				'tr',
 				{ key: 'view-row-' + i, className: 'datagrid-row', style: { height: '25px' } },
-				React.createElement(
-					'td',
-					{ className: 'datagrid-td-rownumber', style: { width: '31px' } },
-					React.createElement(
-						'div',
-						{ className: 'datagrid-cell-rownumber' },
-						i + 1
-					)
-				),
 				_.map(columns, function (c, j) {
-					return React.createElement(ViewCell, { key: 'view-cell-' + i + '-' + j, column: c, value: data[c.field] });
+					var value = c.render.call(data, data[c.field]);
+					return React.createElement(ViewCell, { key: 'view-cell-' + i + '-' + j, column: c, value: value });
 				})
 			);
 		});
@@ -207,7 +207,7 @@
 		render: function () {
 			return React.createElement(
 				'div',
-				{ className: 'datagrid-body', style: { marginTop: '0px', overflowX: 'hidden', height: '298px' } },
+				{ className: 'datagrid-body', onScroll: this.props.bodyScroll, style: { marginTop: '0px', overflowX: 'auto', height: this.props.height - 26 } },
 				React.createElement(
 					'table',
 					{ className: 'datagrid-btable table-hover', cellSpacing: '0', cellPadding: '0', border: '0' },
@@ -224,46 +224,116 @@
 	var View = React.createClass({
 		displayName: 'View',
 
-		header: function (children, columns) {
-			var list = React.Children.map(children, function (node) {
-				columns.push(node.props);
-				return node;
+		getColumnsInfo: function (list) {
+			var cl = IGrid.Column;
+			return React.Children.map(list, function (node) {
+				return _.chain(node.props).pick(cl.props).defaults(cl.defaults).value();
 			});
-			return list;
+		},
+
+		getInitialState: function () {
+			return {
+				columns: this.getColumnsInfo(this.props.children)
+			};
 		},
 
 		render: function () {
 			var columns = [];
 			return React.createElement(
 				'div',
-				{ className: 'datagrid-view2', style: { left: '32px' /*width: '860px'*/ } },
+				{ className: 'datagrid-view2', style: { left: '32px', right: 0 } },
 				React.createElement(
 					'div',
-					{ className: 'datagrid-header', style: { /*width: '860px',*/height: '25px' } },
+					{ className: 'datagrid-header', style: { height: '25px' } },
 					React.createElement(
-						'table',
-						{ className: 'datagrid-htable', border: '0', cellSpacing: '0', cellPadding: '0', style: { height: '25px' } },
+						'div',
+						{ className: 'datagrid-header-inner' },
 						React.createElement(
-							'tbody',
-							null,
+							'table',
+							{ className: 'datagrid-htable', border: '0', cellSpacing: '0', cellPadding: '0', style: { height: '25px' } },
 							React.createElement(
-								'tr',
-								{ className: 'datagrid-header-row' },
+								'tbody',
+								null,
 								React.createElement(
-									'td',
-									{ style: { width: '31px' } },
-									React.createElement('div', { 'class': 'datagrid-header-rownumber' })
-								),
-								this.header(this.props.children, columns)
+									'tr',
+									{ className: 'datagrid-header-row' },
+									this.props.children
+								)
 							)
 						)
 					)
 				),
-				React.createElement(ViewBody, { columns: columns, datas: this.props.datas }),
+				React.createElement(ViewBody, { bodyScroll: this.props.bodyScroll, columns: this.state.columns, datas: this.props.datas, height: this.props.height }),
 				React.createElement(
 					'div',
 					{ className: 'datagrid-footer', style: {/*width: '860px'*/} },
 					React.createElement('div', { className: 'datagrid-footer-inner', style: { display: 'none' } })
+				)
+			);
+		}
+	});
+
+	var Pagination = React.createClass({
+		displayName: 'Pagination',
+
+		render: function () {
+			return React.createElement(
+				'div',
+				{ className: 'datagrid-pager pagination' },
+				React.createElement(
+					'table',
+					{ cellSpacing: '0', cellPadding: '0', border: '0' },
+					React.createElement(
+						'tbody',
+						null,
+						React.createElement(
+							'tr',
+							null,
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'select',
+									{ className: 'pagination-page-list' },
+									React.createElement(
+										'option',
+										null,
+										'10'
+									),
+									React.createElement(
+										'option',
+										null,
+										'20'
+									),
+									React.createElement(
+										'option',
+										null,
+										'30'
+									),
+									React.createElement(
+										'option',
+										null,
+										'40'
+									),
+									React.createElement(
+										'option',
+										null,
+										'50'
+									)
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement('div', { className: 'pagination-btn-separator' })
+							)
+						)
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'pagination-info' },
+					'显示1到10,共53记录'
 				)
 			);
 		}
@@ -277,7 +347,8 @@
 				rownumbers: true,
 				singleSelect: true,
 				pagination: true,
-				method: 'get'
+				method: 'get',
+				height: 298
 			};
 		},
 		getInitialState: function () {
@@ -300,25 +371,65 @@
 					error: function () {}
 				});
 			}
-			//$(ReactDOM.findDOMNode(this)).datagrid(_.extend({
+
+			/*body2.bind("scroll_", function() {
+   	//var b1 = view1.children("div.datagrid-body");
+   	body1.scrollTop($(this).scrollTop());
+   	var c1 = body1.children(":first");
+   	var c2 = body2.children(":first");
+   	if (c1.length && c2.length) {
+   		var _85 = c1.offset().top;
+   		var _86 = c2.offset().top;
+   		if (_85 != _86) {
+   			body1.scrollTop(body1.scrollTop() + _85 - _86);
+   		}
+   	}
+   	view2.children("div.datagrid-header,div.datagrid-footer")._scrollLeft($(this)._scrollLeft());
+   	body2.children("table.datagrid-btable-frozen").css("left", -$(this)._scrollLeft());
+   });*/
+			//.datagrid(_.extend({
 			//	columns: [this.columns]
 			//}, _.omit(this.props, 'children')));
 		},
+		bodyScroll: function () {
+
+			var iGrid = $(ReactDOM.findDOMNode(this)),
+			    view1 = iGrid.find("div.datagrid-view1"),
+			    view2 = iGrid.find("div.datagrid-view2"),
+			    body1 = view1.find("div.datagrid-body"),
+			    body2 = view2.find("div.datagrid-body");
+
+			body1.scrollTop(body2.scrollTop());
+			var c1 = body1.children(":first");
+			var c2 = body2.children(":first");
+			if (c1.length && c2.length) {
+				var _85 = c1.offset().top;
+				var _86 = c2.offset().top;
+				if (_85 != _86) {
+					body1.scrollTop(body1.scrollTop() + _85 - _86);
+				}
+			}
+			view2.children("div.datagrid-header,div.datagrid-footer")._scrollLeft(body2._scrollLeft());
+			body2.children("table.datagrid-btable-frozen").css("left", -body2._scrollLeft());
+		},
 		render: function () {
-			var datas = this.state.datas;
+			var datas = this.state.datas,
+			    height = this.props.height,
+			    viewHeight = height - (this.props.pagination ? 31 : 0);
 			return React.createElement(
 				'div',
-				{ className: 'datagrid-wrap panel-body', title: '', style: {/*width: '893px', height: '298px'*/} },
+				{ className: 'datagrid-wrap panel-body', style: { height: height } },
 				React.createElement(
 					'div',
-					{ className: 'datagrid-view', style: { /*width: '891px',*/height: '298px' } },
-					React.createElement(View1, { rownumbers: this.props.rownumbers, rows: datas.length }),
+					{ className: 'datagrid-view', style: { height: viewHeight } },
+					React.createElement(View1, { rownumbers: this.props.rownumbers, rows: datas.length, height: viewHeight }),
 					React.createElement(
 						View,
-						{ datas: datas },
+						{ datas: datas, height: viewHeight, bodyScroll: this.bodyScroll },
 						this.props.children
 					)
-				)
+				),
+				React.createElement(Pagination, null)
 			);
 		}
 	});
@@ -326,6 +437,12 @@
 	IGrid.Column = React.createClass({
 		displayName: 'Column',
 
+		statics: {
+			props: ['field', 'title', 'render', 'width'],
+			defaults: {
+				render: _.identity
+			}
+		},
 		//shouldComponentUpdate: function() {
 		//	return false;
 		//},
