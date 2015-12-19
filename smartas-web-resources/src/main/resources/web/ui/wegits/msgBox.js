@@ -215,7 +215,7 @@ ZENG.msgbox.show = function(msgHtml, type, timeout, opts) {
 		};
 	}
 	opts = opts || {};
-	var _s = ZENG.msgbox, template = '<span class="zeng_msgbox_layer" style="display:none;z-index:10000;" id="mode_tips_v2"><span class="gtl_ico_{type}"></span>{loadIcon}{msgHtml}<span class="gtl_end"></span></span>', loading = '<span class="gtl_ico_loading"></span>', typeClass = [
+	var _s = ZENG.msgbox, template = '<span class="zeng_msgbox_layer" style="display:none;z-index:10000;" id="mode_tips_v2"><i class="fa fa-cog fa-spin"></i>{msgHtml}<span class="gtl_end"></span></span>', loading = '<span class="gtl_ico_loading"></span>', typeClass = [
 			0, 0, 0, 0, "succ", "fail", "clear" ], mBox, tips;
 	_s._loadCss && _s._loadCss(opts.cssPath);
 	mBox = ZENG.dom.get("q_Msgbox")

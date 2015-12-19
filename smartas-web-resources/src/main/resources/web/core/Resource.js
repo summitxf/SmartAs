@@ -1,7 +1,7 @@
 (function($, Namespace, EventBus, Dispatcher) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
-	var context = $("#content"),lifecycle = EventBus.New(true);
+	var context = $("#content"), lifecycle = EventBus.New(true);
 	// context.on()
 
 	$.fn.include = function(url, params, callback) {
@@ -66,7 +66,8 @@
 				var pkgInfo = Namespace.pkg(ns);
 				// 命名空间
 				if (pkgInfo && pkgInfo.parent) {
-					logger.info("uninstall package '{0}({1})'", ns,	pkgInfo.pkg.__sn__);
+					logger.info("uninstall package '{0}({1})'", ns,
+							pkgInfo.pkg.__sn__);
 					delete pkgInfo.parent[pkgInfo.name];
 				}
 				delete pkgs[ns];
@@ -77,6 +78,9 @@
 
 		var request = function(options) {
 			lifecycle.fire('before');
+			if (options.data && !_.isString(options.data)) {
+				options.data = JSON.stringify(options.data)
+			}
 			var complete = options.complete;
 			options.complete = function(request, code) {
 				try {
@@ -86,6 +90,23 @@
 				}
 			}
 			return $.ajax(options);
+		}
+
+		var method = function(type, url, data, success, error) {
+			if (_.isFunction(data)) {
+				error = success;
+				success = data;
+				data = undefined;
+			}
+			var options = {
+				type : type,
+				url : url,
+				data : data,
+				dataType : 'json',
+				success : success,
+				error : error
+			};
+			request(options);
 		}
 
 		return {
@@ -101,25 +122,32 @@
 				return Resource.hash;
 			},
 			ajax : request,
-			get : null,
-			post : null,
-			put : null,
-			del : null
+			get : function(url, data, success, error) {
+				method('get', url, data, success, error);
+			},
+			post : function(url, data, success, error) {
+				method('post', url, data, success, error);
+			},
+			put : function(url, data, success, error) {
+				method('put', url, data, success, error);
+			},
+			del : function(url, data, success, error) {
+				method('delete', url, data, success, error);
+			}
 		};
 	})();
-	
-	
+
 	$.extend(Namespace.register("Smart.Resource"), Resource);
 
 	window.install = Resource.install;
-	
-	Resource.before(function(){
+
+	Resource.before(function() {
 		ZENG.msgbox.show('正在加载中，请稍后...', 6);
 	});
-	Resource.after(function(){
+	Resource.after(function() {
 		ZENG.msgbox.hide();
 	});
-	
+
 	$(window).hashchange(function(e) {
 		var hash = location.hash;
 		Resource.hash = hash;
@@ -130,5 +158,5 @@
 	});
 	// 第一次手动触发
 	$(window).hashchange();
-	
+
 })($, Smart.Namespace, Smart.EventBus, Smart.Dispatcher);

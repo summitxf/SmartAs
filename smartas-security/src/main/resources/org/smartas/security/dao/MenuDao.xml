@@ -66,8 +66,8 @@
 
 
 	<select id="deleteById">
-		DELETE * FROM tpl_menu_t T
-		WHERE T.ID = #{id}
+		DELETE FROM tpl_menu_t
+		WHERE ID = #{id}
 	</select>
 
 	<!-- //////////////////////////////////////////////////////////// -->

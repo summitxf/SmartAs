@@ -19,7 +19,7 @@ install('web.security.menu', function($S) {
 		request({
 			type : isCreate ? 'post' : 'put',
 			url : "services/security/menu/single",
-			data : JSON.stringify(this),
+			data : this,
 			dataType : "json",
 			contentType : "application/json",
 			success : function(id) {

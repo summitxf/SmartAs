@@ -237,44 +237,31 @@
 				datas: this.props.datas || [],
 			};
 		},
-		componentDidMount: function() {
+
+		load : function(){
 			var props = this.props,
 				context = this;
-			if (props.url) {
-				request({
-					type: props.method,
-					url: props.url,
-					success: function(data) {
-						context.setState({
-							datas: data
-						});
-					},
-					error: function() {
+			props.url && request({
+				type: props.method,
+				url: props.url,
+				success: function(data) {
+					context.setState({
+						datas: data
+					});
+				},
+				error: function() {
 
-					}
-				});
-			}
-
-
-
-			/*body2.bind("scroll_", function() {
-				//var b1 = view1.children("div.datagrid-body");
-				body1.scrollTop($(this).scrollTop());
-				var c1 = body1.children(":first");
-				var c2 = body2.children(":first");
-				if (c1.length && c2.length) {
-					var _85 = c1.offset().top;
-					var _86 = c2.offset().top;
-					if (_85 != _86) {
-						body1.scrollTop(body1.scrollTop() + _85 - _86);
-					}
 				}
-				view2.children("div.datagrid-header,div.datagrid-footer")._scrollLeft($(this)._scrollLeft());
-				body2.children("table.datagrid-btable-frozen").css("left", -$(this)._scrollLeft());
-			});*/
-			//.datagrid(_.extend({
-			//	columns: [this.columns]
-			//}, _.omit(this.props, 'children')));
+			});
+		},
+
+		componentDidMount: function() {
+			var eventBus = this.props.eventBus,context = this;
+			eventBus && eventBus.on('role.refresh',function(data){			
+				context.load()	
+			});
+
+			context.load();
 		},
 		bodyScroll: function() {
 
@@ -317,7 +304,7 @@
 
 	IGrid.Column = React.createClass({
 		statics: {
-			props: ['field', 'title', 'render', 'width'],
+			props: ['field', 'render', 'width', 'operation'],
 			defaults: {
 				render: _.identity
 			}
@@ -328,7 +315,7 @@
 		render: function() {
 			return (<td field={this.props.field}>
 					<div className="datagrid-cell" style={{width : this.props.width}}>
-						<span>{this.props.title}</span><span className="datagrid-sort-icon">&nbsp;</span>
+						<span>{this.props.children}</span><span className="datagrid-sort-icon">&nbsp;</span>
 					</div></td>);
 		}
 	});

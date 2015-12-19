@@ -1,0 +1,43 @@
+<script src="web/security/role/index.js"></script>
+<script type="text/babel">
+install("web.security.role",function($S,mountNode){
+ 	this.ready = function(){
+
+		var UI = Smart.UI,
+			Panel = UI.Panel,
+			IGrid = UI.IGrid,
+			Grid = UI.Grid,
+			Column = UI.Column,
+			pkg = this;
+		var Node = React.createClass({
+			render: function() {
+				return (<div>
+						<Panel>
+							<Panel.Header title="角色列表"></Panel.Header>
+					 		<IGrid eventBus={pkg.eventBus} url="services/security/role/list" height="256">
+								<IGrid.Column width="20" render={function(value){return <input type="checkbox"></input>}}>
+									<input type="checkbox"/>
+								</IGrid.Column>
+								<IGrid.Column width="80" render={
+									function(value){
+										return (<div className="smart-btn">
+												<span title="权限设置">&nbsp;<i className="fa fa-cog"></i>&nbsp;</span>
+												<span title="用户管理">&nbsp;<i className="fa fa-users"></i>&nbsp;</span>
+												{this.defaultIn == false?<span onClick={_.bind(pkg.del,pkg,this.id)} title="删除">&nbsp;<i className="fa fa-trash-o"></i>&nbsp;</span> : null}
+												</div>
+												)
+									}}>操作
+								</IGrid.Column>
+								<IGrid.Column field="name" width="150">名称</IGrid.Column>
+								<IGrid.Column field="desc" width="250">描述</IGrid.Column>
+								<IGrid.Column field="status" width="50" render={function(value){return value == 1 ? <div>有效</div>:'锁定'}}>状态</IGrid.Column>
+					 		</IGrid>
+						</Panel>
+					</div>
+					);
+			}
+		});
+		ReactDOM.render(<Node/>, mountNode);
+	};
+});
+</script>

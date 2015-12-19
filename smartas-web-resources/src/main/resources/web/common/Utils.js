@@ -24,8 +24,8 @@
 		}
 	}();
 	if (!jQuery.__hack__) {
-		var parseJSON = jQuery.parseJSON
-		jQuery.parseJSON = function(data) {
+		var parseJSON = JSON.parse
+		JSON.parse = function(data) {
 			if (data === "") {
 				return data;
 			}
