@@ -149,7 +149,7 @@
 				<div className="datagrid-body" onScroll={this.props.bodyScroll} style={{marginTop: '0px', overflowX: 'auto',height: this.props.height-26}}>
 				<table className="datagrid-btable table-hover" cellSpacing="0" cellPadding="0" border="0">
 					<tbody>
-						{row(this.props.datas,this.props.columns)}	
+						{row(this.props.data,this.props.columns)}	
 					</tbody>
 				</table>
 			</div>
@@ -191,7 +191,7 @@
 						</table>
 						</div>
 					</div>
-					<ViewBody bodyScroll={this.props.bodyScroll} columns={this.state.columns} datas={this.props.datas} height={this.props.height} />
+					<ViewBody bodyScroll={this.props.bodyScroll} columns={this.state.columns} data={this.props.data} height={this.props.height} />
 					<div className="datagrid-footer" style={{/*width: '860px'*/}}>
 						<div className="datagrid-footer-inner" style={{display: 'none'}}></div>
 					</div>
@@ -201,21 +201,54 @@
 	});
 
 	var Pagination = React.createClass({
+
+		refresh : function(){
+			this.props.dataSource.refresh()
+		},
+
 		render: function() {
+			var props = this.props,
+				length = props.length,
+				page = props.page,
+				pageSize = props.pageSize
+			size = (Math.ceil(length / pageSize) || 1);
 			return (<div className="datagrid-pager pagination">
-					<table cellSpacing="0" cellPadding="0" border="0">
-						<tbody>
-							<tr>
-								<td><select className="pagination-page-list"><option>10</option>
-										<option>20</option>
-										<option>30</option>
-										<option>40</option>
-										<option>50</option></select></td>
-								<td><div className="pagination-btn-separator"></div></td>
-							</tr>
-						</tbody>
-					</table>
-					<div className="pagination-info">显示1到10,共53记录</div>
+<table cellSpacing="0" cellPadding="0" border="0">
+	<tbody>
+		<tr>
+			<td><select className="pagination-page-list" onChange={this.refresh}><option>10</option>
+					<option>20</option>
+					<option>30</option>
+					<option>40</option>
+					<option>50</option></select></td>
+			<td><div className="pagination-btn-separator"></div></td>
+			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled"><span
+					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span> <span
+						className="l-btn-icon pagination-first">&nbsp;</span></span></a></td>
+			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled"><span
+					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
+						className="l-btn-icon pagination-prev">&nbsp;</span></span></a></td>
+			<td>
+				<div className="pagination-btn-separator"></div>
+			</td>
+			<td><span style={{paddingLeft: '6px'}}>第</span></td>
+			<td><input className="pagination-num" type="text" value={page} onChange={this.refresh} size="2"/></td>
+			<td><span style={{paddingRight: '6px'}}>共{size}页</span></td>
+			<td><div className="pagination-btn-separator"></div></td>
+			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain"><span
+					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
+						className="l-btn-icon pagination-next">&nbsp;</span></span></a></td>
+			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain"><span
+					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
+						className="l-btn-icon pagination-last">&nbsp;</span></span></a></td>
+			<td><div className="pagination-btn-separator"></div></td>
+			<td><a href="javascript:void(0)" onClick={this.refresh} className="l-btn l-btn-small l-btn-plain"><span
+					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
+						className="l-btn-icon pagination-load">&nbsp;</span></span></a></td>
+		</tr>
+	</tbody>
+</table>
+					<div className="pagination-info">显示{(page - 1) * pageSize + 1}到{page * pageSize},共{length}记录</div>
 				</div>);
 		}
 	});
@@ -234,33 +267,39 @@
 		},
 		getInitialState: function() {
 			return {
-				datas: this.props.datas || [],
+				page: 1,
+				pageSize: 10,
+				length: 0,
+				data: this.props.data || [],
 			};
 		},
 
-		load : function(){
+		load: function() {
 			var props = this.props,
-				context = this;
-			props.url && request({
-				type: props.method,
-				url: props.url,
-				success: function(data) {
-					context.setState({
-						datas: data
-					});
-				},
-				error: function() {
+				dataSource = this.props.dataSource,
+				context = this,
+				url = props.url;
 
-				}
-			});
+			var list = !props.pagination ? dataSource.listAll() : dataSource.listPage(this.state.page, this.state.pageSize)
+
+			list();
 		},
 
 		componentDidMount: function() {
-			var eventBus = this.props.eventBus,context = this;
-			eventBus && eventBus.on('role.refresh',function(data){			
-				context.load()	
+			var props = this.props,
+				dataSource = this.props.dataSource,
+				context = this;
+			dataSource.onRefresh(function(data) {
+				context.load()
+			}).onData(function(data) {
+				var pageable = data;
+				if (!props.pagination) {
+					pageable = {
+						data: data
+					}
+				}
+				context.setState(pageable);
 			});
-
 			context.load();
 		},
 		bodyScroll: function() {
@@ -285,18 +324,18 @@
 			body2.children("table.datagrid-btable-frozen").css("left", -body2._scrollLeft());
 		},
 		render: function() {
-			var datas = this.state.datas,
+			var data = this.state.data,
 				height = this.props.height,
 				viewHeight = height - (this.props.pagination ? 31 : 0);
 			return (
 				<div className="datagrid-wrap panel-body" style={{height: height}}>
 					<div className="datagrid-view" style={{height: viewHeight}}>
-						<View1 rownumbers={this.props.rownumbers} rows={datas.length} height={viewHeight}/>
-						<View datas={datas} height={viewHeight} bodyScroll={this.bodyScroll}>
+						<View1 rownumbers={this.props.rownumbers} rows={data.length} height={viewHeight}/>
+						<View data={data} height={viewHeight} bodyScroll={this.bodyScroll}>
 							{this.props.children}
 						</View>
 					</div>
-					<Pagination/>
+					<Pagination dataSource={this.props.dataSource} page={this.state.page} pageSize={this.state.pageSize} length={this.state.length}/>
 				</div>
 			);
 		}

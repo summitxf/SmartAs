@@ -32,10 +32,11 @@ $(function() {
 				};
 				var root = buildTree(responseData);
 				
-				while (currentNode) {
+				/*while (currentNode) {
 					currentNode.node.open = true;
 					currentNode = currentNode.parent;
-				}
+				}*/
+				loadBreadcrumb(currentNode);
 				return list;
 			}
 		},
@@ -60,6 +61,32 @@ $(function() {
 			onNodeCreated: onMenuCreated
 		}
 	};
+	
+	
+	function loadBreadcrumb(currentNode){
+		var lis = [];
+		lis.push('<li class="active">{0}</li>'.format(currentNode.node.name));
+		currentNode.node.open = true;
+		currentNode = currentNode.parent;
+		while (currentNode && currentNode.node.id > 2) {
+			lis.splice(0, 0, '<li class="active">{0}</li>'.format(currentNode.node.name));  
+			currentNode.node.open = true;
+			currentNode = currentNode.parent;
+		}
+		$("#breadcrumb").html($(lis.join("")));
+	}
+	
+	function loadBreadcrumb2(currentNode){
+		debugger;
+		var lis = [];
+		lis.push('<li class="active">{0}</li>'.format(currentNode.name));
+		currentNode = currentNode.getParentNode();
+		while (currentNode && currentNode.id > 2) {
+			lis.splice(0, 0, '<li class="active">{0}</li>'.format(currentNode.name));  
+			currentNode = currentNode.getParentNode();
+		}
+		$("#breadcrumb").html($(lis.join("")));
+	}
 
 	function onMenuCreated(event, treeId, treeNode) {
 		if(treeNode.url === Smart.Resource.getCurrentUrl()){
@@ -83,6 +110,7 @@ $(function() {
 	}
 
 	function beforeClick(treeId, treeNode) {
+		loadBreadcrumb2(treeNode);
 		zTree_Menu.expandNode(treeNode);
 		return true;
 	}

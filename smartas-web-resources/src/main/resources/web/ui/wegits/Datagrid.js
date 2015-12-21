@@ -214,7 +214,7 @@
 					React.createElement(
 						'tbody',
 						null,
-						row(this.props.datas, this.props.columns)
+						row(this.props.data, this.props.columns)
 					)
 				)
 			);
@@ -263,7 +263,7 @@
 						)
 					)
 				),
-				React.createElement(ViewBody, { bodyScroll: this.props.bodyScroll, columns: this.state.columns, datas: this.props.datas, height: this.props.height }),
+				React.createElement(ViewBody, { bodyScroll: this.props.bodyScroll, columns: this.state.columns, data: this.props.data, height: this.props.height }),
 				React.createElement(
 					'div',
 					{ className: 'datagrid-footer', style: {/*width: '860px'*/} },
@@ -276,7 +276,16 @@
 	var Pagination = React.createClass({
 		displayName: 'Pagination',
 
+		refresh: function () {
+			this.props.dataSource.refresh();
+		},
+
 		render: function () {
+			var props = this.props,
+			    length = props.length,
+			    page = props.page,
+			    pageSize = props.pageSize;
+			size = Math.ceil(length / pageSize) || 1;
 			return React.createElement(
 				'div',
 				{ className: 'datagrid-pager pagination' },
@@ -294,7 +303,7 @@
 								null,
 								React.createElement(
 									'select',
-									{ className: 'pagination-page-list' },
+									{ className: 'pagination-page-list', onChange: this.refresh },
 									React.createElement(
 										'option',
 										null,
@@ -326,6 +335,167 @@
 								'td',
 								null,
 								React.createElement('div', { className: 'pagination-btn-separator' })
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'a',
+									{ href: 'javascript:void(0)', className: 'l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled' },
+									React.createElement(
+										'span',
+										{
+											className: 'l-btn-left l-btn-icon-left' },
+										React.createElement(
+											'span',
+											{ className: 'l-btn-text l-btn-empty' },
+											' '
+										),
+										' ',
+										React.createElement(
+											'span',
+											{
+												className: 'l-btn-icon pagination-first' },
+											' '
+										)
+									)
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'a',
+									{ href: 'javascript:void(0)', className: 'l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled' },
+									React.createElement(
+										'span',
+										{
+											className: 'l-btn-left l-btn-icon-left' },
+										React.createElement(
+											'span',
+											{ className: 'l-btn-text l-btn-empty' },
+											' '
+										),
+										React.createElement(
+											'span',
+											{
+												className: 'l-btn-icon pagination-prev' },
+											' '
+										)
+									)
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement('div', { className: 'pagination-btn-separator' })
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'span',
+									{ style: { paddingLeft: '6px' } },
+									'第'
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement('input', { className: 'pagination-num', type: 'text', value: page, onChange: this.refresh, size: '2' })
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'span',
+									{ style: { paddingRight: '6px' } },
+									'共',
+									size,
+									'页'
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement('div', { className: 'pagination-btn-separator' })
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'a',
+									{ href: 'javascript:void(0)', className: 'l-btn l-btn-small l-btn-plain' },
+									React.createElement(
+										'span',
+										{
+											className: 'l-btn-left l-btn-icon-left' },
+										React.createElement(
+											'span',
+											{ className: 'l-btn-text l-btn-empty' },
+											' '
+										),
+										React.createElement(
+											'span',
+											{
+												className: 'l-btn-icon pagination-next' },
+											' '
+										)
+									)
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'a',
+									{ href: 'javascript:void(0)', className: 'l-btn l-btn-small l-btn-plain' },
+									React.createElement(
+										'span',
+										{
+											className: 'l-btn-left l-btn-icon-left' },
+										React.createElement(
+											'span',
+											{ className: 'l-btn-text l-btn-empty' },
+											' '
+										),
+										React.createElement(
+											'span',
+											{
+												className: 'l-btn-icon pagination-last' },
+											' '
+										)
+									)
+								)
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement('div', { className: 'pagination-btn-separator' })
+							),
+							React.createElement(
+								'td',
+								null,
+								React.createElement(
+									'a',
+									{ href: 'javascript:void(0)', onClick: this.refresh, className: 'l-btn l-btn-small l-btn-plain' },
+									React.createElement(
+										'span',
+										{
+											className: 'l-btn-left l-btn-icon-left' },
+										React.createElement(
+											'span',
+											{ className: 'l-btn-text l-btn-empty' },
+											' '
+										),
+										React.createElement(
+											'span',
+											{
+												className: 'l-btn-icon pagination-load' },
+											' '
+										)
+									)
+								)
 							)
 						)
 					)
@@ -333,7 +503,13 @@
 				React.createElement(
 					'div',
 					{ className: 'pagination-info' },
-					'显示1到10,共53记录'
+					'显示',
+					(page - 1) * pageSize + 1,
+					'到',
+					page * pageSize,
+					',共',
+					length,
+					'记录'
 				)
 			);
 		}
@@ -353,32 +529,39 @@
 		},
 		getInitialState: function () {
 			return {
-				datas: this.props.datas || []
+				page: 1,
+				pageSize: 10,
+				length: 0,
+				data: this.props.data || []
 			};
 		},
 
 		load: function () {
 			var props = this.props,
-			    context = this;
-			props.url && request({
-				type: props.method,
-				url: props.url,
-				success: function (data) {
-					context.setState({
-						datas: data
-					});
-				},
-				error: function () {}
-			});
+			    dataSource = this.props.dataSource,
+			    context = this,
+			    url = props.url;
+
+			var list = !props.pagination ? dataSource.listAll() : dataSource.listPage(this.state.page, this.state.pageSize);
+
+			list();
 		},
 
 		componentDidMount: function () {
-			var eventBus = this.props.eventBus,
+			var props = this.props,
+			    dataSource = this.props.dataSource,
 			    context = this;
-			eventBus && eventBus.on('role.refresh', function (data) {
+			dataSource.onRefresh(function (data) {
 				context.load();
+			}).onData(function (data) {
+				var pageable = data;
+				if (!props.pagination) {
+					pageable = {
+						data: data
+					};
+				}
+				context.setState(pageable);
 			});
-
 			context.load();
 		},
 		bodyScroll: function () {
@@ -403,7 +586,7 @@
 			body2.children("table.datagrid-btable-frozen").css("left", -body2._scrollLeft());
 		},
 		render: function () {
-			var datas = this.state.datas,
+			var data = this.state.data,
 			    height = this.props.height,
 			    viewHeight = height - (this.props.pagination ? 31 : 0);
 			return React.createElement(
@@ -412,14 +595,14 @@
 				React.createElement(
 					'div',
 					{ className: 'datagrid-view', style: { height: viewHeight } },
-					React.createElement(View1, { rownumbers: this.props.rownumbers, rows: datas.length, height: viewHeight }),
+					React.createElement(View1, { rownumbers: this.props.rownumbers, rows: data.length, height: viewHeight }),
 					React.createElement(
 						View,
-						{ datas: datas, height: viewHeight, bodyScroll: this.bodyScroll },
+						{ data: data, height: viewHeight, bodyScroll: this.bodyScroll },
 						this.props.children
 					)
 				),
-				React.createElement(Pagination, null)
+				React.createElement(Pagination, { dataSource: this.props.dataSource, page: this.state.page, pageSize: this.state.pageSize, length: this.state.length })
 			);
 		}
 	});

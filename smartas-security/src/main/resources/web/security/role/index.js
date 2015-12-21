@@ -7,7 +7,7 @@
 			Resource.del('services/security/role/single/{0}'.format(id),
 					function() {
 						logger.debug("Delete Role {{0}}",id)
-						eventBus.fire('role.refresh');
+						eventBus.fire('refresh');
 					});
 		}
 	});

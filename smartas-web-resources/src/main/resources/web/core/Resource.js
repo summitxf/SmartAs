@@ -1,4 +1,4 @@
-(function($, Namespace, EventBus, Dispatcher) {
+(function($, Namespace, EventBus) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
 	var context = $("#content"), lifecycle = EventBus.New(true);
@@ -52,7 +52,7 @@
 			var pkg = Namespace.register(namespace);
 			logger.info("install package '{0}({1})'", namespace, pkg.__sn__);
 			var eventBus = pkg.eventBus
-					|| (pkg.eventBus = Dispatcher.New(namespace))
+					|| (pkg.eventBus = EventBus.New(namespace))
 			define.call(pkg, $S, context[0], eventBus);
 			pkg.ready && pkg.ready();
 			resources[namespace] = pkg;
@@ -106,7 +106,7 @@
 				success : success,
 				error : error
 			};
-			request(options);
+			return request(options);
 		}
 
 		return {
@@ -123,16 +123,16 @@
 			},
 			ajax : request,
 			get : function(url, data, success, error) {
-				method('get', url, data, success, error);
+				return method('get', url, data, success, error);
 			},
 			post : function(url, data, success, error) {
-				method('post', url, data, success, error);
+				return method('post', url, data, success, error);
 			},
 			put : function(url, data, success, error) {
-				method('put', url, data, success, error);
+				return method('put', url, data, success, error);
 			},
 			del : function(url, data, success, error) {
-				method('delete', url, data, success, error);
+				return method('delete', url, data, success, error);
 			}
 		};
 	})();

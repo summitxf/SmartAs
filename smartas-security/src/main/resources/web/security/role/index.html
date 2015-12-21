@@ -8,22 +8,23 @@ install("web.security.role",function($S,mountNode){
 			IGrid = UI.IGrid,
 			Grid = UI.Grid,
 			Column = UI.Column,
-			pkg = this;
+			pkg = this,
+			dataSource = Smart.DataSource.New('security/role',pkg.eventBus);
 		var Node = React.createClass({
 			render: function() {
 				return (<div>
 						<Panel>
 							<Panel.Header title="角色列表"></Panel.Header>
-					 		<IGrid eventBus={pkg.eventBus} url="services/security/role/list" height="256">
+					 		<IGrid dataSource={dataSource} height="256">
 								<IGrid.Column width="20" render={function(value){return <input type="checkbox"></input>}}>
 									<input type="checkbox"/>
 								</IGrid.Column>
 								<IGrid.Column width="80" render={
 									function(value){
 										return (<div className="smart-btn">
-												<span title="权限设置">&nbsp;<i className="fa fa-cog"></i>&nbsp;</span>
+												<span title="权限设置">&nbsp;<i className="fa fa-cog"   ></i>&nbsp;</span>
 												<span title="用户管理">&nbsp;<i className="fa fa-users"></i>&nbsp;</span>
-												{this.defaultIn == false?<span onClick={_.bind(pkg.del,pkg,this.id)} title="删除">&nbsp;<i className="fa fa-trash-o"></i>&nbsp;</span> : null}
+												{this.defaultIn == false?<span onClick={dataSource.del(this.id)} title="删除">&nbsp;<i className="fa fa-trash-o"></i>&nbsp;</span> : null}
 												</div>
 												)
 									}}>操作

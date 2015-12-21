@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.smartas.core.BusinessAccessException;
 import org.smartas.core.Entity;
+import org.smartas.core.Pageable;
 import org.smartas.core.Service;
 import org.smartas.core.annotation.Operation;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,12 @@ public abstract class GenericUI<T extends Entity, PK extends Serializable> {
 	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
 	public T get(@PathVariable("id") PK id) {
 		return getService().get(id);
+	}
+
+	@RequestMapping(value = "/list/{page}/{pageSize}", method = RequestMethod.GET)
+	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
+	public Pageable<T> getAll1(@PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
+		return getService().getAll(page, pageSize);
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
