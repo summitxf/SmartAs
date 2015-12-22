@@ -9,4 +9,5 @@ smartas-workflow/target/classes
 smartas-web/target/classes
 
 #以来的jar包
-smartas-web/target/smartas-web/WEB-INF/lib/*.jar
+smartas-lib/smart-lib/*.jar
+smartas-lib/third-lib/*.jar
