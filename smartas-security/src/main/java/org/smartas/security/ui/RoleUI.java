@@ -6,7 +6,7 @@ package org.smartas.security.ui;
 import org.smartas.core.annotation.Resource;
 import org.smartas.core.ui.BaseUI;
 import org.smartas.security.model.Role;
-import org.smartas.security.service.AppRoleService;
+import org.smartas.security.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Resource(code = 1002, model = "Smart", desc = "Role UI")
 public class RoleUI extends BaseUI<Role> {
 	@Autowired
-	private AppRoleService service;
+	private RoleService service;
 
-	protected AppRoleService getService() {
+	protected RoleService getService() {
 		return service;
 	}
 

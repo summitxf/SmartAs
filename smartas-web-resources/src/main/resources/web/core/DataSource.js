@@ -26,7 +26,7 @@
 	}
 
 	DataSource.prototype.get = function(id) {
-		var services = this.options.services, stacks = {
+		var services = this.options.services,eventBus = this.eventBus, stacks = {
 			'then' : [],
 			'fail' : [],
 			'done' : []
@@ -49,6 +49,9 @@
 				stacks[p].push(func)
 				return qwest
 			}
+		});
+		qwest.then(function(data) {
+			eventBus.fire('get',data);
 		});
 		return qwest
 	};
@@ -174,7 +177,7 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('data',data);
+			eventBus.fire('list',data);
 		});
 		return qwest
 	}
@@ -205,7 +208,7 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('data',data);
+			eventBus.fire('list',data);
 		});
 		return qwest
 	};
@@ -220,8 +223,13 @@
 		return this;
 	};
 	
-	DataSource.prototype.onData = function(func) {
-		this.eventBus.on('data', func);
+	DataSource.prototype.onList = function(func) {
+		this.eventBus.on('list', func);
+		return this;
+	};
+	
+	DataSource.prototype.onGet = function(func) {
+		this.eventBus.on('get', func);
 		return this;
 	};
 

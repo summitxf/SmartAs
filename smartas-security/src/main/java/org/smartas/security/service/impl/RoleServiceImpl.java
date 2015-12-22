@@ -3,7 +3,7 @@ package org.smartas.security.service.impl;
 import org.smartas.core.service.BaseServiceImpl;
 import org.smartas.security.dao.RoleDao;
 import org.smartas.security.model.Role;
-import org.smartas.security.service.AppRoleService;
+import org.smartas.security.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class AppRoleServiceImpl extends BaseServiceImpl<Role> implements AppRoleService {
+public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
 	@Autowired
 	private RoleDao dao;

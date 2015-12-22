@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="org.smartas.security.dao.PermissionDao">
+	  
+	  <!-- <cache /> -->
+	
+	  <!-- ///////////////////////////基础接口定义///////////////////////////////// -->
+	
+	  
+	 <!-- //////////////////////////////////////////////////////////// -->
+	  
+	  
+	  <delete id="delPermsByRoleId">
+	    DELETE FROM  tpl_app_role_perms_t
+	    WHERE role_id = #{id}
+	  </delete>
+	 <insert id="insertPerms">
+	 	INSERT INTO tpl_app_role_perms_t VALUES
+ 		<foreach item="perm" collection="perms" separator="," >
+       		(#{roleId}, #{perm})
+ 		</foreach>
+	  </insert>
+	  <select id="getPermissionsByRoleId" resultType="string">
+		SELECT
+		T.code
+		FROM tpl_app_role_perms_t T
+		WHERE T.role_id = #{id}
+	</select>
+	  
+	
+</mapper>
+

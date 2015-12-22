@@ -1,19 +1,72 @@
 <script src="web/security/role/index.js"></script>
 <script type="text/babel">
 install("web.security.role",function($S,mountNode){
+	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
+	var logger = Log.getLogger('web.security.role');
+	var Edit = React.createClass({
+			getInitialState: function() {
+				return {
+				};
+			},
+			componentWillReceiveProps : function(nextProps){
+				//dataSource.get(nextProps.id)();
+			},
+			componentWillUnmount : function(){
+				 logger.debug('Destroy Permission Tree');
+				 $.fn.zTree.destroy("PermissionTree");
+			},
+			componentDidMount: function() {
+				var context = this;
+				pkg.buildTree();
+				//dataSource.onGet(function(data) {
+				//	context.setState(data);
+				//});
+			},
+
+			render: function() {
+				return <div className="panel panel-default" style={{marginTop : '5px'}}>
+  						<div className="panel-heading">{this.props.name}</div>
+  						<div className="panel-body" style={{padding:0,borderWidth:0,borderRightWidth:'1px',overflow:'auto',height:'380px',width:'50%'}}>
+							<div className="btn-group" role="group" aria-label="..." style={{float : 'right'}}>
+ 	 							<button type="button" className="btn btn-default" onClick={_.bind(pkg.savePermissions,pkg,this.props.id)}>保存</button>
+							</div>
+							<ul className="ztree" id="PermissionTree"></ul>
+  						</div>
+					</div>
+			}
+		}
+	);
+
+
  	this.ready = function(){
 
 		var UI = Smart.UI,
 			Panel = UI.Panel,
 			IGrid = UI.IGrid,
 			Grid = UI.Grid,
-			Column = UI.Column,
-			pkg = this,
-			dataSource = Smart.DataSource.New('security/role',pkg.eventBus);
+			Column = UI.Column;
 		var Node = React.createClass({
+			getInitialState: function() {
+				return {
+				};
+			},
+			componentDidMount: function() {
+				var context = this;
+				eventBus.on('role.settings',function(data) {
+			 		context.setState(data);
+				});
+			},
+
 			render: function() {
 				return (<div>
-						<Panel>
+  						<ul id="myTabs" className="nav nav-tabs" role="tablist">
+    						<li role="presentation" className="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">列表</a></li>
+    						<li role="presentation" style={{display:'none'}}><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">权限设置</a></li>
+  						</ul>
+
+  						<div className="tab-content">
+    						<div role="tabpanel" className="tab-pane fade in  active" id="home">
+							<Panel>
 							<Panel.Header title="角色列表"></Panel.Header>
 					 		<IGrid dataSource={dataSource} height="256">
 								<IGrid.Column width="20" render={function(value){return <input type="checkbox"></input>}}>
@@ -22,9 +75,9 @@ install("web.security.role",function($S,mountNode){
 								<IGrid.Column width="80" render={
 									function(value){
 										return (<div className="smart-btn">
-												<span title="权限设置">&nbsp;<i className="fa fa-cog"   ></i>&nbsp;</span>
+												<span title="权限设置" onClick={_.bind(pkg.roleSetting,pkg,this.id,this.name)}>&nbsp;<i className="fa fa-cog"></i>&nbsp;</span>
 												<span title="用户管理">&nbsp;<i className="fa fa-users"></i>&nbsp;</span>
-												{this.defaultIn == false?<span onClick={dataSource.del(this.id)} title="删除">&nbsp;<i className="fa fa-trash-o"></i>&nbsp;</span> : null}
+												{this.defaultIn == false?<span onClick={_.bind(pkg.del,pkg,this.id)} title="删除">&nbsp;<i className="fa fa-trash-o"></i>&nbsp;</span> : null}
 												</div>
 												)
 									}}>操作
@@ -33,7 +86,12 @@ install("web.security.role",function($S,mountNode){
 								<IGrid.Column field="desc" width="250">描述</IGrid.Column>
 								<IGrid.Column field="status" width="50" render={function(value){return value == 1 ? <div>有效</div>:'锁定'}}>状态</IGrid.Column>
 					 		</IGrid>
-						</Panel>
+							</Panel>
+							</div>
+   							<div role="tabpanel" className="tab-pane fade full-height" id="settings">
+							  <Edit id={this.state.id} name={this.state.name}/>
+							</div>
+  						</div>
 					</div>
 					);
 			}

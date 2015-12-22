@@ -90,7 +90,7 @@ body {
  * Main content
  */
 .main {
-	padding: 0;
+	padding: 32px;
 }
 
 @media ( min-width : 768px) {

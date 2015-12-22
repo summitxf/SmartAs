@@ -56,10 +56,10 @@
 	  </update>
 	  
 	  
-	   <select id="deleteById">
+	   <delete id="deleteById">
 	    DELETE FROM  tpl_app_role_t
 	    WHERE ID = #{id}
-	  </select>
+	  </delete>
 	  
 	 <!-- //////////////////////////////////////////////////////////// -->
 	  

@@ -291,7 +291,7 @@
 				context = this;
 			dataSource.onRefresh(function(data) {
 				context.load()
-			}).onData(function(data) {
+			}).onList(function(data) {
 				var pageable = data;
 				if (!props.pagination) {
 					pageable = {

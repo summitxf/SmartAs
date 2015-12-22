@@ -77,7 +77,6 @@ $(function() {
 	}
 	
 	function loadBreadcrumb2(currentNode){
-		debugger;
 		var lis = [];
 		lis.push('<li class="active">{0}</li>'.format(currentNode.name));
 		currentNode = currentNode.getParentNode();

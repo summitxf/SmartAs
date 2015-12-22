@@ -2,11 +2,13 @@ package org.smartas.security.service;
 
 import org.smartas.core.BaseService;
 import org.smartas.security.model.Role;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author chenb
  *
  */
-public interface AppRoleService extends BaseService<Role> {
+@Transactional()
+public interface RoleService extends BaseService<Role> {
 
 }
