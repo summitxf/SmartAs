@@ -214,7 +214,11 @@
 				<artifactId>smartas-web-resources</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.smart.as</groupId>
+				<artifactId>smartas-demo</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.smart.as</groupId>
 				<artifactId>smartas-web-support</artifactId>
@@ -354,6 +358,7 @@
 		<module>smartas-security</module>
 		<module>smartas-web-support</module>
 		<module>smartas-web-resources</module>
+		<module>smartas-demo</module>
 		<module>smartas-web</module>
 	</modules>
 

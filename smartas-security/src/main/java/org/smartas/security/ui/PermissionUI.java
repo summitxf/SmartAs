@@ -4,7 +4,11 @@
 package org.smartas.security.ui;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +43,7 @@ public class PermissionUI extends BaseUI<Permission> implements InitializingBean
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	private Set<Permission> perms;
+	private List<Permission> perms;
 
 	protected PermissionService getService() {
 		return service;
@@ -73,12 +77,17 @@ public class PermissionUI extends BaseUI<Permission> implements InitializingBean
 				}
 			}, OPERATION_HANDLER_METHODS);
 		}
-		this.perms = perms;
+		this.perms = new ArrayList<Permission>(perms);
+		Collections.sort(this.perms, new Comparator<Permission>() {
+			public int compare(Permission o1, Permission o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+		});
 	}
 
 	@RequestMapping(value = "/scan", method = RequestMethod.GET)
 	@Operation(code = Operation.READ, desc = Operation.READ_DESC)
-	public Set<Permission> scan() {
+	public List<Permission> scan() {
 		return perms;
 	}
 

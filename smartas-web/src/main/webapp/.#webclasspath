@@ -7,6 +7,8 @@ smartas-web-resources/src/main/resources
 smartas-web-support/target/classes
 smartas-workflow/target/classes
 smartas-web/target/classes
+smartas-demo/src/main/resources
+smartas-demo/target/classes
 
 #以来的jar包
 smartas-lib/smart-lib/*.jar
