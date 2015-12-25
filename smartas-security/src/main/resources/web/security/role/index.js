@@ -32,20 +32,25 @@
 				}
 			});
 		};
-		
+		this.roleUserList = function(id){
+			$S(ReactDOM.findDOMNode(this.refs.roleUserList)).modal('show');
+		};
+		this.returnRoleList = function(){
+			$S("#myTabs li:last").hide();
+			$S("#myTabs li:first").children('a:first').tab('show');
+		};
 		this.savePermissions = function(id){
 			var ids = [];
 			_.each(treeObj.getCheckedNodes(true),function(node){
 				node.id.indexOf('.')>0 && ids.push(node.id);
 			});
-			
 			request({
 				type : 'post',
 				url : "services/security/permission/role/{0}".format(id),
 				data : ids,
 				success : function(data) {
-					$S("#myTabs li:last").hide();
-					$S("#myTabs li:first").children('a:first').tab('show');
+					//$S("#myTabs li:last").hide();
+					//$S("#myTabs li:first").children('a:first').tab('show');
 				},
 				error : function() {
 

@@ -202,7 +202,7 @@
 
 	var Pagination = React.createClass({
 
-		refresh : function(){
+		refresh: function() {
 			this.props.dataSource.refresh()
 		},
 
@@ -400,4 +400,21 @@
 			return null;
 		}
 	});
+
+	NS.Dialog = React.createClass({
+		render: function() {
+			return (<div className="modal fade" id={this.props.id} role="dialog">	
+  					<div className="modal-dialog" role="document">
+  						<div className="modal-content">
+  							<div className="modal-header">
+        						<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        						<h4 className="modal-title">New message</h4>
+      						</div>	
+    					</div>	
+    				</div>	
+      			</div>);
+		}
+	});
+
+
 }(Smart.Namespace)

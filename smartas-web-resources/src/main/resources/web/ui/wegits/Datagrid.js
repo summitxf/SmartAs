@@ -682,4 +682,41 @@
 			return null;
 		}
 	});
+
+	NS.Dialog = React.createClass({
+		displayName: 'Dialog',
+
+		render: function () {
+			return React.createElement(
+				'div',
+				{ className: 'modal fade', id: this.props.id, role: 'dialog' },
+				React.createElement(
+					'div',
+					{ className: 'modal-dialog', role: 'document' },
+					React.createElement(
+						'div',
+						{ className: 'modal-content' },
+						React.createElement(
+							'div',
+							{ className: 'modal-header' },
+							React.createElement(
+								'button',
+								{ type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+								React.createElement(
+									'span',
+									{ 'aria-hidden': 'true' },
+									'×'
+								)
+							),
+							React.createElement(
+								'h4',
+								{ className: 'modal-title' },
+								'New message'
+							)
+						)
+					)
+				)
+			);
+		}
+	});
 })(Smart.Namespace);

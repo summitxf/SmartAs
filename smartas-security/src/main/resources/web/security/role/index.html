@@ -29,6 +29,7 @@ install("web.security.role",function($S,mountNode){
   						<div className="panel-body" style={{padding:0,borderWidth:0,borderRightWidth:'1px',overflow:'auto',height:'380px',width:'50%'}}>
 							<div className="btn-group" role="group" aria-label="..." style={{float : 'right'}}>
  	 							<button type="button" className="btn btn-default" onClick={_.bind(pkg.savePermissions,pkg,this.props.id)}>保存</button>
+ 	 							<button type="button" className="btn btn-default" onClick={_.bind(pkg.returnRoleList,pkg,this.props.id)}>返回</button>
 							</div>
 							<ul className="ztree" id="PermissionTree"></ul>
   						</div>
@@ -44,6 +45,7 @@ install("web.security.role",function($S,mountNode){
 			Panel = UI.Panel,
 			IGrid = UI.IGrid,
 			Grid = UI.Grid,
+			Dialog = UI.Dialog,
 			Column = UI.Column;
 		var Node = React.createClass({
 			getInitialState: function() {
@@ -58,6 +60,7 @@ install("web.security.role",function($S,mountNode){
 			},
 
 			render: function() {
+				var context = this;
 				return (<div>
   						<ul id="myTabs" className="nav nav-tabs" role="tablist">
     						<li role="presentation" className="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">列表</a></li>
@@ -76,7 +79,7 @@ install("web.security.role",function($S,mountNode){
 									function(value){
 										return (<div className="smart-btn">
 												<span title="权限设置" onClick={_.bind(pkg.roleSetting,pkg,this.id,this.name)}>&nbsp;<i className="fa fa-cog"></i>&nbsp;</span>
-												<span title="用户管理">&nbsp;<i className="fa fa-users"></i>&nbsp;</span>
+												<span title="用户管理">&nbsp;<i className="fa fa-users" onClick={_.bind(pkg.roleUserList,context,this.id,this.name)}></i>&nbsp;</span>
 												{this.defaultIn == false?<span onClick={_.bind(pkg.del,pkg,this.id)} title="删除">&nbsp;<i className="fa fa-trash-o"></i>&nbsp;</span> : null}
 												</div>
 												)
@@ -92,6 +95,7 @@ install("web.security.role",function($S,mountNode){
 							  <Edit id={this.state.id} name={this.state.name}/>
 							</div>
   						</div>
+						<Dialog ref="roleUserList" />
 					</div>
 					);
 			}
