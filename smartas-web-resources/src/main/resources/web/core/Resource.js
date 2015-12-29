@@ -1,7 +1,7 @@
 (function($, Namespace, EventBus) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
-	var context = $("#content"), lifecycle = EventBus.New(true);
+	var context = $("#content"), lifecycle = EventBus.New(true),qs = {};
 	// context.on()
 
 	$.fn.include = function(url, params, callback) {
@@ -51,10 +51,17 @@
 		var install = function(namespace, define) {
 			var pkg = Namespace.register(namespace);
 			logger.info("install package '{0}({1})'", namespace, pkg.__sn__);
-			var eventBus = pkg.eventBus
-					|| (pkg.eventBus = EventBus.New(namespace))
-			define.call(pkg, $S, context[0], eventBus);
-			pkg.ready && pkg.ready();
+			var eventBus = pkg.eventBus || (pkg.eventBus = EventBus.New(namespace));
+			
+			define.call(pkg, $S);
+			
+			var Root = pkg.root && pkg.root();
+			if(Root){
+				ReactDOM.render(React.createElement(Root, {
+					qs : Resource.getQs()
+				}), context[0],pkg.ready);
+			}
+			// pkg.ready && pkg.ready();
 			resources[namespace] = pkg;
 		};
 		// 卸载资源
@@ -66,8 +73,7 @@
 				var pkgInfo = Namespace.pkg(ns);
 				// 命名空间
 				if (pkgInfo && pkgInfo.parent) {
-					logger.info("uninstall package '{0}({1})'", ns,
-							pkgInfo.pkg.__sn__);
+					logger.info("uninstall package '{0}({1})'", ns,	pkgInfo.pkg.__sn__);
 					delete pkgInfo.parent[pkgInfo.name];
 				}
 				delete pkgs[ns];
@@ -116,6 +122,13 @@
 			after : function(fn) {
 				lifecycle.on('after', fn);
 			},
+			getQs:function(reqs){
+				if(reqs){
+					var hash = location.hash;
+					return Qs.parse(hash.substr(hash.indexOf('?') + 1))
+				}
+				return qs;
+			},
 			install : install,
 			uninstall : uninstall,
 			getCurrentUrl : function() {
@@ -147,10 +160,12 @@
 	Resource.after(function() {
 		ZENG.msgbox.hide();
 	});
-
+	
 	$(window).hashchange(function(e) {
 		var hash = location.hash;
 		Resource.hash = hash;
+		qs = Qs.parse(hash.substr(hash.indexOf('?') + 1));
+		// TODO：处理请求参数
 		context.include(hash.substr(2), function() {
 			// 卸载已经加载的资源
 			Resource.uninstall();

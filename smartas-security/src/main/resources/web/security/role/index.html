@@ -1,6 +1,6 @@
 <script src="web/security/role/index.js"></script>
 <script type="text/babel">
-install("web.security.role",function($S,mountNode){
+install("web.security.role",function($S){
 	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
 	var logger = Log.getLogger('web.security.role');
 	var Edit = React.createClass({
@@ -39,7 +39,7 @@ install("web.security.role",function($S,mountNode){
 	);
 
 
- 	this.ready = function(){
+ 	this.root = function(){
 
 		var UI = Smart.UI,
 			Panel = UI.Panel,
@@ -100,7 +100,7 @@ install("web.security.role",function($S,mountNode){
 					);
 			}
 		});
-		ReactDOM.render(<Node/>, mountNode);
+		return Node;
 	};
 });
 </script>

@@ -1,8 +1,8 @@
 <script src="web/security/user/index.js"></script>
 <script type="text/babel">
-install("web.security.user",function($S,mountNode){
+install("web.security.user",function($S){
 	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
- 	this.ready = function(){
+ 	this.root = function(){
 		var UI = Smart.UI,
 			Panel = UI.Panel,
 			IGrid = UI.IGrid,
@@ -25,7 +25,7 @@ install("web.security.user",function($S,mountNode){
 					);
 			}
 		});
-		ReactDOM.render(<Node/>, mountNode);
+		return Node;
 	};
 });
 </script>

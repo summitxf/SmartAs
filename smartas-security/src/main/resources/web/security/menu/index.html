@@ -1,7 +1,7 @@
 <script src="web/security/menu/index.js"></script>
 <script type="text/babel">
-install("web.security.menu",function($S,mountNode){
- 	this.ready = function(){
+install("web.security.menu",function($S){
+ 	this.root = function(){
 	
 	var Input = ReactBootstrap.Input,ButtonInput = ReactBootstrap.ButtonInput,pkg = this;
  	var Root = React.createClass({
@@ -48,7 +48,7 @@ return(
 	</div>
 	</div>)}});
 
-	ReactDOM.render(<Root />, mountNode);
+	return Root;
 };
 });
 </script>

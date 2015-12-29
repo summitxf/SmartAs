@@ -42,8 +42,7 @@ $(function() {
 						$("#info").show().find("[role='alert']").text("服务器忙,稍后再试");
 					},
 					error : function() {
-						$("#info").show().find("[role='alert']").text(
-								"服务器忙,稍后再试");
+						$("#info").show().find("[role='alert']").text("服务器忙,稍后再试");
 						$btn.button('reset')
 					}
 				});

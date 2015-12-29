@@ -1,13 +1,13 @@
 <script type="text/babel">
-install("web.security.group",function($S,mountNode){
- 	this.ready = function(){
+install("web.security.group",function($S){
+ 	this.root = function(){
 		var UI = Smart.UI,
 			Panel = UI.Panel,
 			IGrid = UI.IGrid,
 			Grid = UI.Grid,
 			Column = UI.Column,
 			pkg = this;
-		var Node = React.createClass({
+		return React.createClass({
 			render: function() {
 				return (<div>
 						<Panel>
@@ -23,7 +23,6 @@ install("web.security.group",function($S,mountNode){
 					);
 			}
 		});
-		ReactDOM.render(<Node/>, mountNode);
 	};
 });
 </script>
