@@ -199,7 +199,4 @@
 			Resource.uninstall();
 		});
 	});
-	// 第一次手动触发
-	$(window).hashchange();
-
 })($, Smart.Namespace,Smart.Env,Smart.EventBus);

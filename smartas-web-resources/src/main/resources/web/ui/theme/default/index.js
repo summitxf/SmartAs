@@ -128,4 +128,6 @@ $(function() {
 			}
 		});
 	});
+	// 第一次手动触发
+	$(window).hashchange();
 });
