@@ -27,7 +27,7 @@
 	<!-- 設定Spring Context的默认Profile -->
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
-		<param-value>dev</param-value>
+		<param-value>sit</param-value>
 	</context-param>
 	
 	<!-- Filter 定义 -->

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "react wegits",
     "scripts": {
-        "build": "babel src/main/resources/web  -x .jsx -d src/main/resources/web/"
+        "build": "babel src/main/resources/web --compact true --minified  -w -x .jsx -d src/main/resources/web/"
     },
 
     "devDependencies": {

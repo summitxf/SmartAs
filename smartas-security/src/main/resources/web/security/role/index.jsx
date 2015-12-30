@@ -1,5 +1,9 @@
-<script src="web/security/role/index.js"></script>
-<script type="text/babel">
+/**[[
+ 
+ <script src="web/security/role/role.js"></script>
+ 
+]]**/
+
 install("web.security.role",function($S){
 	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
 	var logger = Log.getLogger('web.security.role');
@@ -37,8 +41,28 @@ install("web.security.role",function($S){
 			}
 		}
 	);
-
-
+	
+   	//API
+   	this.reducers = function(){
+		return {
+			securityRole : function(role,action){
+				if(action.type === 'securityRole'){
+					window.console.info(action);
+					return role || {securityRole : {}};
+				}
+				return {securityRole : {}};
+			}
+		}
+   	};
+	
+	this.connect = function(createSelector){
+		return {
+			selector : this.selector(createSelector),
+			action : this.action()
+		}
+	};
+	//API
+	//根组件
  	this.root = function(){
 
 		var UI = Smart.UI,
@@ -102,5 +126,23 @@ install("web.security.role",function($S){
 		});
 		return Node;
 	};
+
+	//组件内部状态改变触发器
+	this.action = function(){
+		return {
+		   	add : function(name){
+				return {type:'add',name:name}
+			},
+			asyn : function(url){
+				return function(dispatch){ };
+			},
+		}
+	};
+	//组件关注的状态数据
+	this.selector = function(createSelector){
+		function select(state) {
+  			return state.securityRole
+		}
+    	//return createSelector(function(state){},function(state){},function(arg1,arg2){});
+	};
 });
-</script>

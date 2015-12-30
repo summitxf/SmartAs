@@ -1,9 +1,23 @@
-(function($, Namespace, EventBus) {
+(function($, Namespace,Env,EventBus) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
-	var context = $("#content"), lifecycle = EventBus.New(true),qs = {};
-	// context.on()
+	var context = $("#content"), lifecycle = EventBus.New(true),qs = {},info = Env.getInfo();
 
+	function $S(selector) {
+		return $(selector, context);
+	}
+	
+	function thunkMiddleware(_ref) {
+	  var dispatch = _ref.dispatch;
+	  var getState = _ref.getState;
+
+	  return function (next) {
+	    return function (action) {
+	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
+	    };
+	  };
+	}
+	
 	$.fn.include = function(url, params, callback) {
 		// .处理url中?参数
 		var index = url.indexOf('?'), self = this;
@@ -27,6 +41,16 @@
 			success : function(data) {
 				// 1.回调
 				callback && callback();
+				var start = data.indexOf('/**[['),end = data.indexOf(']]**/');
+				// 处理资源
+				if(start >=0 && end > 0){
+					var html = [];
+					html.push(data.substring(start+5,end));
+					html.push('<script type="text/{0}">'.format(info.profile == 'dev'?'babel':'javascript'))
+					html.push(data.substr(end+5));
+					html.push('</script>');
+					data = html.join("");
+				}
 				// 2.加载资源
 				var page = $(data);
 				logger.info("apply html segment to dom ");
@@ -38,30 +62,34 @@
 
 			}
 		});
-	}
+	};
 
 	var Resource = (function() {
-
-		var $S = function(selector) {
-			return $(selector, context);
-		};
-
-		var resources = {};
+		// ReactRedux
+		var finalCreateStore = Redux.applyMiddleware(thunkMiddleware)(Redux.createStore),
+			// reducer = Redux.combineReducers(),
+			store = finalCreateStore(_.identity),defaultGlobal = {Global:{userName:'chenjpu'}}
+			resources = {};
+		
 		// 加载资源
 		var install = function(namespace, define) {
 			var pkg = Namespace.register(namespace);
 			logger.info("install package '{0}({1})'", namespace, pkg.__sn__);
 			var eventBus = pkg.eventBus || (pkg.eventBus = EventBus.New(namespace));
-			
-			define.call(pkg, $S);
-			
-			var Root = pkg.root && pkg.root();
-			if(Root){
-				ReactDOM.render(React.createElement(Root, {
-					qs : Resource.getQs()
-				}), context[0],pkg.ready);
+			define.call(pkg, $S, context[0]);
+			var root = pkg.root && pkg.root();
+			if(root){
+				if(pkg.connect){
+					var options = pkg.connect();
+					root = ReactRedux.connect(options.selector,options.action)(root);
+				}
+				if(pkg.reducers){
+					store.replaceReducer(Redux.combineReducers(_.extend({Global : function(state,action){return defaultGlobal}},pkg.reducers())));
+				}
+				ReactDOM.render(React.createElement(ReactRedux.Provider,{store:store},React.createElement(root, {qs : Resource.getQs()})), context[0],pkg.ready);
+			}else{
+				pkg.ready && pkg.ready();
 			}
-			// pkg.ready && pkg.ready();
 			resources[namespace] = pkg;
 		};
 		// 卸载资源
@@ -174,4 +202,4 @@
 	// 第一次手动触发
 	$(window).hashchange();
 
-})($, Smart.Namespace, Smart.EventBus, Smart.Dispatcher);
+})($, Smart.Namespace,Smart.Env,Smart.EventBus);

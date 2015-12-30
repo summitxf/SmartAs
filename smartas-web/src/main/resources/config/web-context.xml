@@ -1,92 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
 
-	<!-- Enables the Spring MVC @Controller programming model
-	<mvc:annotation-driven conversion-service="conversionService"/>
+	<!-- Enables the Spring MVC @Controller programming model <mvc:annotation-driven 
+		conversion-service="conversionService"/> <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"> 
+		</bean> -->
 
-
-	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-		 
-	</bean> -->
-	
 	<import resource="classpath*:/META-INF/spring/web-context.xml" />
-	
-	<context:component-scan base-package="org.smartas.**.ui" name-generator="org.smartas.core.FullClassNameBeanNameGenerator">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-	
-	<bean id="resourcesHandler" class="org.smartas.web.support.handler.ResourcesHandler">
-		<property name="locations">
-		  <list>
-		    <value>classpath:web/</value>
-		  </list>
-		</property>
-	</bean>
-	
-	
-	<bean id="indexHandler" class="org.smartas.web.support.handler.ResourceHandler">
-		<property name="resource" value="classpath:web/ui/theme/default/index.html"/>
-	</bean>
-	<bean id="loginHandler" class="org.smartas.web.support.handler.ResourceHandler">
-		<property name="resource" value="classpath:web/security/signin/index.html"/>
-	</bean>
-	
-	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="urlMap">
-			<map>
-				<entry key="/" value-ref="indexHandler"/>
-				<entry key="/index.html" value-ref="indexHandler"/>
-				<entry key="/login.html" value-ref="loginHandler"/>
-			 	<entry key="/web/**" value-ref="resourcesHandler"/>
-			</map>
-		</property>
-	</bean>
-	
-	<bean class="org.smartas.web.support.handler.ServiceHandlerMapping">
-		 <property name="prefix" value="/services"/>
-		  <property name="interceptors">
-		 	<list>
-		 		<ref bean="securityInteceptor"/>
-		 	</list>
-		 </property>
-	</bean>
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				 <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
-			        <property name="supportedMediaTypes" value="application/json;charset=UTF-8"/>
-			        <property name="features">
-			          <array>
-			            <value>WriteMapNullValue</value>
-			            <value>WriteNullStringAsEmpty</value>
-			          </array>
-			        </property>
-			      </bean>
-			</list>
-		</property>
-	</bean>
-	
-	<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>
-	
-	<mvc:interceptors>
-	     <mvc:interceptor>
-	           <mvc:mapping path="/" />
-	           <mvc:mapping path="/index.html" />
-	           <ref bean="loginInteceptor" />
-	     </mvc:interceptor>
- 	</mvc:interceptors>
+
+	<beans profile="dev">
+		<bean name="reactResourcesHandler"
+			class="org.smartas.web.support.handler.ReactResourcesHandler">
+			<property name="dev" value="true" />
+			<property name="locations">
+				<list>
+					<value>classpath:web/</value>
+				</list>
+			</property>
+		</bean>
+	</beans>
+
+	<beans profile="sit,production">
+		<bean name="reactResourcesHandler"
+			class="org.smartas.web.support.handler.ReactResourcesHandler">
+			<property name="dev" value="false" />
+			<property name="locations">
+				<list>
+					<value>classpath:web/</value>
+				</list>
+			</property>
+		</bean>
+	</beans>
+
+	<beans>
+
+		<context:component-scan base-package="org.smartas.**.ui"
+			name-generator="org.smartas.core.FullClassNameBeanNameGenerator">
+			<context:include-filter type="annotation"
+				expression="org.springframework.stereotype.Controller" />
+		</context:component-scan>
+
+		<bean id="staticResourcesHandler" class="org.smartas.web.support.handler.StaticResourcesHandler">
+			<property name="locations">
+				<list>
+					<value>classpath:web/</value>
+				</list>
+			</property>
+		</bean>
+
+		<bean id="indexHandler" class="org.smartas.web.support.handler.ResourceHandler">
+			<property name="resource" value="classpath:web/ui/theme/default/index.html" />
+		</bean>
+		<bean id="loginHandler" class="org.smartas.web.support.handler.ResourceHandler">
+			<property name="resource" value="classpath:web/security/signin/index.html" />
+		</bean>
+
+		<bean
+			class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+			<property name="urlMap">
+				<map>
+					<entry key="/" value-ref="indexHandler" />
+					<entry key="/index.html" value-ref="indexHandler" />
+					<entry key="/login.html" value-ref="loginHandler" />
+					<entry key="/web/**/*.*" value-ref="staticResourcesHandler" />
+					<entry key="/web/**/*.jsx" value-ref="reactResourcesHandler" />
+				</map>
+			</property>
+		</bean>
+
+		<bean class="org.smartas.web.support.handler.ServiceHandlerMapping">
+			<property name="prefix" value="/services" />
+			<property name="interceptors">
+				<list>
+					<ref bean="securityInteceptor" />
+				</list>
+			</property>
+		</bean>
+		<bean
+			class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+			<property name="messageConverters">
+				<list>
+					<bean
+						class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+						<property name="supportedMediaTypes" value="application/json;charset=UTF-8" />
+						<property name="features">
+							<array>
+								<value>WriteMapNullValue</value>
+								<value>WriteNullStringAsEmpty</value>
+							</array>
+						</property>
+					</bean>
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter" />
+
+		<mvc:interceptors>
+			<mvc:interceptor>
+				<mvc:mapping path="/" />
+				<mvc:mapping path="/index.html" />
+				<ref bean="loginInteceptor" />
+			</mvc:interceptor>
+		</mvc:interceptors>
 
 
-	<!-- 配置上传文件 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-	 <!-- 设置上传文件的最大尺寸为10MB -->  
-	 <!-- <property name="maxUploadSize" value="100010485761"/> -->
-	</bean>
-	 
+		<!-- freemarker config -->
+		<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+			<property name="defaultEncoding" value="UTF-8" />
+			<property name="preferFileSystemAccess" value="false" />
+			<property name="templateLoaderPath" value="classpath:/ftl/" />
+		</bean>
+
+		<!-- View resolvers can also be configured with ResourceBundles or XML 
+			files. If you need different view resolving based on Locale, you have to 
+			use the resource bundle resolver. -->
+		<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+			<property name="cache" value="true" />
+			<property name="contentType" value="text/html;charset=UTF-8"></property>  
+			<property name="prefix" value="" />
+			<property name="suffix" value=".ftl" />
+		</bean>
+
+
+		<!-- 配置上传文件 -->
+		<bean id="multipartResolver"
+			class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<!-- 设置上传文件的最大尺寸为10MB -->
+			<!-- <property name="maxUploadSize" value="100010485761"/> -->
+		</bean>
+	</beans>
 </beans>
