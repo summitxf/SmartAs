@@ -128,6 +128,15 @@ $(function() {
 			}
 		});
 	});
+	
+	$("#reloadSql").click(function(){
+		var get = Smart.Resource.get;
+		get('services/env/dev/mybatis',function(data){
+			//alert(data);
+		});
+	});
+	
+	
 	// 第一次手动触发
 	$(window).hashchange();
 });
