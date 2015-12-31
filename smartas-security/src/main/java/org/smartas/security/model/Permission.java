@@ -87,7 +87,13 @@ public class Permission implements Entity {
 	}
 
 	public boolean equals(Object o) {
-		return this.id.equals(((Permission)o).id);
+		if (o == null) {
+			return false;
+		}
+		if (o == this) {
+			return true;
+		}
+		return this.id.equals(((Permission) o).id);
 	}
 
 	public int hashCode() {
