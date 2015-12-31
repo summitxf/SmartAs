@@ -7,11 +7,13 @@ import java.util.List;
 
 import org.smartas.core.BaseDao;
 import org.smartas.security.model.Menu;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author chenb
  *
  */
+@Repository
 public interface MenuDao extends BaseDao<Menu> {
 
 	/**

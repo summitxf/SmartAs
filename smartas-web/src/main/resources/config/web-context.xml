@@ -27,7 +27,7 @@
 		</bean>
 	</beans>
 
-	<beans profile="sit,production">
+	<beans profile="sit,uat,pat,prod">
 		<bean name="reactResourcesHandler"
 			class="org.smartas.web.support.handler.ReactResourcesHandler">
 			<property name="dev" value="false" />

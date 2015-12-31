@@ -24,6 +24,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.smart.as</groupId>
+			<artifactId>smartas-env</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.smart.as</groupId>
 			<artifactId>smartas-web-resources</artifactId>
 		</dependency>
 		<dependency>

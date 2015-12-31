@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<name>SmartAs</name>
@@ -208,6 +207,11 @@
 				<artifactId>smartas-security</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.smart.as</groupId>
+				<artifactId>smartas-env</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.smart.as</groupId>
@@ -385,7 +389,8 @@
 		<module>smartas-web-resources</module>
 		<module>smartas-demo</module>
 		<module>smartas-web</module>
-	</modules>
+    	<module>smartas-env</module>
+  </modules>
 
 	<profiles>
 		<profile>
