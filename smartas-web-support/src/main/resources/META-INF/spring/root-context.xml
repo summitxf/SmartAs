@@ -15,15 +15,16 @@
 	<beans profile="dev">
 		<bean name="sessionRepository" class="org.springframework.session.MapSessionRepository"></bean>
 	</beans>
-	
+
 	<beans profile="sit,uat,pat,prod">
-		<bean name="sessionRepository" class="org.springframework.session.MapSessionRepository"></bean>
+		<bean name="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" />
+		<bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" />
 	</beans>
-	
+
 	<beans>
 		<bean name="sessionRepositoryFilter" class="org.springframework.session.web.http.SessionRepositoryFilter">
 			<constructor-arg ref="sessionRepository" />
 		</bean>
 	</beans>
-		
+
 </beans>

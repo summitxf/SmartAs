@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<name>SmartAs</name>
@@ -13,6 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.framework.version>4.2.1.RELEASE</spring.framework.version>
 		<shiro.version>1.2.4</shiro.version>
+		<spring.framework.session.version>1.0.2.RELEASE</spring.framework.session.version>
 		<!-- JVM params for test execution -->
 		<argLine>-Duser.language=en</argLine>
 	</properties>
@@ -178,12 +180,6 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.11</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.27</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -356,9 +352,15 @@
 			<dependency>
 				<groupId>org.springframework.session</groupId>
 				<artifactId>spring-session</artifactId>
-				<version>1.0.2.RELEASE</version>
+				<version>${spring.framework.session.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.springframework.session</groupId>
+				<artifactId>spring-session-data-redis</artifactId>
+				<version>${spring.framework.session.version}</version>
+				<type>pom</type>
+			</dependency>
 
 			<dependency>
 				<groupId>org.apache.shiro</groupId>
@@ -389,8 +391,8 @@
 		<module>smartas-web-resources</module>
 		<module>smartas-demo</module>
 		<module>smartas-web</module>
-    	<module>smartas-env</module>
-  </modules>
+		<module>smartas-env</module>
+	</modules>
 
 	<profiles>
 		<profile>
