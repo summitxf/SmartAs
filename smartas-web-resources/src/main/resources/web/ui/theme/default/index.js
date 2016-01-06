@@ -120,14 +120,17 @@ $(function() {
 	zTree_Menu = $.fn.zTree.getZTreeObj("main_menu");
 
 	$("#navbar-fullscreen").click(function() {
+		var full = false;
 		$("[fullscreen]").each(function() {
 			var self = $(this);
 			if (self.hasClass("container")) {
 				self.removeClass("container");
 			} else {
 				self.addClass("container");
+				full = true;
 			}
 		});
+		$("#main").css({'padding-left' : full ? '40px' : '5px'});
 	});
 	
 	$("#reloadSql").click(function(){
