@@ -24,15 +24,17 @@
 		if (index >= 0) {
 			url = url.substr(0, index);
 		}
+		if ($.isFunction(params)) {
+			callback = params;
+			params = undefined;
+		}
+		
 		if (!url) {
 			logger.warn("request url is emtpy");
 			callback && callback();
 			return;
 		}
-		if ($.isFunction(params)) {
-			callback = params;
-			params = undefined;
-		}
+		
 		logger.debug("request url '{0}'", url);
 		Resource.ajax({
 			type : 'get',
@@ -197,7 +199,7 @@
 		// TODO：处理请求参数
 		context.include(hash.substr(2), function() {
 			// 卸载已经加载的资源
-			ReactDOM.unmountComponentAtNode(context[0])
+			ReactDOM.unmountComponentAtNode(context[0]);
 			Resource.uninstall();
 		});
 	});
