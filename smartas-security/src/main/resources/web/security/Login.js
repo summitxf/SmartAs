@@ -1,14 +1,10 @@
 $(function() {
-	$.ajaxSetup({
-		dataType : "json",
-		contentType : "application/json",
-	});
 	var context = "";
-
 	$("#logout").click(function() {
 		$.ajax({
 			type : 'post',
 			url : "services/security/logout",
+			contentType : "application/json",
 			success : function(data) {
 				location.reload();
 			},
@@ -25,6 +21,7 @@ $(function() {
 				$.ajax({
 					type : 'post',
 					url : "services/security/login",
+					contentType : "application/json",
 					data : JSON.stringify(data),
 					success : function(data) {
 						if (data.status == 200) {// 登录成功

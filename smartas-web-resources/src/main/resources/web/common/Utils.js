@@ -23,14 +23,4 @@
 			isUndefined : isType("Undefined")
 		}
 	}();
-	if (!jQuery.__hack__) {
-		var parseJSON = JSON.parse
-		JSON.parse = function(data) {
-			if (data === "") {
-				return data;
-			}
-			return parseJSON(data);
-		}
-		jQuery.__hack__ = true;
-	}
 }(jQuery);

@@ -26,6 +26,7 @@
 		}
 		if (!url) {
 			logger.warn("request url is emtpy");
+			callback && callback();
 			return;
 		}
 		if ($.isFunction(params)) {
@@ -112,6 +113,7 @@
 
 		var request = function(options) {
 			lifecycle.fire('before');
+			options.contentType = "application/json";
 			if (options.data && !_.isString(options.data)) {
 				options.data = JSON.stringify(options.data)
 			}
@@ -136,7 +138,6 @@
 				type : type,
 				url : url,
 				data : data,
-				dataType : 'json',
 				success : success,
 				error : error
 			};
@@ -196,6 +197,7 @@
 		// TODO：处理请求参数
 		context.include(hash.substr(2), function() {
 			// 卸载已经加载的资源
+			ReactDOM.unmountComponentAtNode(context[0])
 			Resource.uninstall();
 		});
 	});

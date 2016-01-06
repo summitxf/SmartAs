@@ -18,9 +18,10 @@ $(function() {
 								node : menu,
 								parent : parent
 							}
-							if (menu.url == url) {
+							if (menu.url && menu.url == url) {
 								currentNode = node;
 							}
+							menu.url || (menu.url = '#!');
 							menu.target = '_self';
 							result.push(node);
 						}
@@ -36,7 +37,7 @@ $(function() {
 					currentNode.node.open = true;
 					currentNode = currentNode.parent;
 				}*/
-				loadBreadcrumb(currentNode);
+				currentNode && loadBreadcrumb(currentNode);
 				return list;
 			}
 		},
@@ -88,7 +89,7 @@ $(function() {
 	}
 
 	function onMenuCreated(event, treeId, treeNode) {
-		if(treeNode.url === Smart.Resource.getCurrentUrl()){
+		if (treeNode.url != '#!' && treeNode.url === Smart.Resource.getCurrentUrl()) {
 			zTree_Menu.selectNode(treeNode);
 		}
 	}
