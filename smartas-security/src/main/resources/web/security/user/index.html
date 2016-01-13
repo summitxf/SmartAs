@@ -2,7 +2,7 @@
 <script type="text/babel">
 install("web.security.user",function($S){
 	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
- 	this.root = function(){
+ 	this.ready = function(c){
 		var UI = Smart.UI,
 			Panel = UI.Panel,
 			IGrid = UI.IGrid,
@@ -10,7 +10,7 @@ install("web.security.user",function($S){
 			Column = UI.Column;
 		var Node = React.createClass({
 			render: function() {
-				return (<div>
+				return <div>
 						<Panel>
 							<Panel.Header title="用户列表"></Panel.Header>
 					 		<IGrid dataSource={dataSource} height="256">
@@ -22,10 +22,9 @@ install("web.security.user",function($S){
 					 		</IGrid>
 						</Panel>
 					</div>
-					);
 			}
 		});
-		return Node;
+		return (Node);
 	};
 });
 </script>

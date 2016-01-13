@@ -1,8 +1,6 @@
-/**[[
- 
+/*[[
  <script src="web/security/role/role.js"></script>
- 
-]]**/
+]]*/
 
 install("web.security.role",function($S){
 	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
@@ -13,7 +11,7 @@ install("web.security.role",function($S){
 				};
 			},
 			componentWillReceiveProps : function(nextProps){
-				//dataSource.get(nextProps.id)();
+				// dataSource.get(nextProps.id)();
 			},
 			componentWillUnmount : function(){
 				 logger.debug('Destroy Permission Tree');
@@ -22,9 +20,9 @@ install("web.security.role",function($S){
 			componentDidMount: function() {
 				var context = this;
 				pkg.buildTree();
-				//dataSource.onGet(function(data) {
-				//	context.setState(data);
-				//});
+				// dataSource.onGet(function(data) {
+				// context.setState(data);
+				// });
 			},
 
 			render: function() {
@@ -42,7 +40,7 @@ install("web.security.role",function($S){
 		}
 	);
 	
-   	//API
+   	// API
    	this.reducers = function(){
 		return {
 			securityRole : function(role,action){
@@ -54,16 +52,9 @@ install("web.security.role",function($S){
 			}
 		}
    	};
-	
-	this.connect = function(createSelector){
-		return {
-			selector : this.selector(createSelector),
-			action : this.action()
-		}
-	};
-	//API
-	//根组件
- 	this.root = function(){
+	// API
+	// 根组件
+ 	this.ready = function(connect){
 
 		var UI = Smart.UI,
 			Panel = UI.Panel,
@@ -124,10 +115,9 @@ install("web.security.role",function($S){
 					);
 			}
 		});
-		return Node;
+		return connect(this.action())(Node);
 	};
-
-	//组件内部状态改变触发器
+	
 	this.action = function(){
 		return {
 		   	add : function(name){
@@ -137,12 +127,5 @@ install("web.security.role",function($S){
 				return function(dispatch){ };
 			},
 		}
-	};
-	//组件关注的状态数据
-	this.selector = function(createSelector){
-		function select(state) {
-  			return state.securityRole
-		}
-    	//return createSelector(function(state){},function(state){},function(arg1,arg2){});
 	};
 });

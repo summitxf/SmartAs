@@ -1,23 +1,23 @@
-(function($, Namespace,Env,EventBus) {
+(function($, Namespace, Env, EventBus) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
-	var context = $("#content"), lifecycle = EventBus.New(true),qs = {},info = Env.getInfo();
+	var context = $("#content"), lifecycle = EventBus.New(true), qs = {}, info = Env.getInfo();
 
 	function $S(selector) {
 		return $(selector, context);
 	}
-	
-	function thunkMiddleware(_ref) {
-	  var dispatch = _ref.dispatch;
-	  var getState = _ref.getState;
 
-	  return function (next) {
-	    return function (action) {
-	      return typeof action === 'function' ? action(dispatch, getState) : next(action);
-	    };
-	  };
+	function thunkMiddleware(_ref) {
+		var dispatch = _ref.dispatch;
+		var getState = _ref.getState;
+
+		return function(next) {
+			return function(action) {
+				return typeof action === 'function' ? action(dispatch, getState) : next(action);
+			};
+		};
 	}
-	
+
 	$.fn.include = function(url, params, callback) {
 		// .处理url中?参数
 		var index = url.indexOf('?'), self = this;
@@ -28,13 +28,13 @@
 			callback = params;
 			params = undefined;
 		}
-		
+
 		if (!url) {
 			logger.warn("request url is emtpy");
 			callback && callback();
 			return;
 		}
-		
+
 		logger.debug("request url '{0}'", url);
 		Resource.ajax({
 			type : 'get',
@@ -44,13 +44,13 @@
 			success : function(data) {
 				// 1.回调
 				callback && callback();
-				var start = data.indexOf('/**[['),end = data.indexOf(']]**/');
+				var start = data.indexOf('/*[['), end = data.indexOf(']]*/');
 				// 处理资源
-				if(start >=0 && end > 0){
+				if (start >= 0 && end > 0) {
 					var html = [];
-					html.push(data.substring(start+5,end));
-					html.push('<script type="text/{0}">'.format(info.profile == 'dev'?'babel':'javascript'))
-					html.push(data.substr(end+5));
+					html.push(data.substring(start + 4, end));
+					html.push('<script type="text/{0}">'.format(info.profile == 'dev' ? 'babel' : 'javascript'))
+					html.push(data.substr(end + 4));
 					html.push('</script>');
 					data = html.join("");
 				}
@@ -67,32 +67,73 @@
 		});
 	};
 
+	var defaultGlobal = function(global, action) {
+		return {
+			Global : {
+				userName : 'chenjpu'
+			}
+		}
+	};
+
 	var Resource = (function() {
 		// ReactRedux
 		var finalCreateStore = Redux.applyMiddleware(thunkMiddleware)(Redux.createStore),
-			// reducer = Redux.combineReducers(),
-			store = finalCreateStore(_.identity),defaultGlobal = {Global:{userName:'chenjpu'}}
-			resources = {};
+		store = finalCreateStore(_.identity, {
+			Global : {
+				userName : 'chenjpu'
+			}
+		}), resources = {};
 		
+		var connect = function(namespace){ 
+			return function(actions){
+				return ReactRedux.connect(function(state){
+					var local = _.extend({},state[namespace]);
+					local.Global = state.Global;
+					return local;
+				},actions);
+			}
+		};
+
 		// 加载资源
 		var install = function(namespace, define) {
 			var pkg = Namespace.register(namespace);
 			logger.info("install package '{0}({1})'", namespace, pkg.__sn__);
 			var eventBus = pkg.eventBus || (pkg.eventBus = EventBus.New(namespace));
 			define.call(pkg, $S, context[0]);
-			var root = pkg.root && pkg.root();
-			if(root){
-				if(pkg.connect){
-					var options = pkg.connect();
-					root = ReactRedux.connect(options.selector,options.action)(root);
+			var node = pkg.ready && pkg.ready(connect(namespace));
+			if (node) {
+				if(!node.WrappedComponent){
+					node = connect(namespace)()(node);
 				}
-				if(pkg.reducers){
-					store.replaceReducer(Redux.combineReducers(_.extend({Global : function(state,action){return defaultGlobal}},pkg.reducers())));
+				var reducers = pkg.reducers && pkg.reducers();
+				if (!_.isFunction(reducers)) {
+					logger.warn("defined a reducers method for '{0}' and return func", namespace);
+					reducers = _.identity;
 				}
-				ReactDOM.render(React.createElement(ReactRedux.Provider,{store:store},React.createElement(root, {qs : Resource.getQs()})), context[0],pkg.ready);
-			}else{
-				pkg.ready && pkg.ready();
+				store.replaceReducer(function(state, action) {
+					var local = {};
+					local['Global'] = defaultGlobal(state.Global, action);
+					local[namespace] = reducers(state[namespace] || {}, action);
+					return _.extend({}, state, local);
+				});
+				ReactDOM.render(React.createElement(ReactRedux.Provider, {
+					store : store
+				}, React.createElement(node, {
+					qs : Resource.getQs()
+				})), context[0]);
 			}
+
+			/*
+			 * var root = pkg.root && pkg.root(); if(root){ if(pkg.connect){ var
+			 * options = pkg.connect(); root =
+			 * ReactRedux.connect(options.selector,options.action)(root); }
+			 * if(pkg.reducers){
+			 * store.replaceReducer(Redux.combineReducers(_.extend({Global :
+			 * function(state,action){return defaultGlobal}},pkg.reducers()))); }
+			 * ReactDOM.render(React.createElement(ReactRedux.Provider,{store:store},React.createElement(root,
+			 * {qs : Resource.getQs()})), context[0],pkg.ready); }else{
+			 * pkg.ready && pkg.ready(); }
+			 */
 			resources[namespace] = pkg;
 		};
 		// 卸载资源
@@ -104,7 +145,7 @@
 				var pkgInfo = Namespace.pkg(ns);
 				// 命名空间
 				if (pkgInfo && pkgInfo.parent) {
-					logger.info("uninstall package '{0}({1})'", ns,	pkgInfo.pkg.__sn__);
+					logger.info("uninstall package '{0}({1})'", ns, pkgInfo.pkg.__sn__);
 					delete pkgInfo.parent[pkgInfo.name];
 				}
 				delete pkgs[ns];
@@ -153,12 +194,15 @@
 			after : function(fn) {
 				lifecycle.on('after', fn);
 			},
-			getQs:function(reqs){
-				if(reqs){
+			getQs : function(reqs) {
+				if (reqs) {
 					var hash = location.hash;
 					return Qs.parse(hash.substr(hash.indexOf('?') + 1))
 				}
 				return qs;
+			},
+			getStore : function() {
+				return store;
 			},
 			install : install,
 			uninstall : uninstall,
@@ -191,7 +235,7 @@
 	Resource.after(function() {
 		ZENG.msgbox.hide();
 	});
-	
+
 	$(window).hashchange(function(e) {
 		var hash = location.hash;
 		Resource.hash = hash;
@@ -203,4 +247,4 @@
 			Resource.uninstall();
 		});
 	});
-})($, Smart.Namespace,Smart.Env,Smart.EventBus);
+})($, Smart.Namespace, Smart.Env, Smart.EventBus);
