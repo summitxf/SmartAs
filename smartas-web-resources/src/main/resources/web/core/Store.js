@@ -33,7 +33,7 @@
 	};*/
 
 	var defaultReducers = {
-		$INPUT_CHANGE : function(data, action) {
+		$$LINK_INPUT_CHANGE : function(data, action) {
 			if (action.input === 'radio' || action.input === 'checkbox') {
 				return Smart.set(data, action.key, action.checked ? action.value : '')
 			} else {
@@ -103,7 +103,7 @@
 	    // validateReducer(reducer);
 		var collection = {};
 		collection['global'] = defaultGlobal;
-		collection['namespace'] = _.extend({},reducer,defaultReducers);
+		collection['namespace'] = reducer;
 		
 	    /**
 		 * @param {Immutable.Iterable}
@@ -131,7 +131,10 @@
 	            isActionHandled: false
 	        };
 	        newState = iterator(state, action, collection, tapper);
-
+	        //如果自定义reducers没有处理
+	        if(!tapper.isActionHandled && action.type && action.type.indexOf('$$') === 0){
+	        	newState = iterator(newState, action, {namespace : defaultReducers}, tapper);
+	        }
 	        if (!tapper.isActionHandled && action.type !== 'CONSTRUCT') {
 	        	logger.warn("Unhandled action '{0}'.",action.type);
 	        }
@@ -172,7 +175,7 @@
 			value: Smart.get(props,key),
 			requestChange: function(value,checked,input) {
 				store.dispatch({
-					type : AT.F.INPUT_CHANGE,
+					type : AT.LINK.INPUT_CHANGE,
 					key : key,
 					value : value,
 					input : input || 'input',
