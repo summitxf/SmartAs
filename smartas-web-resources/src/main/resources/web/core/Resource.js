@@ -1,21 +1,10 @@
-(function($, Namespace, Env, EventBus) {
+(function($, Namespace, Env, EventBus, Store) {
 	// Bind an event handler.
 	var logger = Log.getLogger("core.resource.control");
 	var context = $("#content"), lifecycle = EventBus.New(true), qs = {}, info = Env.getInfo();
 
 	function $S(selector) {
 		return $(selector, context);
-	}
-
-	function thunkMiddleware(_ref) {
-		var dispatch = _ref.dispatch;
-		var getState = _ref.getState;
-
-		return function(next) {
-			return function(action) {
-				return typeof action === 'function' ? action(dispatch, getState) : next(action);
-			};
-		};
 	}
 
 	$.fn.include = function(url, params, callback) {
@@ -67,73 +56,28 @@
 		});
 	};
 
-	var defaultGlobal = function(global, action) {
-		return {
-			Global : {
-				userName : 'chenjpu'
-			}
-		}
-	};
-
 	var Resource = (function() {
-		// ReactRedux
-		var finalCreateStore = Redux.applyMiddleware(thunkMiddleware)(Redux.createStore),
-		store = finalCreateStore(_.identity, {
-			Global : {
-				userName : 'chenjpu'
-			}
-		}), resources = {};
-		
-		var connect = function(namespace){ 
-			return function(actions){
-				return ReactRedux.connect(function(state){
-					var local = _.extend({},state[namespace]);
-					local.Global = state.Global;
-					return local;
-				},actions);
-			}
-		};
-
+		var resources = {};
 		// 加载资源
 		var install = function(namespace, define) {
 			var pkg = Namespace.register(namespace);
 			logger.info("install package '{0}({1})'", namespace, pkg.__sn__);
 			var eventBus = pkg.eventBus || (pkg.eventBus = EventBus.New(namespace));
 			define.call(pkg, $S, context[0]);
-			var node = pkg.ready && pkg.ready(connect(namespace));
+
+			var node = pkg.ready && pkg.ready(Store.connect(namespace));
 			if (node) {
-				if(!node.WrappedComponent){
-					node = connect(namespace)()(node);
+				if (!node.WrappedComponent) {
+					node = Store.connect(namespace)()(node);
 				}
 				var reducers = pkg.reducers && pkg.reducers();
-				if (!_.isFunction(reducers)) {
-					logger.warn("defined a reducers method for '{0}' and return func", namespace);
-					reducers = _.identity;
-				}
-				store.replaceReducer(function(state, action) {
-					var local = {};
-					local['Global'] = defaultGlobal(state.Global, action);
-					local[namespace] = reducers(state[namespace] || {}, action);
-					return _.extend({}, state, local);
-				});
+				var store = Store.replaceReducer(reducers, namespace);
 				ReactDOM.render(React.createElement(ReactRedux.Provider, {
 					store : store
 				}, React.createElement(node, {
 					qs : Resource.getQs()
 				})), context[0]);
 			}
-
-			/*
-			 * var root = pkg.root && pkg.root(); if(root){ if(pkg.connect){ var
-			 * options = pkg.connect(); root =
-			 * ReactRedux.connect(options.selector,options.action)(root); }
-			 * if(pkg.reducers){
-			 * store.replaceReducer(Redux.combineReducers(_.extend({Global :
-			 * function(state,action){return defaultGlobal}},pkg.reducers()))); }
-			 * ReactDOM.render(React.createElement(ReactRedux.Provider,{store:store},React.createElement(root,
-			 * {qs : Resource.getQs()})), context[0],pkg.ready); }else{
-			 * pkg.ready && pkg.ready(); }
-			 */
 			resources[namespace] = pkg;
 		};
 		// 卸载资源
@@ -201,9 +145,6 @@
 				}
 				return qs;
 			},
-			getStore : function() {
-				return store;
-			},
 			install : install,
 			uninstall : uninstall,
 			getCurrentUrl : function() {
@@ -247,4 +188,4 @@
 			Resource.uninstall();
 		});
 	});
-})($, Smart.Namespace, Smart.Env, Smart.EventBus);
+})($, Smart.Namespace, Smart.Env, Smart.EventBus, Smart.Store);

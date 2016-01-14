@@ -3,7 +3,7 @@
 		AT = Smart.UI.ActionTypes;
 	UI.Radio = React.createClass({
 		propTypes: {
-			name: React.PropTypes.string.isRequired,
+			name: React.PropTypes.string,
 			id: React.PropTypes.string,
 			disabled: React.PropTypes.bool,
 			readonly: React.PropTypes.bool,
@@ -55,30 +55,26 @@
 			if (!this.props.uncheckable && checked) {
 				return;
 			}
-			var opts = {
-				checked: !checked
-			};
-			this.setState(opts);
-			this.props.action({
-				type: AT.F.INPUT_CHANGE
-				ops: {
-					type: 'radio',
-					checked: !checked,
-					name: this.props.name,
-					value: this.props.value
-				}
-			});
-		},
-
-		componentWillReceiveProps: function(nextProps) {
-			this.state.checked = nextProps.checked
+			var checkedLink = this.props.checkedLink;
+			if (checkedLink) {
+				checkedLink.requestChange(this.props.value,!checked,'radio');
+			} else {
+				this.setState({
+					checked: !checked
+				});
+			}
 		},
 
 		render: function() {
-			var disabled = this.props.disabled || this.props.readonly,
-				checked = this.state.checked,
-				p = this.props,
-				s = this.state;
+			var p = this.props,
+				s = this.state,
+				disabled = p.disabled || p.readonly,
+				checked;
+				if(p.checkedLink){
+					checked = p.checkedLink.value === p.value;
+				}else{
+					checked = s.checked || p.checked;
+				}
 			return <div onMouseEnter={this.doMouseEnter} onMouseLeave={this.doMouseLeave}  className={classNames('l-radio-wrapper',{'l-disabled':disabled,'l-over':s.mouseOver})}>
 				<a onClick={this.doClick.bind(this,disabled,p.name)} className={classNames('l-radio',{'l-radio-checked':checked})}/>
 				<input ref='input' type="radio" name={p.name} id={p.id} style={{display:'none'}}  readOnly={disabled} checked={checked} value={p.value}/>
