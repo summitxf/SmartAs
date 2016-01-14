@@ -68,7 +68,7 @@
 			var node = pkg.ready && pkg.ready(Store.connect(namespace));
 			if (node) {
 				if (!node.WrappedComponent) {
-					node = Store.connect(namespace)()(node);
+					node = Store.connect(namespace)(pkg.actions)(node);
 				}
 				var reducers = pkg.reducers && pkg.reducers();
 				var store = Store.replaceReducer(reducers, namespace);

@@ -18,7 +18,8 @@ install("web.demo.plugins.form",function($S){
 	);
 	
 	// 组件内部状态改变触发器
-	var actions = {
+	//API
+	this.actions = {
 	   	add : function(name){
 			return {type:'DATE_CLICK',name:name}
 		},
@@ -28,8 +29,8 @@ install("web.demo.plugins.form",function($S){
 	};
 	// API
 	this.ready = function(connect){
-		return connect(actions)(Node);
-		// return Node;
+		//return connect(this.actions)(Node);
+		return Node;
 	};
    	// API
    	this.reducers = function(){
