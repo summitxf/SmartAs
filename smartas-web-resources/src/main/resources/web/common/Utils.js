@@ -19,12 +19,12 @@
 		function setValue(object, path, value) {
             var paths = path.split('.');
             //Immutable.Iterable.isIterable(result)
-            return object.updateIn(paths,function(object){
+            /*return object.updateIn(paths,function(object){
             	return value;
-            });
-            /*var o = object;
-            for (var i = 0; i < a.length - 1; i++) {
-                var n = a[i];
+            });*/
+            var o = object;
+            for (var i = 0; i < paths.length - 1; i++) {
+                var n = paths[i];
                 if (n in o) {
                     o = o[n];
                 } else {
@@ -32,23 +32,23 @@
                     o = o[n];
                 }
             }
-            o[a[a.length - 1]] = value;*/
+            o[paths[paths.length - 1]] = value;
         }
 
         function getValue(object, path,def) {
-        	var paths = path.split('.');
-        	return object.getIn(paths);
+        	/*var paths = path.split('.');
+        	return object.getIn(paths);*/
         	
-            /*var o = object;
-            var a = path.split('.');
-            while (a.length) {
-                var n = a.shift();
+            var o = object;
+            var paths = path.split('.');
+            while (paths.length) {
+                var n = paths.shift();
                 o = o[n];
                 if(o === undefined){
                    return def;
                 }
             }
-            return o;*/
+            return o;
         }
 		
         window.Smart = {
@@ -57,8 +57,8 @@
     			isArray : Array.isArray || isType("Array"),
     			isFunction : isType("Function"),
     			isUndefined : isType("Undefined"),
-    			set : setValue,
-    			get : getValue
+    			setValue : setValue,
+    			getValue : getValue
     		}
 		
 	}();

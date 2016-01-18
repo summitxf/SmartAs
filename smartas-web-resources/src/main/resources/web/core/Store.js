@@ -13,14 +13,14 @@
 	}
 	// ReactRedux
 	var finalCreateStore = Redux.applyMiddleware(thunkMiddleware)(Redux.createStore);
-
-	var store = finalCreateStore(_.identity, {
-		global : Immutable.fromJS({
-			user : {
-				userName : 'chenjpu'
+	var store = finalCreateStore(_.identity, Immutable.fromJS({
+		global : {
+				user : {
+					userName : 'chenjpu'
+				}
 			}
 		})
-	});
+	);
 
 	/*var compose = function() {
 		var fns = arguments;
@@ -34,11 +34,14 @@
 
 	var defaultReducers = {
 		$$LINK_INPUT_CHANGE : function(data, action) {
-			if (action.input === 'radio' || action.input === 'checkbox') {
-				return Smart.set(data, action.key, action.checked ? action.value : '')
-			} else {
-				return Smart.set(data, action.key, action.value)
-			}
+			//Immutable.Iterable.isIterable(result)
+            return data.updateIn(action.key.split('.'),function(object){
+            	if (action.input === 'radio' || action.input === 'checkbox') {
+    				return action.checked ? action.value : ''
+    			} else {
+    				return action.value
+    			};
+            });
 		}
 	};
 
@@ -76,23 +79,36 @@
 	var iterator = function(domain, action, collection, tapper){
 	    var newDomain;
 
-	    if (!Immutable.Iterable.isIterable(domain)) {
+	    /*if (!Immutable.Iterable.isIterable(domain)) {
 	        throw new Error('Domain must be an instance of Immutable.Iterable.');
-	    }
+	    }*/
 	    newDomain = domain;
 	    _.forEach(collection, function(value, domainName) {
 	        if (isActionMap(value)) {
 	            if (value[action.type]) {
-	                var result;
-	                tapper.isActionHandled = true;
-	                result = value[action.type](newDomain.get(domainName) || Immutable.Map({}), action);
+	            	tapper.isActionHandled = true;
+	            	
+	                /*var result = value[action.type](newDomain[domainName] || {}, action);
+	                if(result !== newDomain[domainName]){
+	                	newDomain = _.extend({},newDomain);
+		                newDomain[domainName] = result;
+	                }
+	                return newDomain;*/
+	                
+	            	var result = value[action.type](newDomain.get(domainName) || Immutable.Map({}), action);
 	                if (!Immutable.Iterable.isIterable(result)) {
 	                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.name + '" action handler result is "' + typeof result + '".');
 	                }
 	                newDomain = newDomain.set(domainName, result);
 	            }
 	        } else if (isDomainMap(value)) {
-	            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || Immutable.Map(), action, value, tapper));
+	            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || Immutable.Map({}), action, value, tapper));
+	        	/*var result = iterator(newDomain[domainName] || {}, action, value, tapper);
+	        	if(result !== newDomain[domainName]){
+                	newDomain = _.extend({},newDomain);
+	                newDomain[domainName] = result;
+                }
+	        	return newDomain;*/
 	        }
 	    });
 
@@ -101,9 +117,10 @@
 	
 	function combineReducers(reducer,namespace){
 	    // validateReducer(reducer);
-		var collection = {};
+		var collection = {},defaultCollection = {};
 		collection['global'] = defaultGlobal;
-		collection['namespace'] = reducer;
+		collection[namespace] = reducer;
+		defaultCollection[namespace] = defaultReducers;
 		
 	    /**
 		 * @param {Immutable.Iterable}
@@ -133,24 +150,29 @@
 	        newState = iterator(state, action, collection, tapper);
 	        //如果自定义reducers没有处理
 	        if(!tapper.isActionHandled && action.type && action.type.indexOf('$$') === 0){
-	        	newState = iterator(newState, action, {namespace : defaultReducers}, tapper);
+	        	newState = iterator(newState, action, defaultCollection, tapper);
 	        }
 	        if (!tapper.isActionHandled && action.type !== 'CONSTRUCT') {
 	        	logger.warn("Unhandled action '{0}'.",action.type);
 	        }
 	        return newState;
 	    };
-	    var _localState,_local;
 		return function(state, action) {
-			var localState = Immutable.Map({global:state.global,namespace : state[namespace] || Immutable.Map({})});
-			var localState = reducers(localState, action);
-			if(_localState !== localState){
-				_localState = localState;
-				_local =  _.extend({}, state);
-				_local['global'] = _localState.get('global');
-				_local[namespace] = _localState.get('namespace');
+			
+			return reducers(state,action);
+			
+			/*var localState = Immutable.Map({global:state.global,namespace : state[namespace] || Immutable.Map({})});
+			var localState = reducers({global:state.global,namespace : state[namespace] || {}}, action);
+			if(localState.global !== state['global'] || localState.namespace !== state[namespace]){
+				var result =  _.extend({}, state);
+				//_local['global'] = _localState.get('global');
+				//_local[namespace] = _localState.get('namespace');
+				
+				result['global'] = localState.global;
+				result[namespace] = localState.namespace;
+				return result;
 			}
-			return _local; 
+			return state; */
 		}
 	};
 
@@ -172,7 +194,7 @@
 	function linkState(key){
 		var props = this.props;
 		return {
-			value: Smart.get(props,key),
+			value: Smart.getValue(props,key),
 			requestChange: function(value,checked,input) {
 				store.dispatch({
 					type : AT.LINK.INPUT_CHANGE,
@@ -187,23 +209,18 @@
 	function connect(namespace) {
 		return function(actions) {
 			return ReactRedux.connect(function(state) {
-				var ns = state[namespace], global = state.global;
-				return {
-					get : function(key) {
-						return ns.get(key)
+				var ns = state.get(namespace), global = state.get('global');
+				return _.extend({},ns?ns.toJS():{},{global:global.toJS()});
+				/*return {
+					local : function(key) {
+						//return ns.get(key)
+						return Smart.getValue(ns,key);
 					},
-					getIn : function(key) {
-						return ns.getIn(key)
-					},
-					global : {
-						get : function(key) {
-							return global.get(key)
-						},
-						getIn : function(key) {
-							return global.getIn(key)
-						},
+					global : function(key) {
+						//return global.get(key)
+						return Smart.getValue(global,key);
 					}
-				}
+				}*/
 			}, actions, null, {
 				withRef : true
 			});
