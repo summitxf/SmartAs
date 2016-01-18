@@ -194,7 +194,7 @@
 	function linkState(key){
 		var props = this.props;
 		return {
-			value: Smart.getValue(props,key),
+			value: props.local.getIn(key),
 			requestChange: function(value,checked,input) {
 				store.dispatch({
 					type : AT.LINK.INPUT_CHANGE,
@@ -206,21 +206,32 @@
 		};
 	};
 	
+	var ImmutableMethod = {
+		get:function(key){
+			return this.get(key)
+		},
+		getIn:function(key){
+			return this.getIn(key.split('.'));
+		}
+	};
+	
 	function connect(namespace) {
 		return function(actions) {
 			return ReactRedux.connect(function(state) {
-				var ns = state.get(namespace), global = state.get('global');
-				return _.extend({},ns?ns.toJS():{},{global:global.toJS()});
-				/*return {
-					local : function(key) {
-						//return ns.get(key)
-						return Smart.getValue(ns,key);
+				var ns = state.get(namespace) || Immutable.Map({}), global = state.get('global');
+				//return _.extend({},ns?ns.toJS():{},{global:global.toJS()});
+				return {
+					get : _.bind(ImmutableMethod.get,ns),
+					getIn : _.bind(ImmutableMethod.getIn,ns),
+					local : {
+						get : _.bind(ImmutableMethod.get,ns),
+						getIn : _.bind(ImmutableMethod.getIn,ns)
 					},
-					global : function(key) {
-						//return global.get(key)
-						return Smart.getValue(global,key);
+					global : {
+						get : _.bind(ImmutableMethod.get,global),
+						getIn : _.bind(ImmutableMethod.getIn,global)
 					}
-				}*/
+				}
 			}, actions, null, {
 				withRef : true
 			});
