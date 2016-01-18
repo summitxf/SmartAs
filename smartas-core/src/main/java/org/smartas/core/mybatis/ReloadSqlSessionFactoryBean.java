@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartas.core.spring.event.MyBaitsRefreshEvent;
@@ -18,7 +17,7 @@ import org.springframework.context.ApplicationEvent;
  * @author chenb
  *
  */
-public class ReloadSqlSessionFactoryBean extends SqlSessionFactoryBean {
+public class ReloadSqlSessionFactoryBean extends DialectSqlSessionFactoryBean {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReloadSqlSessionFactoryBean.class);
 

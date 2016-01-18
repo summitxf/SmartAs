@@ -6,6 +6,7 @@ import java.util.List;
 import org.smartas.core.BusinessAccessException;
 import org.smartas.core.Entity;
 import org.smartas.core.GenericDao;
+import org.smartas.core.Page;
 import org.smartas.core.Pageable;
 import org.smartas.core.Service;
 
@@ -36,7 +37,7 @@ public abstract class GenericServiceImpl<T extends Entity, PK extends Serializab
 	}*/
 
 	public List<T> getAll() {
-		return getDao().select();
+		return getDao().selectAll();
 	}
 
 
@@ -51,7 +52,7 @@ public abstract class GenericServiceImpl<T extends Entity, PK extends Serializab
 	public Pageable<T> getAll(int page, int pageSize) throws BusinessAccessException {
 		int length =getDao().getCountAll();
 		page = realPage(page, pageSize, length);
-		return new Pageable<T>(page, pageSize, length, getDao().select((page - 1) * pageSize, pageSize));
+		return new Pageable<T>(page, pageSize, length, getDao().select(new Page((page - 1) * pageSize, pageSize)));
 	}
 
 	public int getAllSize() throws BusinessAccessException {

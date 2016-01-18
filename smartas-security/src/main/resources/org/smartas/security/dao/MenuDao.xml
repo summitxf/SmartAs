@@ -21,16 +21,20 @@
 		FROM tpl_menu_t T
 	</select>
 
-	<select id="select" resultType="org.smartas.security.model.Menu">
+	<select id="selectAll" resultType="org.smartas.security.model.Menu">
 		SELECT
 		T.*
 		FROM tpl_menu_t T
-		<if test="skip != null">
-			LIMIT #{skip},#{max}
-		</if>
 		<query open="(" close=")"  value="queryVo"/>
-		
 		ORDER BY T.sn
+	</select>
+
+	<select id="select" resultType="org.smartas.security.model.Menu">
+		${limitBefore}
+		SELECT T.* FROM tpl_menu_t T
+		<query open="(" close=")"  value="queryVo"/>
+		ORDER BY T.sn
+		${limitAfter}
 	</select>
 
 

@@ -21,13 +21,16 @@
 	    FROM tpl_user_t T
 	  </select>
 	  
-	  <select id="select" resultType="org.smartas.security.model.User">
+	  <select id="selectAll" resultType="org.smartas.security.model.User">
 	    SELECT
 	       T.*
 	    FROM tpl_user_t T
-	    <if test="skip != null">
-	    	LIMIT #{skip},#{max}
-	    </if>
+	  </select>
+	  
+	  <select id="select" resultType="org.smartas.security.model.User">
+	    ${limitBefore}
+	    SELECT T.* FROM tpl_user_t T
+	    ${limitAfter}
 	  </select>
 	  
 	  

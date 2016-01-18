@@ -38,7 +38,8 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	List<T> select();
+	// @MapKey("selectAll")
+	List<T> selectAll();
 
 	/**
 	 * 返回数据库中此类记录的数据,满足查询边界.主要用在iBatis上,现在还没有研究hibernate上这个方法怎么实现
@@ -48,7 +49,7 @@ public interface GenericDao<T extends Entity, PK extends Serializable> {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	List<T> select(@Param("skip") int skip, @Param("max") int max);
+	List<T> select(@Param("page") Page page);
 
 	/**
 	 * 保存数据记录,更具id是否为空来判断是否插入新记录还是更新操作

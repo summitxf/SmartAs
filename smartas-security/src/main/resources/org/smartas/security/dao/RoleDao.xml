@@ -21,15 +21,17 @@
 	    FROM tpl_app_role_t T
 	  </select>
 	  
-	  <select id="select" resultType="org.smartas.security.model.Role">
+	  <select id="selectAll" resultType="org.smartas.security.model.Role">
 	    SELECT
 	       T.*
 	    FROM tpl_app_role_t T
-	    <if test="skip != null">
-	    	LIMIT #{skip},#{max}
-	    </if>
 	  </select>
 	  
+	  <select id="select" resultType="org.smartas.security.model.Role">
+	  	${limitBefore}
+	    SELECT T.* FROM tpl_app_role_t T
+	    ${limitAfter}
+	  </select>
 	  
 	  <insert id="insert" parameterType="org.smartas.security.model.Role">
 	    INSERT INTO tpl_app_role_t

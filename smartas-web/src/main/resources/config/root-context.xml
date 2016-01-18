@@ -12,6 +12,7 @@
 	<beans profile="dev">
 		<bean id="sqlSessionFactory" class="org.smartas.core.mybatis.ReloadSqlSessionFactoryBean">
 			<property name="dataSource" ref="dataSource" />
+			<property name="databaseIdProvider" ref="databaseIdProvider" />
 			<property name="configLocation" value="classpath:config/mybatis-config.xml" />
 			<property name="mapperLocations" value="classpath*:/**/dao/*.xml">
 			</property>
@@ -19,13 +20,30 @@
 	</beans>
 
 	<beans profile="sit,uat,pat,prod">
-		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<bean id="sqlSessionFactory" class="org.smartas.core.mybatis.DialectSqlSessionFactoryBean">
 			<property name="dataSource" ref="dataSource" />
+			<property name="databaseIdProvider" ref="databaseIdProvider" />
 			<property name="configLocation" value="classpath:config/mybatis-config.xml" />
 		</bean>
 	</beans>
 
 	<beans>
+	
+		<bean id="vendorProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="properties">
+				<props>
+					<prop key="SQL Server">sqlserver</prop>
+					<prop key="DB2">db2</prop>
+					<prop key="Oracle">oracle</prop>
+					<prop key="MySQL">mysql</prop>
+				</props>
+			</property>
+		</bean>
+
+		<bean id="databaseIdProvider" class="org.smartas.core.mybatis.DefautlDatabaseIdProvider">
+			<property name="properties" ref="vendorProperties" />
+		</bean>
+
 		<!-- Root Context: defines shared resources visible to all other web components -->
 		<context:property-placeholder location="classpath:config/jdbc.properties" />
 
@@ -42,22 +60,6 @@
 			<property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" />
 			<property name="maxStatements" value="${c3p0.maxStatements}" />
 			<property name="numHelperThreads" value="${c3p0.numHelperThreads}" />
-		</bean>
-
-
-		<bean id="vendorProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-			<property name="properties">
-				<props>
-					<prop key="SQL Server">sqlserver</prop>
-					<prop key="DB2">db2</prop>
-					<prop key="Oracle">oracle</prop>
-					<prop key="MySQL">mysql</prop>
-				</props>
-			</property>
-		</bean>
-
-		<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
-			<property name="properties" ref="vendorProperties" />
 		</bean>
 
 		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

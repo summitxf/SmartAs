@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.smartas.core.Entity;
 import org.smartas.core.GenericDao;
+import org.smartas.core.Page;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -26,12 +27,12 @@ public class BatisGenericDao<T extends Entity, PK extends Serializable> extends 
 		return super.getSqlSession().selectOne(clazz.getName(), id);
 	}
 
-	public List<T> select() throws DataAccessException {
+	public List<T> selectAll() throws DataAccessException {
 		return super.getSqlSession().selectList(selectStatement(clazz));
 	}
 
-	public List<T> select(final int offset, final int limit) throws DataAccessException {
-		return super.getSqlSession().selectList(selectStatement(clazz),new RowBounds(offset, limit));
+	public List<T> select(final Page page) throws DataAccessException {
+		return super.getSqlSession().selectList(selectStatement(clazz),new RowBounds(page.getFirstResult(), page.getMaxResult()));
 	}
 
 	public int getCountAll() throws DataAccessException {
