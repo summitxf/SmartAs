@@ -1,5 +1,6 @@
-<script src="web/security/user/index.js"></script>
-<script type="text/babel">
+/*[[
+ <script src="web/security/user/index.js"></script>
+]]*/
 install("web.security.user",function($S){
 	var pkg = this,dataSource = pkg.dataSource,eventBus = this.eventBus;
  	this.ready = function(c){
@@ -27,4 +28,3 @@ install("web.security.user",function($S){
 		return (Node);
 	};
 });
-</script>
