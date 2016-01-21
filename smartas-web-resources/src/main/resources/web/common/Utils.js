@@ -50,7 +50,6 @@
             }
             return o;
         }
-		
         window.Smart = {
     			isObject : isType("Object"),
     			isString : isType("String"),

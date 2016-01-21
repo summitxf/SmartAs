@@ -43,8 +43,9 @@
 </head>
 
 <body>
+	<div class="container-fluid full-height" fullscreen>
 	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid full-height container" fullscreen>
+		<div class="container-fluid full-height" fullscreen>
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
 					aria-expanded="false" aria-controls="navbar">
@@ -55,9 +56,7 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Dashboard</a></li>
 					<li><a href="#">Profile</a></li>
-
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
 						aria-haspopup="true" aria-expanded="false">chenjpu<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
@@ -84,7 +83,7 @@
 		</div>
 	</nav>
 
-	<div class="container-fluid ztree_menu full-height container" fullscreen>
+	<div class="container-fluid ztree_menu full-height">
 		<div class="row full-height">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<div>
@@ -92,17 +91,18 @@
 				</div>
 			</div>
 			<div id="main" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main full-height">
-				<div style="position: absolute; top: 0">
+				<div class="h4 page-header">
+				<div style="position: absolute; top: 3px">
 					<ol class="breadcrumb" id="breadcrumb" style="margin-bottom: 5px; padding: 4px">
 						<li></li>
 					</ol>
-				</div>
+				</div></div>
 				<div id="content" class="full-height"></div>
 
 			</div>
 		</div>
 	</div>
-
+</div>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -127,7 +127,7 @@
 	<script src="web/common/react/redux.js"></script>
 	<script src="web/common/react/react-redux.js"></script>
 
-	<script src="web/common/react/browser.js"></script>
+	<script src="web/common/react/browser.min.js"></script>
 	<script src="web/common/easyui/jquery.easyui.min.js"></script>
 	<script src="web/common/easyui/locale/easyui-lang-zh_CN.js"></script>
 	
@@ -136,12 +136,14 @@
 	<script src="services/env/workspace"></script>
 	<script src="web/core/EventBus.js"></script>
 	<!-- <script src="web/core/Dispatcher.js"></script> -->
-	<script src="web/ui/plugins/ActionTypes.js"></script>
+	<script src="web/core/ActionTypes.js"></script>
 	<script src="web/core/Store.js"></script>
 	<script src="web/core/Resource.js"></script>
 	<script src="web/core/DataSource.js"></script>
+	<script src="web/core/Service.js"></script>
 	
-	<script src="web/ui/wegits/Datagrid.js"></script>
+	<script src="web/ui/plugins/Storage.js"></script>
+	<script src="web/ui/plugins/Datagrid.js"></script>
 	<script src="web/ui/plugins/Radio.js"></script>
 	<script src="web/ui/plugins/Checkbox.js"></script>
 	<script src="web/ui/plugins/Button.js"></script>

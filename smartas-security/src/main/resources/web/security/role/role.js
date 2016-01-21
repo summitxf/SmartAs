@@ -3,10 +3,11 @@
 	install('web.security.role', function($S) {
 		var logger = Log.getLogger('web.security.role');
 		var eventBus = this.eventBus, request = Smart.Resource.ajax,pkg = this,treeObj = null;
-		var dataSource = this.dataSource = DataSource.New('security/role',eventBus);
+		
+		this.service = Smart.Service.New("security/role");
 		
 		this.del = function(id) {
-			this.dataSource.del(id)();
+			this.service.remove(id);
 		};
 		this.roleSetting = function(id,name) {
 			$S("#myTabs li:last").show().children('a:last').tab('show');

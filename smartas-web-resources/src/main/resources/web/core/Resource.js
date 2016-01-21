@@ -151,6 +151,7 @@
 				return Resource.hash;
 			},
 			ajax : request,
+			method : method,
 			get : function(url, data, success, error) {
 				return method('get', url, data, success, error);
 			},

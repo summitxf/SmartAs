@@ -73,6 +73,9 @@ install("web.security.role",function($S){
 			 		context.setState(data);
 				});
 			},
+			del:function(id){
+				this.refs.storage.getDao().remove(id)
+			},
 			render: function() {
 				var context = this;
 				
@@ -95,7 +98,7 @@ install("web.security.role",function($S){
     						<div role="tabpanel" className="tab-pane fade in active" id="home">
 								<Panel>
 									<Panel.Header title="角色列表"></Panel.Header>
-							 		<IGrid dataSource={dataSource} height="256">
+							 		<IGrid service={pkg.service} height="256">
 										<IGrid.Column width="20" render={function(value){return <input type="checkbox"></input>}}>
 											<input type="checkbox"/>
 										</IGrid.Column>

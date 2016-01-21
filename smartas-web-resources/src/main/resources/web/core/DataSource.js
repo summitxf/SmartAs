@@ -26,7 +26,7 @@
 	}
 
 	DataSource.prototype.get = function(id) {
-		var services = this.options.services,eventBus = this.eventBus, stacks = {
+		var services = this.options.services, eventBus = this.eventBus, stacks = {
 			'then' : [],
 			'fail' : [],
 			'done' : []
@@ -51,7 +51,7 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('get',data);
+			eventBus.fire('get', data);
 		});
 		return qwest
 	};
@@ -83,7 +83,7 @@
 		});
 
 		qwest.then(function(data) {
-			eventBus.fire('refresh',data);
+			eventBus.fire('refresh', data);
 		});
 		return qwest
 	};
@@ -114,7 +114,7 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('refresh',data);
+			eventBus.fire('refresh', data);
 		});
 		return qwest
 	};
@@ -145,7 +145,7 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('refresh',data);
+			eventBus.fire('refresh', data);
 		});
 		return qwest
 	};
@@ -158,8 +158,7 @@
 		}, promises = [ 'then', 'fail', 'done' ], req = null,
 
 		qwest = function() {
-			req = Resource
-					.get(services.listPage.format(page, pageSize), params);
+			req = Resource.get(services.listPage.format(page, pageSize), params);
 
 			_.each(promises, function(p) {
 				req[p](function(res) {
@@ -177,7 +176,7 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('list',data);
+			eventBus.fire('list', data);
 		});
 		return qwest
 	}
@@ -208,11 +207,11 @@
 			}
 		});
 		qwest.then(function(data) {
-			eventBus.fire('list',data);
+			eventBus.fire('list', data);
 		});
 		return qwest
 	};
-	
+
 	DataSource.prototype.refresh = function(func) {
 		this.eventBus.fire('refresh');
 		return this;
@@ -222,12 +221,12 @@
 		this.eventBus.on('refresh', func);
 		return this;
 	};
-	
+
 	DataSource.prototype.onList = function(func) {
 		this.eventBus.on('list', func);
 		return this;
 	};
-	
+
 	DataSource.prototype.onGet = function(func) {
 		this.eventBus.on('get', func);
 		return this;

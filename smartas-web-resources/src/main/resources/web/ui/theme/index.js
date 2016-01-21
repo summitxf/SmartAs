@@ -130,7 +130,7 @@ $(function() {
 				full = true;
 			}
 		});
-		$("#main").css({'padding-left' : full ? '40px' : '5px'});
+		//$("#main").css({'padding-left' : full ? '40px' : '5px'});
 	});
 	
 	$("#reloadSql").click(function(){

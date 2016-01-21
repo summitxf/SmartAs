@@ -14,13 +14,15 @@ install("web.security.user",function($S){
 				return <div>
 						<Panel>
 							<Panel.Header title="用户列表"></Panel.Header>
-					 		<IGrid dataSource={dataSource} height="256">
-								<IGrid.Column field="acount" width="100" title="账户"></IGrid.Column>
-								<IGrid.Column field="email" width="100" title="Emai"></IGrid.Column>
-								<IGrid.Column field="firstname" width="200" title="First name"></IGrid.Column>
-								<IGrid.Column field="lastname" width="200" title="Last name"></IGrid.Column>
-								<IGrid.Column field="state" width="50" render={function(value){return value == 1 ? '有效':'锁定'}} title="状态"></IGrid.Column>
-					 		</IGrid>
+							<UI.Storage model="security/user">
+						 		<IGrid height="256">
+									<IGrid.Column field="acount" width="100">账户</IGrid.Column>
+									<IGrid.Column field="email" width="100">Emai</IGrid.Column>
+									<IGrid.Column field="firstname" width="200">First name</IGrid.Column>
+									<IGrid.Column field="lastname" width="200">Last name</IGrid.Column>
+									<IGrid.Column field="state" width="50" render={function(value){return value == 1 ? '有效':'锁定'}}>状态</IGrid.Column>
+						 		</IGrid>
+					 		</UI.Storage>
 						</Panel>
 					</div>
 			}

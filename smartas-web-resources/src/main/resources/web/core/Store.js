@@ -246,4 +246,4 @@
 		connect : connect
 	});
 
-})($, Smart.Namespace, Smart.UI.ActionTypes);
+})($, Smart.Namespace, Smart.ActionTypes);
