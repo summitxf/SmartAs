@@ -193,46 +193,94 @@
 			);
 		}
 	});
+	
+	var Num = React.createClass({
+		  getInitialState: function() {
+		    return {page: this.props.page};
+		  },
+		  handleChange: function(event) {
+		    this.setState({page: event.target.value});
+		  },
+		  componentWillReceiveProps :function(nextProps){
+			  this.state.page = nextProps.page;
+		  },
+		  render: function() {
+		    return <input className="pagination-num" type="text" size="5" value={this.state.page} onKeyDown={this.props.keyDown} onChange={this.handleChange} />;
+		  }
+		});
 
 	var Pagination = React.createClass({
-
-		refresh: function() {
-			this.props.service.refresh()
+		
+		onPageNum: function(e) {
+			if(e.key === 'Enter'){
+				this.props.service.refresh(e.target.value,this.props.pageSize);
+			}
 		},
-
+		onPageSizeNum: function(e) {
+			this.props.service.refresh(this.props.page,e.target.value);
+		},
+		refresh : function(){
+			this.props.service.refresh();
+		},
+		firstPage:function(){
+			if(this.props.page > 1){
+				this.props.service.refresh(1,this.props.pageSize);
+			}
+		},
+		prePage:function(){
+			if(this.props.page > 1){
+				this.props.service.refresh(this.props.page - 1,this.props.pageSize);
+			}
+		},
+		lastPage:function(){
+			if(this.props.page < this.size){
+				this.props.service.refresh(this.size,this.props.pageSize);
+			}
+		},
+		nextPage:function(){
+			if(this.props.page < this.size){
+				this.props.service.refresh(this.props.page + 1,this.props.pageSize);
+			}
+		},
 		render: function() {
 			var props = this.props,
 				length = props.length,
 				page = props.page,
-				pageSize = props.pageSize
-			size = (Math.ceil(length / pageSize) || 1);
+				pageSize = props.pageSize;
+			this.size = (Math.ceil(length / pageSize) || 1);
+			var className1 = classNames('l-btn l-btn-small l-btn-plain',{'l-btn-disabled l-btn-plain-disabled':page == 1});
+			var className2 = classNames('l-btn l-btn-small l-btn-plain',{'l-btn-disabled l-btn-plain-disabled':this.size== page});
 			return (<div className="datagrid-pager pagination">
 <table cellSpacing="0" cellPadding="0" border="0">
 	<tbody>
 		<tr>
-			<td><select className="pagination-page-list" onChange={this.refresh}><option>10</option>
+			<td><select className="pagination-page-list" onChange={this.onPageSizeNum}><option>10</option>
 					<option>20</option>
 					<option>30</option>
 					<option>40</option>
-					<option>50</option></select></td>
+					<option>50</option>
+					<option>100</option>
+					</select></td>
 			<td><div className="pagination-btn-separator"></div></td>
-			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled"><span
+			<td><a href="javascript:void(0)" onClick={this.firstPage} className={className1}><span
 					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span> <span
 						className="l-btn-icon pagination-first">&nbsp;</span></span></a></td>
-			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain l-btn-disabled l-btn-plain-disabled"><span
+			<td><a href="javascript:void(0)" onClick={this.prePage} className={className1}><span
 					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
 						className="l-btn-icon pagination-prev">&nbsp;</span></span></a></td>
 			<td>
 				<div className="pagination-btn-separator"></div>
 			</td>
 			<td><span style={{paddingLeft: '6px'}}>第</span></td>
-			<td><input className="pagination-num" type="text" value={page} onChange={this.refresh} size="2"/></td>
-			<td><span style={{paddingRight: '6px'}}>共{size}页</span></td>
+			<td>
+				<Num page={page} keyDown={this.onPageNum}/>
+			</td>
+			<td><span style={{paddingRight: '6px'}}>共{this.size}页</span></td>
 			<td><div className="pagination-btn-separator"></div></td>
-			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain"><span
+			<td><a href="javascript:void(0)"  onClick={this.nextPage}  className={className2}><span
 					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
 						className="l-btn-icon pagination-next">&nbsp;</span></span></a></td>
-			<td><a href="javascript:void(0)" className="l-btn l-btn-small l-btn-plain"><span
+			<td><a href="javascript:void(0)"  onClick={this.lastPage}  className={className2}><span
 					className="l-btn-left l-btn-icon-left"><span className="l-btn-text l-btn-empty">&nbsp;</span><span
 						className="l-btn-icon pagination-last">&nbsp;</span></span></a></td>
 			<td><div className="pagination-btn-separator"></div></td>
@@ -269,7 +317,17 @@
 		
 		handleChange : function(action) {
 			var props = this.props,context = this;
-			if(action.type == AT.SERVICE.REFRESH || action.type == AT.SERVICE.INIT){
+			if(action.type == AT.SERVICE.INIT){
+				this.load();
+				return;
+			}
+			if(action.type == AT.SERVICE.REFRESH){
+				var data = action.data
+				if(data){
+					this.state.page = data.page;
+					this.state.pageSize = data.pageSize;
+					this.state.q = data.q;
+				}
 				this.load();
 				return;
 			}
@@ -348,7 +406,7 @@
 							{this.props.children}
 						</View>
 					</div>
-					<Pagination service={this.props.service} page={this.state.page} pageSize={this.state.pageSize} length={this.state.length}/>
+					<Pagination service={this.props.service}  page={this.state.page} pageSize={this.state.pageSize} length={this.state.length}/>
 				</div>
 			);
 		}

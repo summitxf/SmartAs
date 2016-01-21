@@ -12,7 +12,7 @@
 			});
 		}
 	}
-	
+
 	NS.New = function(model) {
 		var listeners = [], services = {
 			create : 'services/' + model + '/single',
@@ -43,7 +43,6 @@
 				listener(action);
 			});
 		}
-
 
 		var method = function(method, type, url, data, success, error) {
 			return Resource.method(type, url, data, compose(type, function(data) {
@@ -83,8 +82,16 @@
 		function init() {
 			dispatch(AT.SERVICE.INIT);
 		}
-		function refresh() {
-			dispatch(AT.SERVICE.INIT);
+		function refresh(/*page, pageSize, q*/) {
+			if(arguments.length){
+				dispatch(AT.SERVICE.REFRESH, {
+					page : arguments[0],
+					pageSize : arguments[1],
+					q : arguments[2]
+				});
+			}else {
+				dispatch(AT.SERVICE.REFRESH);
+			}
 		}
 		function dispatch(type, data) {
 			_dispatch({
