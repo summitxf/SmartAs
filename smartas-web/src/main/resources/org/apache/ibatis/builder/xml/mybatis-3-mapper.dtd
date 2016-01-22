@@ -181,6 +181,7 @@ useCache (true|false) #IMPLIED
 databaseId CDATA #IMPLIED
 lang CDATA #IMPLIED
 resultOrdered (true|false) #IMPLIED
+pageable (true|false) #IMPLIED
 resultSets CDATA #IMPLIED 
 >
 

@@ -27,10 +27,8 @@
 	    FROM tpl_app_role_t T
 	  </select>
 	  
-	  <select id="select" resultType="org.smartas.security.model.Role">
-	  	${limitBefore}
+	  <select id="select" resultType="org.smartas.security.model.Role" pageable="true">
 	    SELECT T.* FROM tpl_app_role_t T
-	    ${limitAfter}
 	  </select>
 	  
 	  <insert id="insert" parameterType="org.smartas.security.model.Role">

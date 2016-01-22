@@ -38,6 +38,7 @@ import org.apache.ibatis.scripting.xmltags.TrimSqlNode;
 import org.apache.ibatis.scripting.xmltags.VarDeclSqlNode;
 import org.apache.ibatis.scripting.xmltags.WhereSqlNode;
 import org.apache.ibatis.session.Configuration;
+import org.smartas.core.sql.mapping.PageSqlSource;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -88,7 +89,10 @@ public class XMLScriptBuilder extends BaseBuilder {
 		List<SqlNode> contents = parseDynamicTags(context);
 		MixedSqlNode rootSqlNode = new MixedSqlNode(contents);
 		SqlSource sqlSource = null;
-		if (isDynamic) {
+		
+		if(context.getBooleanAttribute("pageable",false)){
+			return new PageSqlSource(configuration,rootSqlNode,isDynamic);
+		}else if (isDynamic) {
 			sqlSource = new DynamicSqlSource(configuration, rootSqlNode);
 		} else {
 			sqlSource = new RawSqlSource(configuration, rootSqlNode, parameterType);
