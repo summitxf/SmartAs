@@ -14,6 +14,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.framework.version>4.2.1.RELEASE</spring.framework.version>
 		<shiro.version>1.2.4</shiro.version>
+		<org.activiti-version>6.0.0.Beta2</org.activiti-version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<spring.framework.session.version>1.0.2.RELEASE</spring.framework.session.version>
 		<!-- JVM params for test execution -->
 		<argLine>-Duser.language=en</argLine>
@@ -258,11 +260,6 @@
 				<artifactId>drools-compiler</artifactId>
 				<version>5.5.0.Final</version>
 			</dependency>
-			<dependency>
-				<groupId>org.json</groupId>
-				<artifactId>json</artifactId>
-				<version>20070829</version>
-			</dependency>
 
 			<dependency>
 				<groupId>org.mybatis</groupId>
@@ -374,14 +371,56 @@
 				<version>${shiro.version}</version>
 			</dependency>
 
+
+			<!-- Activiti5 -->
+			<dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-engine</artifactId>
+				<version>${org.activiti-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-spring</artifactId>
+				<version>${org.activiti-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-jdbc</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>2.6</version>
 			</dependency>
 
+
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>${org.aspectj-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${org.aspectj-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>2.2.2</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
+
+	<repositories>
+
+		<!-- <repository> <id>Alfresco Maven Repository</id> <url>https://maven.alfresco.com/nexus/content/groups/public/</url> 
+			</repository> <repository> <id>spring-snapshot</id> <url>http://repo.springsource.org/libs-snapshot</url> </repository> -->
+	</repositories>
 
 	<modules>
 		<module>smartas-core</module>
