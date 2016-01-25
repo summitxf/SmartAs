@@ -42,7 +42,7 @@
 	</aop:config>
 
 	<!-- Activiti begin -->
-	<bean id="processEngineConfiguration" class="org.smartas.workflow.activiti.ExtProcessEngineConfiguration">
+	<bean id="processEngineConfiguration" class="org.smartas.workflow.activiti.cfg.ExtProcessEngineConfiguration">
 		<property name="dataSource" ref="dataSource" />
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="databaseSchemaUpdate" value="true" />
@@ -54,7 +54,7 @@
 	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
-
+	
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
 	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
 	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
@@ -62,6 +62,7 @@
 	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
 	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
 	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
-	<!-- <bean id="commandExecutor" factory-bean="processEngineConfiguration" factory-method="getCommandExecutorTxRequired" /> -->
+	<bean id="freeflowTaskService" factory-bean="processEngineConfiguration" factory-method="getFreeflowTaskService" depends-on="processEngine"/>
+	<bean id="commandExecutor" factory-bean="processEngineConfiguration" factory-method="getCommandExecutor" depends-on="processEngine"/>
 
 </beans>

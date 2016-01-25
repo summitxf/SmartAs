@@ -1,4 +1,4 @@
-package org.smartas.workflow.activiti;
+package org.smartas.workflow.activiti.cfg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,9 @@ import org.activiti.engine.impl.form.FormEngine;
 import org.activiti.engine.parse.BpmnParseHandler;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.smartas.core.util.BeansUtils;
+import org.smartas.workflow.activiti.FreeflowTaskService;
 import org.smartas.workflow.activiti.form.HtmlFormEngine;
+import org.smartas.workflow.activiti.impl.FreeflowTaskServiceImpl;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -33,5 +35,11 @@ public class ExtProcessEngineConfiguration extends SpringProcessEngineConfigurat
 		}
 		bpmnParseHandlers.addAll(BeansUtils.getBeansOfType(applicationContext, AbstractBpmnParseHandler.class));
 		setPostBpmnParseHandlers(bpmnParseHandlers);
+
+		setTaskService(new FreeflowTaskServiceImpl(this));
+	}
+
+	public FreeflowTaskService getFreeflowTaskService() {
+		return (FreeflowTaskService) getTaskService();
 	}
 }
