@@ -13,7 +13,7 @@ import org.springframework.dao.DataAccessException;
  *         注意::这个接口改进,主要用了jdk1.5的特性 运用方法参数化类型.
  * @version 1.2
  */
-public interface GenericDao<T extends Entity, PK extends Serializable> {
+public interface GenericDao<T extends POJO, PK extends Serializable> {
 	/**
 	 * 从数据库查询满足条件的对象,这里我们不处理找不到结果的情况,应为存在业务要求 数据库中是否已有这条记录
 	 * 

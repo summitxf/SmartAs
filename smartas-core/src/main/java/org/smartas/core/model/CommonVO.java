@@ -1,11 +1,9 @@
 package org.smartas.core.model;
 
-import org.smartas.core.BaseEntity;
-
 /**
  * @author chenbing 组织模型
  */
-public abstract class BaseModel extends BaseEntity {
+public abstract class CommonVO extends LongIdVO {
 	/**
 	 * 
 	 */

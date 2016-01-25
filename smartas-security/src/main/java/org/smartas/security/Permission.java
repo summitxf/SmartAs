@@ -1,18 +1,17 @@
-package org.smartas.security.model;
+package org.smartas.security;
 
-import org.smartas.core.Entity;
+import org.smartas.core.model.StringIdVO;
 
 /**
  * @author chenbing 权限
  */
-public class Permission implements Entity {
+public class Permission extends StringIdVO {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5030442800316489341L;
 
-	private String id;// 编码
 	private String parentId;// 父编码
 	private String model;// 模块
 	private String name; // 名称
@@ -63,14 +62,6 @@ public class Permission implements Entity {
 		this.desc = desc;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	/**
 	 * @return the parentId
 	 */
@@ -94,9 +85,5 @@ public class Permission implements Entity {
 			return true;
 		}
 		return this.id.equals(((Permission) o).id);
-	}
-
-	public int hashCode() {
-		return id.hashCode();
 	}
 }

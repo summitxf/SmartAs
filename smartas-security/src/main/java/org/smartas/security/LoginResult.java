@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.smartas.security.model;
+package org.smartas.security;
 
 /**
  * @author chenb

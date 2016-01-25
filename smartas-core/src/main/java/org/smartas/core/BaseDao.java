@@ -9,6 +9,6 @@
 
 package org.smartas.core;
 
-public interface BaseDao<T extends Entity> extends GenericDao<T, Long> {
+public interface BaseDao<T extends POJO> extends GenericDao<T, Long> {
 
 }

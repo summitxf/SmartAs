@@ -1,11 +1,11 @@
-package org.smartas.security.model;
+package org.smartas.security;
 
-import org.smartas.core.model.BaseModel;
+import org.smartas.core.model.CommonVO;
 
 /**
  * 
  */
-public class Group extends BaseModel {
+public class Group extends CommonVO {
 
 	/**
 	 * 

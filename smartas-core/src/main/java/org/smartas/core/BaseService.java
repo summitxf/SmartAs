@@ -5,6 +5,6 @@ package org.smartas.core;
  *
  * @param <T>实体类
  */
-public interface BaseService<T extends Entity> extends Service<T, Long>{
+public interface BaseService<T extends POJO> extends Service<T, Long>{
 
 }

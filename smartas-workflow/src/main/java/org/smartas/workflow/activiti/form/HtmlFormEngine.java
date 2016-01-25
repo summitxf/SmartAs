@@ -8,7 +8,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.impl.form.FormEngine;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.smartas.core.Entity;
+import org.smartas.core.POJO;
 
 /**
  * @author chebing
@@ -42,7 +42,7 @@ public class HtmlFormEngine implements FormEngine {
 		Map<String, Object> variables = task.getVariables();
 
 		for (Object ob : variables.values()) {
-			if (ob instanceof Entity) {
+			if (ob instanceof POJO) {
 				//((Entity) ob).init();
 			}
 		}

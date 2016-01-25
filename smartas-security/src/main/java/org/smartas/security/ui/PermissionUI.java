@@ -15,7 +15,7 @@ import java.util.Set;
 import org.smartas.core.annotation.Operation;
 import org.smartas.core.annotation.Resource;
 import org.smartas.core.ui.BaseUI;
-import org.smartas.security.model.Permission;
+import org.smartas.security.Permission;
 import org.smartas.security.service.PermissionService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

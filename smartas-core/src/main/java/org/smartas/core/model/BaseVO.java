@@ -7,22 +7,23 @@
  * 版权所有：J.Bob
  */
 
-package org.smartas.core;
+package org.smartas.core.model;
+
+import org.smartas.core.POJO;
 
 /**
  * @author chenb
  *
  */
-public abstract class BaseEntity implements Entity {
+public abstract class BaseVO implements POJO {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3617220118055104348L;
 
-	private Long id;
-	private String tenantId;// 多租户
-	private String scope;//
+	protected String tenantId;// 多租户
+	protected String scope;//
 	protected int revision = 1;//版本
 
 	/**
@@ -73,13 +74,4 @@ public abstract class BaseEntity implements Entity {
 	public int getRevisionNext() {
 		return revision + 1;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 }

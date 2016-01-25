@@ -1,19 +1,18 @@
-package org.smartas.security.model;
+package org.smartas.security;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.smartas.core.BaseEntity;
+import org.smartas.core.model.LongIdVO;
 
-public class User extends BaseEntity {
+public class User extends LongIdVO {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1757475622243875292L;
-	
-	
+
 	private String acount;
 	private String email;
 	private String firstname;
@@ -26,7 +25,7 @@ public class User extends BaseEntity {
 	private String zip;
 	private String country;
 	private String phone;
-	
+
 	protected String password;
 	protected String mobile;
 	protected String fax;
@@ -35,9 +34,9 @@ public class User extends BaseEntity {
 	protected Date accessionTime;
 	protected String education;
 	protected Short title;
-	
+
 	private Short delFlag;
-	
+
 	private Set<String> rights = new HashSet<String>();
 
 	/**
@@ -54,11 +53,11 @@ public class User extends BaseEntity {
 		this.setId(in_userId);
 	}
 
-
-
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="password" type="java.lang.String" length="128" not-null="true" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="password" type="java.lang.String"
+	 *                     length="128" not-null="true" unique="false"
 	 */
 	public String getPassword() {
 		return this.password;
@@ -66,6 +65,7 @@ public class User extends BaseEntity {
 
 	/**
 	 * Set the password
+	 * 
 	 * @spring.validator type="required"
 	 */
 	public void setPassword(String aValue) {
@@ -73,8 +73,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="email" type="java.lang.String" length="128" not-null="true" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="email" type="java.lang.String" length="128"
+	 *                     not-null="true" unique="false"
 	 */
 	public String getEmail() {
 		return this.email;
@@ -82,16 +84,18 @@ public class User extends BaseEntity {
 
 	/**
 	 * Set the email
+	 * 
 	 * @spring.validator type="required"
 	 */
 	public void setEmail(String aValue) {
 		this.email = aValue;
 	}
 
-
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="phone" type="java.lang.String" length="32" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="phone" type="java.lang.String" length="32"
+	 *                     not-null="false" unique="false"
 	 */
 	public String getPhone() {
 		return this.phone;
@@ -105,8 +109,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="mobile" type="java.lang.String" length="32" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="mobile" type="java.lang.String" length="32"
+	 *                     not-null="false" unique="false"
 	 */
 	public String getMobile() {
 		return this.mobile;
@@ -120,8 +126,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="fax" type="java.lang.String" length="32" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="fax" type="java.lang.String" length="32"
+	 *                     not-null="false" unique="false"
 	 */
 	public String getFax() {
 		return this.fax;
@@ -135,8 +143,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="address" type="java.lang.String" length="64" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="address" type="java.lang.String" length="64"
+	 *                     not-null="false" unique="false"
 	 */
 	public String getAddress() {
 		return this.address;
@@ -150,8 +160,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="zip" type="java.lang.String" length="32" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="zip" type="java.lang.String" length="32"
+	 *                     not-null="false" unique="false"
 	 */
 	public String getZip() {
 		return this.zip;
@@ -165,8 +177,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="photo" type="java.lang.String" length="128" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="photo" type="java.lang.String" length="128"
+	 *                     not-null="false" unique="false"
 	 */
 	public String getPhoto() {
 		return this.photo;
@@ -180,8 +194,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return java.util.Date
-	 * @hibernate.property column="accessionTime" type="java.util.Date" length="19" not-null="true" unique="false"
+	 * * @return java.util.Date
+	 * 
+	 * @hibernate.property column="accessionTime" type="java.util.Date"
+	 *                     length="19" not-null="true" unique="false"
 	 */
 	public java.util.Date getAccessionTime() {
 		return this.accessionTime;
@@ -189,16 +205,18 @@ public class User extends BaseEntity {
 
 	/**
 	 * Set the accessionTime
+	 * 
 	 * @spring.validator type="required"
 	 */
 	public void setAccessionTime(java.util.Date aValue) {
 		this.accessionTime = aValue;
 	}
 
-
 	/**
-	 * 	 * @return String
-	 * @hibernate.property column="education" type="java.lang.String" length="64" not-null="false" unique="false"
+	 * * @return String
+	 * 
+	 * @hibernate.property column="education" type="java.lang.String"
+	 *                     length="64" not-null="false" unique="false"
 	 */
 	public String getEducation() {
 		return this.education;
@@ -212,8 +230,10 @@ public class User extends BaseEntity {
 	}
 
 	/**
-	 * 	 * @return Short
-	 * @hibernate.property column="title" type="java.lang.Short" length="32" not-null="false" unique="false"
+	 * * @return Short
+	 * 
+	 * @hibernate.property column="title" type="java.lang.Short" length="32"
+	 *                     not-null="false" unique="false"
 	 */
 	public Short getTitle() {
 		return this.title;
@@ -236,7 +256,6 @@ public class User extends BaseEntity {
 	public String getFirstKeyColumnName() {
 		return "userId";
 	}
-
 
 	public boolean isAccountNonExpired() {
 		return true;
@@ -275,8 +294,6 @@ public class User extends BaseEntity {
 		this.delFlag = delFlag;
 	}
 
-	
-	 
 	public String getAcount() {
 		return acount;
 	}

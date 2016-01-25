@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.smartas.security.model;
+package org.smartas.security;
 
-import org.smartas.core.BaseEntity;
+import org.smartas.core.model.LongIdVO;
 
 /**
  * 菜单对下
@@ -11,7 +11,7 @@ import org.smartas.core.BaseEntity;
  * @author chenb
  *
  */
-public class Menu extends BaseEntity {
+public class Menu extends LongIdVO {
 
 	/**
 	 * 

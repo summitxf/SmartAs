@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.smartas.core.BusinessAccessException;
-import org.smartas.core.Entity;
+import org.smartas.core.POJO;
 import org.smartas.core.GenericDao;
 import org.smartas.core.Page;
 import org.smartas.core.Pageable;
 import org.smartas.core.Service;
 
-public abstract class GenericServiceImpl<T extends Entity, PK extends Serializable> implements Service<T, PK> {
+public abstract class GenericServiceImpl<T extends POJO, PK extends Serializable> implements Service<T, PK> {
 
 	protected abstract GenericDao<T, PK> getDao();
 	

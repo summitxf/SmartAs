@@ -4,7 +4,7 @@
 package org.smartas.security.dao;
 
 import org.smartas.core.BaseDao;
-import org.smartas.security.model.Role;
+import org.smartas.security.Role;
 import org.springframework.stereotype.Repository;
 
 /**

@@ -8,7 +8,7 @@
 
 	<!-- ///////////////////////////基础接口定义///////////////////////////////// -->
 
-	<select id="getById" resultType="org.smartas.security.model.Menu">
+	<select id="getById" resultType="org.smartas.security.Menu">
 		SELECT
 		T.*
 		FROM tpl_menu_t T
@@ -21,7 +21,7 @@
 		FROM tpl_menu_t T
 	</select>
 
-	<select id="selectAll" resultType="org.smartas.security.model.Menu">
+	<select id="selectAll" resultType="org.smartas.security.Menu">
 		SELECT
 		T.*
 		FROM tpl_menu_t T
@@ -29,7 +29,7 @@
 		ORDER BY T.sn
 	</select>
 
-	<select id="select" resultType="org.smartas.security.model.Menu">
+	<select id="select" resultType="org.smartas.security.Menu">
 		${limitBefore}
 		SELECT T.* FROM tpl_menu_t T
 		<query open="(" close=")"  value="queryVo"/>
@@ -38,7 +38,7 @@
 	</select>
 
 
-	<insert id="insert" parameterType="org.smartas.security.model.Menu">
+	<insert id="insert" parameterType="org.smartas.security.Menu">
 		INSERT INTO tpl_menu_t
 		(code, name, url, parentId, sn, className, iconName, publish)
 		VALUES
@@ -55,7 +55,7 @@
 		</selectKey>
 	</insert>
 
-	<update id="update" parameterType="org.smartas.security.model.Menu">
+	<update id="update" parameterType="org.smartas.security.Menu">
 		UPDATE tpl_menu_t SET
 		code = #{code,jdbcType=VARCHAR},
 		name = #{name,jdbcType=VARCHAR},
@@ -65,7 +65,7 @@
 		className = #{className,jdbcType=VARCHAR},
 		iconName = #{iconName,jdbcType=VARCHAR},
 		publish = #{publish,jdbcType=VARCHAR}
-		WHERE ID = #{id}
+		WHERE ID = #{id,jdbcType=NUMERIC}
 	</update>
 
 
@@ -77,7 +77,7 @@
 	<!-- //////////////////////////////////////////////////////////// -->
 
 
-	<select id="findNavbarMenus" resultType="org.smartas.security.model.Menu">
+	<select id="findNavbarMenus" resultType="org.smartas.security.Menu">
 		SELECT
 		T.*
 		FROM tpl_menu_t T

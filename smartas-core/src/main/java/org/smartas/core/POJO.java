@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author chenb
  * 
  */
-public interface Entity extends Serializable {
+public interface POJO extends Serializable {
 	
 	/**
 	 * id
