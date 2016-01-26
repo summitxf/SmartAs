@@ -35,10 +35,10 @@
 
 	<aop:config>
 		<aop:advisor advice-ref="StartProcessMethodInterceptor"
-			pointcut="execution(* **.service.*.*(..)) and @annotation(org.smartas.workflow.annotation.StartProcess)" order="10" />
+			pointcut="execution(* **.service.*.*(..)) and @annotation(org.smartas.core.annotation.StartProcess)" order="10" />
 
 		<aop:advisor advice-ref="CompleteTaskMethodInterceptor"
-			pointcut="execution(* **.service.*.*(..)) and @annotation(org.smartas.workflow.annotation.CompleteTask)" order="10" />
+			pointcut="execution(* **.service.*.*(..)) and @annotation(org.smartas.core.annotation.ApproveTask)" order="10" />
 	</aop:config>
 
 	<!-- Activiti begin -->

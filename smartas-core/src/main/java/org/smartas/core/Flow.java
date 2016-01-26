@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.smartas.workflow;
+package org.smartas.core;
 
 /**
  * @author chenb
  *
  */
-public class Workflow {
+public class Flow {
 
 	private String taskId;
 	private String processDefId;

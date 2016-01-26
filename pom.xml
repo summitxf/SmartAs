@@ -431,6 +431,7 @@
 		<module>smartas-demo</module>
 		<module>smartas-web</module>
 		<module>smartas-env</module>
+		
 	</modules>
 
 	<profiles>
