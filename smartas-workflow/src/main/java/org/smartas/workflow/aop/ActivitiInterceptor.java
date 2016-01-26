@@ -25,6 +25,13 @@ abstract class ActivitiInterceptor implements MethodInterceptor {
 	@Autowired
 	protected HistoryService historyService;
 
+	/**
+	 * @return the excludeVariableNames
+	 */
+	public Set<String> getExcludeVariableNames() {
+		return excludeVariableNames;
+	}
+
 	/*
 	 * protected final Map<String, Object> getWorkflowVariables() { Map<String,
 	 * Object> variables = new HashMap<String, Object>(); for (Entry<String,
