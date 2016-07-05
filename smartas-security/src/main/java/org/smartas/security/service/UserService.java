@@ -1,7 +1,7 @@
 package org.smartas.security.service;
 
 import org.smartas.core.BaseService;
-import org.smartas.security.model.User;
+import org.smartas.security.User;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

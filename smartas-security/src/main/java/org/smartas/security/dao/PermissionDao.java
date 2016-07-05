@@ -5,7 +5,7 @@ package org.smartas.security.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.smartas.core.BaseDao;
-import org.smartas.security.model.Permission;
+import org.smartas.security.Permission;
 import org.springframework.stereotype.Repository;
 
 /**

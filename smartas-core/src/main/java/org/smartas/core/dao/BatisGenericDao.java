@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-import org.smartas.core.Entity;
+import org.smartas.core.POJO;
 import org.smartas.core.GenericDao;
 import org.smartas.core.Page;
 import org.springframework.dao.DataAccessException;
@@ -15,7 +15,7 @@ import org.springframework.dao.DataAccessException;
  * @author chenjpu
  */
 @SuppressWarnings("all")
-public class BatisGenericDao<T extends Entity, PK extends Serializable> extends SqlSessionDaoSupport implements GenericDao<T, PK> {
+public class BatisGenericDao<T extends POJO, PK extends Serializable> extends SqlSessionDaoSupport implements GenericDao<T, PK> {
 
 	protected Class<T> clazz;
 

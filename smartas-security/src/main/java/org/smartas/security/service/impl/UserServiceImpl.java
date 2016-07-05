@@ -1,8 +1,8 @@
 package org.smartas.security.service.impl;
 
 import org.smartas.core.service.BaseServiceImpl;
+import org.smartas.security.User;
 import org.smartas.security.dao.UserDao;
-import org.smartas.security.model.User;
 import org.smartas.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -8,7 +8,7 @@
 	
 	  <!-- ///////////////////////////基础接口定义///////////////////////////////// -->
 	
-	  <select id="getById" resultType="org.smartas.security.model.Role">
+	  <select id="getById" resultType="org.smartas.security.Role">
 	    SELECT
 	       T.*
 	    FROM tpl_app_role_t T
@@ -21,17 +21,17 @@
 	    FROM tpl_app_role_t T
 	  </select>
 	  
-	  <select id="selectAll" resultType="org.smartas.security.model.Role">
+	  <select id="selectAll" resultType="org.smartas.security.Role">
 	    SELECT
 	       T.*
 	    FROM tpl_app_role_t T
 	  </select>
 	  
-	  <select id="select" resultType="org.smartas.security.model.Role" pageable="true">
+	  <select id="select" resultType="org.smartas.security.Role" pageable="true">
 	    SELECT T.* FROM tpl_app_role_t T
 	  </select>
 	  
-	  <insert id="insert" parameterType="org.smartas.security.model.Role">
+	  <insert id="insert" parameterType="org.smartas.security.Role">
 	    INSERT INTO tpl_app_role_t
 	      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, ACOUNT)
 	    VALUES
@@ -39,7 +39,7 @@
 	  </insert>
 	  
 	  
-	  <update id="update" parameterType="org.smartas.security.model.Role">
+	  <update id="update" parameterType="org.smartas.security.Role">
 	    UPDATE ACCOUNT SET
 	      EMAIL = #{email},
 	      FIRSTNAME = #{firstName},
@@ -52,7 +52,7 @@
 	      ZIP = #{zip},
 	      COUNTRY = #{country},
 	      PHONE = #{phone}
-	    WHERE ID = #{id}
+	    WHERE ID = #{id,jdbcType=NUMERIC}
 	  </update>
 	  
 	  
@@ -65,7 +65,7 @@
 	  
 	  
 	  
-	  <select id="findByRoleAcount" resultType="org.smartas.security.model.Role">
+	  <select id="findByRoleAcount" resultType="org.smartas.security.Role">
 	    SELECT
 	       T.*
 	    FROM tpl_app_role_t T 

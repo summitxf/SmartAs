@@ -8,7 +8,7 @@
 	
 	  <!-- ///////////////////////////基础接口定义///////////////////////////////// -->
 	
-	  <select id="getById" resultType="org.smartas.security.model.User">
+	  <select id="getById" resultType="org.smartas.security.User">
 	    SELECT
 	       T.*
 	    FROM tpl_user_t T
@@ -21,20 +21,20 @@
 	    FROM tpl_user_t T
 	  </select>
 	  
-	  <select id="selectAll" resultType="org.smartas.security.model.User">
+	  <select id="selectAll" resultType="org.smartas.security.User">
 	    SELECT
 	       T.*
 	    FROM tpl_user_t T
 	  </select>
 	  
-	  <select id="select" resultType="org.smartas.security.model.User">
+	  <select id="select" resultType="org.smartas.security.User">
 	    ${limitBefore}
 	    SELECT T.* FROM tpl_user_t T
 	    ${limitAfter}
 	  </select>
 	  
 	  
-	  <insert id="insert" parameterType="org.smartas.security.model.User">
+	  <insert id="insert" parameterType="org.smartas.security.User">
 	    INSERT INTO tpl_user_t
 	      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, ACOUNT)
 	    VALUES
@@ -42,7 +42,7 @@
 	  </insert>
 	  
 	  
-	  <update id="update" parameterType="org.smartas.security.model.User">
+	  <update id="update" parameterType="org.smartas.security.User">
 	    UPDATE ACCOUNT SET
 	      EMAIL = #{email},
 	      FIRSTNAME = #{firstName},
@@ -55,7 +55,7 @@
 	      ZIP = #{zip},
 	      COUNTRY = #{country},
 	      PHONE = #{phone}
-	    WHERE ID = #{id}
+	    WHERE ID = #{id,jdbcType=NUMERIC}
 	  </update>
 	  
 	  
@@ -68,7 +68,7 @@
 	  
 	  
 	  
-	  <select id="findByUserAcount" resultType="org.smartas.security.model.User">
+	  <select id="findByUserAcount" resultType="org.smartas.security.User">
 	    SELECT
 	       T.*
 	    FROM tpl_user_t T 

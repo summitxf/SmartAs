@@ -4,7 +4,7 @@
 package org.smartas.security.service;
 
 import org.smartas.core.BaseService;
-import org.smartas.security.model.Permission;
+import org.smartas.security.Permission;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

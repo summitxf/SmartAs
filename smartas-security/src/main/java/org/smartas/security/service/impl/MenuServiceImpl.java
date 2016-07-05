@@ -3,8 +3,8 @@ package org.smartas.security.service.impl;
 import java.util.List;
 
 import org.smartas.core.service.BaseServiceImpl;
+import org.smartas.security.Menu;
 import org.smartas.security.dao.MenuDao;
-import org.smartas.security.model.Menu;
 import org.smartas.security.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

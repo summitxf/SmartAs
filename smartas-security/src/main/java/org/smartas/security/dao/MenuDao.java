@@ -6,7 +6,7 @@ package org.smartas.security.dao;
 import java.util.List;
 
 import org.smartas.core.BaseDao;
-import org.smartas.security.model.Menu;
+import org.smartas.security.Menu;
 import org.springframework.stereotype.Repository;
 
 /**

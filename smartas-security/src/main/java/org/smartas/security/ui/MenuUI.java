@@ -8,7 +8,7 @@ import java.util.List;
 import org.smartas.core.annotation.Operation;
 import org.smartas.core.annotation.Resource;
 import org.smartas.core.ui.BaseUI;
-import org.smartas.security.model.Menu;
+import org.smartas.security.Menu;
 import org.smartas.security.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

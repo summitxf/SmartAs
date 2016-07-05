@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.smartas.demo.workflow.dao.DemoWorkflowDao">
+
+	<!-- <cache /> -->
+
+	<!-- ///////////////////////////基础接口定义///////////////////////////////// -->
+
+	<select id="getById" resultType="org.smartas.demo.workflow.DemoWorkflow">
+		SELECT
+		T.*
+		FROM tpl_demoWorkflow_t T
+		WHERE T.ID = #{id}
+	</select>
+
+	<select id="getCountAll" resultType="int">
+		SELECT
+		count(1)
+		FROM tpl_demoWorkflow_t T
+	</select>
+
+	<select id="selectAll" resultType="org.smartas.demo.workflow.DemoWorkflow">
+		SELECT
+		T.*
+		FROM tpl_demoWorkflow_t T
+	</select>
+
+	<select id="select" resultType="org.smartas.demo.workflow.DemoWorkflow" pageable="true">
+		SELECT T.* FROM tpl_demoWorkflow_t T
+	</select>
+
+
+	<insert id="insert" parameterType="org.smartas.demo.workflow.DemoWorkflow">
+		INSERT INTO tpl_demoWorkflow_t
+		(code)
+		VALUES(
+		#{code,jdbcType=VARCHAR}
+		
+		)
+		<selectKey resultType="long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID() AS ID
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterType="org.smartas.demo.workflow.DemoWorkflow">
+		UPDATE tpl_demoWorkflow_t SET
+		code = #{code,jdbcType=VARCHAR},
+		WHERE ID = #{id,jdbcType=NUMERIC}
+	</update>
+
+
+	<select id="deleteById">
+		DELETE FROM tpl_demoWorkflow_t
+		WHERE ID = #{id}
+	</select>
+
+	<!-- //////////////////////////////////////////////////////////// -->
+ 
+</mapper>
+

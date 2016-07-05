@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop.xsd      
+	http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd    
+	http://www.springframework.org/schema/context     http://www.springframework.org/schema/context/spring-context.xsd  
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd       
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd   
+	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+
+	<bean class="org.smartas.workflow.activiti.parse.ExtUserTaskParseHandler"/>
+	<bean class="org.smartas.workflow.activiti.parse.SequenceFlowParseHandler"/>
+
+	<bean id="StartProcessMethodInterceptor" class="org.smartas.workflow.aop.StartProcessMethodInterceptor">
+		<property name="excludeVariableNames">
+			<set>
+				<value>processDefinitionId</value>
+			</set>
+		</property>
+	</bean>
+
+
+	<bean id="CompleteTaskMethodInterceptor" class="org.smartas.workflow.aop.CompleteTaskMethodInterceptor">
+		<property name="excludeVariableNames">
+			<set>
+				<value>taskId</value>
+				<value>processInstanceId</value>
+			</set>
+		</property>
+	</bean>
+
+	<aop:config>
+		<aop:advisor advice-ref="StartProcessMethodInterceptor"
+			pointcut="execution(* **.service.*.*(..)) and @annotation(org.smartas.core.annotation.StartProcess)" order="10" />
+
+		<aop:advisor advice-ref="CompleteTaskMethodInterceptor"
+			pointcut="execution(* **.service.*.*(..)) and @annotation(org.smartas.core.annotation.ApproveTask)" order="10" />
+	</aop:config>
+
+	<!-- Activiti begin -->
+	<bean id="processEngineConfiguration" class="org.smartas.workflow.activiti.cfg.ExtProcessEngineConfiguration">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<property name="jobExecutorActivate" value="true" />
+		<property name="deploymentName" value="btravel" />
+		<property name="deploymentResources" value="classpath*:/META-INF/bpmn/*.bpmn" />
+	</bean>
+
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+	
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
+	<bean id="freeflowTaskService" factory-bean="processEngineConfiguration" factory-method="getFreeflowTaskService" depends-on="processEngine"/>
+	<bean id="commandExecutor" factory-bean="processEngineConfiguration" factory-method="getCommandExecutor" depends-on="processEngine"/>
+
+</beans>

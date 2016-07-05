@@ -6,7 +6,7 @@ package org.smartas.security.ui;
 import org.smartas.core.annotation.Operation;
 import org.smartas.core.annotation.Resource;
 import org.smartas.core.ui.BaseUI;
-import org.smartas.security.model.User;
+import org.smartas.security.User;
 import org.smartas.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

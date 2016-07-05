@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.smartas.core.BusinessAccessException;
-import org.smartas.core.Entity;
+import org.smartas.core.POJO;
 import org.smartas.core.Pageable;
 import org.smartas.core.Service;
 import org.smartas.core.annotation.Operation;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @param <T>
  * @param <PK>
  */
-public abstract class GenericUI<T extends Entity, PK extends Serializable> {
+public abstract class GenericUI<T extends POJO, PK extends Serializable> {
 
 	protected abstract Service<T, PK> getService();
 

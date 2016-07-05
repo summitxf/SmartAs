@@ -38,6 +38,20 @@ public @interface Operation {
 	 */
 	int DELETE = 1004;
 	String DELETE_DESC = "delete";
+	
+	
+	/**
+	 * 创建流程
+	 */
+	int CREATE_PROCESS = 1005;
+	String CREATE_PROCESS_DESC = "create process";
+	
+	/**
+	 * 审批流程
+	 */
+	int APPROVE_PROCESS = 1006;
+	String APPROVE_PROCESS_DESC = "approve process";
+
 
 	int code();
 
